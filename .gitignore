@@ -1,13 +1,5 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
+# Auto generated files
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
+_build_*_*
+_start_msvc.bat
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a

@@ -1,0 +1,11 @@
+# Stock Trading Strategies Creator
+# Process market datafeed and some additional factors to generate open, close signals to open position to generate profitable strategies
+
+[*] : some common changes
+[-] : delete bug
+[+] : new feature
+
+ [00.00.00.01], (14-Feb-2013), Ivan Sidarau
+---------------------------------------------------------------------------
+[+] project creating
+
