@@ -10,18 +10,9 @@ namespace stsc
 	{
 		namespace common
 		{
-			void bar_types_possible_values_tests()
-			{
-				BOOST_CHECK_EQUAL( sizeof( float ) <= sizeof( double ), true );
-			}
-			void specialized_bar_types_tests()
-			{
-				BOOST_CHECK_EQUAL( typeid( float_bar_type::float_type ) == typeid( float ), true );
-				BOOST_CHECK_EQUAL( typeid( double_bar_type::float_type ) == typeid( double ), true );
-			}
 			void bar_type_constructor_tests()
 			{
-				float_bar_type bar;
+				bar_type bar;
 				bar.open_ = 45.65f;
 				bar.close_ = 45.34f;
 				bar.high_ = 45.67f;
@@ -35,7 +26,7 @@ namespace stsc
 			}
 			void bar_type_ostream_operator_tests()
 			{
-				float_bar_type bar;
+				bar_type bar;
 				bar.open_ = 45.65f;
 				bar.close_ = 45.34f;
 				bar.high_ = 45.67f;

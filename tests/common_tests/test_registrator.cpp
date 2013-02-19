@@ -12,8 +12,6 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 
 	using namespace stsc::tests_::common;
 
-	ts1->add( BOOST_TEST_CASE( &bar_types_possible_values_tests ) );
-	ts1->add( BOOST_TEST_CASE( &specialized_bar_types_tests ) );
 	ts1->add( BOOST_TEST_CASE( &bar_type_constructor_tests ) );
 	ts1->add( BOOST_TEST_CASE( &bar_type_ostream_operator_tests ) );
 

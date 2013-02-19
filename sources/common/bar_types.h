@@ -7,10 +7,9 @@ namespace stsc
 {
 	namespace common
 	{
-		template< typename float_type_typename = float >
 		struct bar_type
 		{
-			typedef float_type_typename float_type;
+			typedef float float_type;
 
 			float_type open_;
 			float_type close_;
@@ -19,11 +18,7 @@ namespace stsc
 
 			float_type volume_;
 		};
-		typedef bar_type< float > float_bar_type;
-		typedef bar_type< double > double_bar_type;
-
-		std::ostream& operator<<( std::ostream& out, const float_bar_type& bar );
-		std::ostream& operator<<( std::ostream& out, const double_bar_type& bar );
+		std::ostream& operator<<( std::ostream& out, const bar_type& bar );
 	}
 }
 
