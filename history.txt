@@ -5,6 +5,12 @@
 [-] : delete bug
 [+] : new feature
 
+ [00.00.00.02], (19-Feb-2013), Ivan Sidarau
+---------------------------------------------------------------------------
+[+] adding common module
+[+] adding algorithm_prototype, signal_vector, strategies_engine classes with possibility to create algorithm, register it into strategies_engine 
+[+] adding possibility to subscribe on other algorithms signal vectors (with type check on run-time)
+
  [00.00.00.01], (14-Feb-2013), Ivan Sidarau
 ---------------------------------------------------------------------------
 [+] project creating
