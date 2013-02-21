@@ -6,6 +6,11 @@
 [+] : new feature
 
 
+ [00.00.00.04], (21-Feb-2013), Ivan Sidarau
+---------------------------------------------------------------------------
+[+] adding datafeed module with classes that store periods elements
+[+] adding binary serializator de-serializator
+
  [00.00.00.03], (21-Feb-2013), Ivan Sidarau
 ---------------------------------------------------------------------------
 [+] adding on_stock, on_bar, on_period algorithm prototypes
