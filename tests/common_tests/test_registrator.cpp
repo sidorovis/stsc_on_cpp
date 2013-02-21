@@ -14,6 +14,8 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 
 	ts1->add( BOOST_TEST_CASE( &bar_type_constructor_tests ) );
 	ts1->add( BOOST_TEST_CASE( &bar_type_ostream_operator_tests ) );
+	ts1->add( BOOST_TEST_CASE( &price_bar_constructor_tests ) );
+	ts1->add( BOOST_TEST_CASE( &price_bar_ostream_operator_tests ) );
 
 	ts1->add( BOOST_TEST_CASE( &signal_subtypes_tests ) );
 	ts1->add( BOOST_TEST_CASE( &close_signal_constructor_tests ) );

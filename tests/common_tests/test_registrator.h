@@ -6,10 +6,11 @@ namespace stsc
 	{
 		namespace common
 		{
-			void bar_types_possible_values_tests();
-			void specialized_bar_types_tests();
 			void bar_type_constructor_tests();
 			void bar_type_ostream_operator_tests();
+
+			void price_bar_constructor_tests();
+			void price_bar_ostream_operator_tests();
 
 			void signal_subtypes_tests();
 			void close_signal_constructor_tests();

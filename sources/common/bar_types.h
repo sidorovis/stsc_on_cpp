@@ -9,6 +9,10 @@ namespace stsc
 	{
 		struct bar_type
 		{
+			long time_;
+		};
+		struct price_bar : public bar_type
+		{
 			typedef float float_type;
 
 			float_type open_;
@@ -19,6 +23,7 @@ namespace stsc
 			float_type volume_;
 		};
 		std::ostream& operator<<( std::ostream& out, const bar_type& bar );
+		std::ostream& operator<<( std::ostream& out, const price_bar& bar );
 	}
 }
 

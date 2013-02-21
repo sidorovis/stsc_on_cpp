@@ -2,13 +2,13 @@
 
 #include <strategies_engine.h>
 
-using namespace stsc::algorithm_storage;
+using namespace stsc::engine;
 
 namespace stsc
 {
 	namespace tests_
 	{
-		namespace algorithm_storage
+		namespace engine
 		{
 			void strategies_engine_constructor_tests()
 			{

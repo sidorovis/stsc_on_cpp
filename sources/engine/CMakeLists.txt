@@ -6,7 +6,6 @@ find_package( Boost 1.41 ${SEARCH_PARAMETERS} COMPONENTS
 	date_time
 	system
 	program_options
-	unit_test_framework
 )
 
 find_package( system_utilities ${SEARCH_PARAMETERS} COMPONENTS
@@ -21,7 +20,4 @@ find_package( system_utilities ${SEARCH_PARAMETERS} COMPONENTS
 	timer
 )
 
-add_source_list( ${tests_name} algorithms "algorithms/*_tests.cpp" )
-compile_project( ${tests_name} "*.cpp" "*.h" BINARY tests ${tests_name} ${module_name} common system_utilities Boost )
-register_test( ${tests_name} 1.0 1.0 )
-
+compile_project( ${module_name} "*.cpp" "*.h" STATIC libraries ${module_name} common system_utilities Boost )
