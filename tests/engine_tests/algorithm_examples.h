@@ -3,6 +3,7 @@
 
 #include <algorithm_prototype.h>
 #include <bar_types.h>
+#include <signal_types.h>
 
 namespace stsc
 {
@@ -19,12 +20,26 @@ namespace stsc
 				virtual void process( const stsc::common::price_bar& b );
 			};
 			//
-			class on_bar_algorithm_example : public stsc::engine::on_bar_algorithm_prototype< void >
+			class on_bar_algorithm_example : public stsc::engine::on_bar_algorithm_prototype< int >
 			{
 				stsc::engine::signal_vector< double > double_serie_;
 			public:
 				explicit on_bar_algorithm_example( const std::string& name, stsc::engine::strategies_engine& es, const std::string& subscription_name );
 				virtual ~on_bar_algorithm_example();
+			private:
+				virtual void process( const stsc::common::bar_type& b );
+			};
+			class on_period_algorithm_example : public stsc::engine::on_period_algorithm_prototype< stsc::common::signal >
+			{
+				stsc::engine::signal_vector< double > double_serie_;
+				stsc::engine::signal_vector< int > int_serie_;
+			public:
+				explicit on_period_algorithm_example( 
+					const std::string& name, 
+					stsc::engine::strategies_engine& es, 
+					const std::string& double_subscription_name,
+					const std::string& int_subscription_name );
+				virtual ~on_period_algorithm_example();
 			private:
 				virtual void process( const stsc::common::bar_type& b );
 			};

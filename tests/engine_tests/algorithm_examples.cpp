@@ -20,7 +20,7 @@ namespace stsc
 			}
 			//
 			on_bar_algorithm_example::on_bar_algorithm_example( const std::string& name, stsc::engine::strategies_engine& es, const std::string& subscription_name )
-				: on_bar_algorithm_prototype< void >( name, es )
+				: on_bar_algorithm_prototype< int >( name, es )
 				, double_serie_( es.subscribe< double >( subscription_name ) )
 			{
 			}
@@ -28,6 +28,23 @@ namespace stsc
 			{
 			}
 			void on_bar_algorithm_example::process( const stsc::common::bar_type& b )
+			{
+			}
+			//
+			on_period_algorithm_example::on_period_algorithm_example( 
+				const std::string& name, 
+				stsc::engine::strategies_engine& es, 
+				const std::string& double_subscription_name,
+				const std::string& int_subscription_name )
+				 : on_period_algorithm_prototype< stsc::common::signal >( name, es )
+				 , double_serie_( es.subscribe< double >( double_subscription_name ) )
+				 , int_serie_( es.subscribe< int >( int_subscription_name ) )
+			{
+			}
+			on_period_algorithm_example::~on_period_algorithm_example()
+			{
+			}
+			void on_period_algorithm_example::process( const stsc::common::bar_type& b )
 			{
 			}
 			//

@@ -105,17 +105,26 @@ namespace stsc
 		private:
 			virtual void process( const bar_type& b ) = 0;
 		};
-		/*
+		
 		template< typename output_signal_type >
-		class on_period_algorithm_prototype : public algorithm_prototype< void, output_signal_type >
+		class on_period_algorithm_prototype : public details::algorithm_prototype< common::bar_type, output_signal_type >
 		{
+			typedef algorithm_prototype< common::bar_type, output_signal_type > typed_algorithm;
+			strategies_engine& strategies_engine_;
 		protected:
-			virtual ~algorithm_prototype()
+			explicit on_period_algorithm_prototype( const std::string& name, stsc::engine::strategies_engine& se )
+				: typed_algorithm( name, se.signals_storage_ )
+				, strategies_engine_( se )
 			{
+				strategies_engine_.registrate_on_period_algorithm( this );
+			}
+			virtual ~on_period_algorithm_prototype()
+			{
+				strategies_engine_.unregistrate_on_period_algorithm( this );
 			}
 		private:
-			virtual void process() = 0;
-		};*/
+			virtual void process( const bar_type& b ) = 0;
+		};
 	}
 }
 

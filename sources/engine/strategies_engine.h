@@ -20,20 +20,19 @@ namespace stsc
 			template< typename output_signal_type >
 			friend class on_bar_algorithm_prototype;
 
+			template< typename output_signal_type >
+			friend class on_period_algorithm_prototype;
+
 			details::algorithm_storage on_stock_algorithm_storage_;
 			details::algorithm_storage on_bar_algorithm_storage_;
-			//details::algorithm_storage on_stock_algorithm_storage_;
+			details::algorithm_storage on_period_algorithm_storage_;
+
 			details::signals_storage signals_storage_;
 		public:
 			explicit strategies_engine();
 			~strategies_engine();
 			//
-			//template< typename output_signal_type >
-			//signal_vector< output_signal_type >& create_vector( const std::string& name )
-			//{
-			//	return signals_storage_.create_vector< output_signal_type >( name );
-			//}
-			//
+		private:
 			template< typename output_signal_type >
 			void registrate_on_stock_algorithm( on_stock_algorithm_prototype< output_signal_type >* const algorithm )
 			{
@@ -56,6 +55,18 @@ namespace stsc
 				on_bar_algorithm_storage_.erase( algorithm );
 			}
 			//
+			template< typename output_signal_type >
+			void registrate_on_period_algorithm( on_period_algorithm_prototype< output_signal_type >* const algorithm )
+			{
+				on_period_algorithm_storage_.insert( algorithm );
+			}
+			template< typename output_signal_type >
+			void unregistrate_on_period_algorithm( on_period_algorithm_prototype< output_signal_type >* const algorithm )
+			{
+				on_period_algorithm_storage_.erase( algorithm );
+			}
+			//
+		public:
 			template< typename output_signal_type >
 			const signal_vector< output_signal_type >& subscribe( const std::string& name )
 			{

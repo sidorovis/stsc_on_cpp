@@ -17,6 +17,7 @@ namespace stsc
 				strategies_engine se;
 				on_stock_algorithm_example osae( "osae", se );
 				on_bar_algorithm_example obae( "obae", se, "osae" );
+				on_period_algorithm_example opae( "opae", se, "osae", "obae" );
 			}
 		}
 	}

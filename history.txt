@@ -5,6 +5,11 @@
 [-] : delete bug
 [+] : new feature
 
+
+ [00.00.00.03], (21-Feb-2013), Ivan Sidarau
+---------------------------------------------------------------------------
+[+] adding on_stock, on_bar, on_period algorithm prototypes
+
  [00.00.00.02], (19-Feb-2013), Ivan Sidarau
 ---------------------------------------------------------------------------
 [+] adding common module
