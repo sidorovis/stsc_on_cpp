@@ -13,6 +13,12 @@ namespace stsc
 			void algorithm_prototypes_constructor_tests();
 
 			//void algorithm_prototype_constructor_tests();
+
+			void moving_median_constructor_tests();
+			void moving_median_simple_work_tests();
+
+			void moving_median_indicator_constructor_tests();
+			void moving_median_indicator_simple_work_tests();
 		}
 	}
 }
