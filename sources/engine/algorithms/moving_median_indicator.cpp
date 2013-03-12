@@ -6,17 +6,19 @@ namespace stsc
 {
 	namespace engine
 	{
-		const std::string moving_median_indicator::algorithm_name = "moving_median_indicator";
-		moving_median_indicator::moving_median_indicator( strategies_engine& se, 
-												const size_t moving_median_window,
-												const common::bar_data::float_type bigger_than,
-												const common::bar_data::float_type less_than,
-												const common::bar_data_types::value type )
-			: base_type( algorithm_name, se )
+		moving_median_indicator::moving_median_indicator( const std::string& name,
+														strategies_engine& se, 
+														const size_t moving_median_window,
+														const common::bar_data::float_type bigger_than,
+														const common::bar_data::float_type less_than,
+														const common::bar_data_types::value type )
+			: base_type( name, se )
 			, data_type_in_use_( type )
 			, bigger_than_( bigger_than )
 			, less_than_( less_than )
 		{
+			if ( bigger_than_ >= less_than_ )
+				throw std::invalid_argument( "moving_median_indicator: bigger_than value is bigger than less_than value" );
 			mm_.reset( new moving_median_type( moving_median_window ) );
 		}
 		moving_median_indicator::~moving_median_indicator()
@@ -25,7 +27,7 @@ namespace stsc
 		void moving_median_indicator::process( const bar_type& b )
 		{
 			using namespace common::bar_data_types;
-			common::bar_data::float_type price;
+			common::bar_data::float_type price = 0.0;
 			switch( data_type_in_use_ )
 			{
 			case open:

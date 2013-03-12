@@ -6,11 +6,20 @@
 
 namespace stsc
 {
+	namespace tests_
+	{
+		namespace engine
+		{
+			class moving_median_tests;
+		}
+	}
 	namespace engine
 	{
 		template< class T >
 		class moving_median
 		{
+			friend class stsc::tests_::engine::moving_median_tests;
+
 		public:
 			typedef T value_type;
 			typedef std::multiset< value_type > median_set;

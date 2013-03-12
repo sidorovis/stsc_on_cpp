@@ -1,5 +1,5 @@
-#ifndef _STSC_ENGINE_ALGORITHM_MOVING_MEDIAN_INDICATOR_H_
-#define _STSC_ENGINE_ALGORITHM_MOVING_MEDIAN_INDICATOR_H_
+#ifndef _STSC_ENGINE_ALGORITHM_ALGORITHM_MOVING_MEDIAN_INDICATOR_H_
+#define _STSC_ENGINE_ALGORITHM_ALGORITHM_MOVING_MEDIAN_INDICATOR_H_
 
 #include <boost/shared_ptr.hpp>
 
@@ -10,12 +10,18 @@
 
 namespace stsc
 {
+	namespace tests_
+	{
+		namespace engine
+		{
+			class moving_median_indicator_tests;
+		}
+	}
 	namespace engine
 	{
 		class moving_median_indicator : public on_stock_algorithm_prototype< common::open_signal >
 		{
-		public:
-			static const std::string algorithm_name;
+			friend class stsc::tests_::engine::moving_median_indicator_tests;
 
 		private:
 			typedef on_stock_algorithm_prototype< common::open_signal > base_type;
@@ -28,7 +34,8 @@ namespace stsc
 			const common::bar_data::float_type less_than_;
 			
 		public:
-			explicit moving_median_indicator( strategies_engine& se, 
+			explicit moving_median_indicator( const std::string& name, 
+											strategies_engine& se, 
 											const size_t moving_median_window,
 											const common::bar_data::float_type bigger_than,
 											const common::bar_data::float_type less_than,
@@ -40,5 +47,5 @@ namespace stsc
 	}
 }
 
-#endif // _STSC_ENGINE_ALGORITHM_MOVING_MEDIAN_INDICATOR_H_
+#endif // _STSC_ENGINE_ALGORITHM_ALGORITHM_MOVING_MEDIAN_INDICATOR_H_
 
