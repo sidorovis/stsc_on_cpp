@@ -6,6 +6,11 @@
 [+] : new feature
 
 
+ [00.00.00.05], (12-Mar-2013), Ivan Sidarau
+---------------------------------------------------------------------------
+[+] move binary reader/writer to stsc::datafeed::binary namespace
+[+] adding csv/yahoo_finance_reader prototype
+
  [00.00.00.04], (21-Feb-2013), Ivan Sidarau
 ---------------------------------------------------------------------------
 [+] adding datafeed module with classes that store periods elements
