@@ -20,6 +20,15 @@
 [+] move binary reader/writer to stsc::datafeed::binary namespace
 [+] adding csv/yahoo_finance_reader prototype
 
+ [00.00.00.04], (12-Mar-2013), Ihar Marozau
+---------------------------------------------------------------------------
+[*] fix #ifndef #endif directive name
+[+] add tests for moving_median and moving_median_indicator
+
+ [00.00.00.04], (11-Mar-2013), Ihar Marozau
+---------------------------------------------------------------------------
+[+] add moving median indicator
+
  [00.00.00.04], (21-Feb-2013), Ivan Sidarau
 ---------------------------------------------------------------------------
 [+] adding datafeed module with classes that store periods elements

@@ -7,6 +7,17 @@ namespace stsc
 {
 	namespace common
 	{
+		namespace bar_data_types
+		{
+			enum value
+			{
+				open,
+				high,
+				low,
+				close,
+				volume
+			};
+		}
 		struct bar_type
 		{
 			long time_;

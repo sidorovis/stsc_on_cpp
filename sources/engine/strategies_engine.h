@@ -72,7 +72,6 @@ namespace stsc
 			{
 				return signals_storage_.subscribe< output_signal_type >( name );
 			}
-
 		};
 	}
 }
