@@ -18,6 +18,14 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 
 	ts1->add( BOOST_TEST_CASE( &write_read_unit_tests ) );
 
+	ts1->add( BOOST_TEST_CASE( &yahoo_finance_reader_constructor_tests ) );
+	ts1->add( BOOST_TEST_CASE( &yahoo_finance_reader_unit_tests ) );
+
+	if ( RUN_PERFORMANCE_TESTS )
+	{
+		ts1->add( BOOST_TEST_CASE( &yahoo_finance_reader_performance_tests ) );
+	}
+
 	return ts1;
 }
 

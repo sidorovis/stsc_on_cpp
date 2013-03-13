@@ -6,6 +6,10 @@
 [+] : new feature
 
 
+ [00.00.00.06], (13-Mar-2013), Ivan Sidarau
+---------------------------------------------------------------------------
+[+] adding csv/yahoo_finance_reader multithread processor that read yahoo EOD history datafeed files
+
  [00.00.00.05], (12-Mar-2013), Ivan Sidarau
 ---------------------------------------------------------------------------
 [+] move binary reader/writer to stsc::datafeed::binary namespace

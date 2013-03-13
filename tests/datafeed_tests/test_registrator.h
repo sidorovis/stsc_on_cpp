@@ -15,7 +15,9 @@ namespace stsc
 			}
 			namespace csv
 			{
-
+				void yahoo_finance_reader_constructor_tests();
+				void yahoo_finance_reader_unit_tests();
+				void yahoo_finance_reader_performance_tests();
 			}
 		}
 	}
