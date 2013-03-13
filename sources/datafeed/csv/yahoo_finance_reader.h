@@ -38,9 +38,6 @@ namespace stsc
 				};
 				typedef boost::shared_ptr< yahoo_finance_file > yahoo_finance_file_ptr;
 
-				template< bool >
-				void check_yahoo_finance_file_line_by_regexp( const std::string& line );
-
 			}
 
 			class yahoo_finance_reader : virtual protected boost::noncopyable
@@ -59,7 +56,7 @@ namespace stsc
 				const bool protected_scan_;
 
 			public:
-				explicit yahoo_finance_reader( datafeed_processor& dp, const std::string& datafeed_folder, const std::string& output_folder, const bool protected_scan = true );
+				explicit yahoo_finance_reader( datafeed_processor& dp, const std::string& datafeed_folder, const bool protected_scan = true );
 				~yahoo_finance_reader();
 				//
 				void process( const size_t thread_size = 1ul );

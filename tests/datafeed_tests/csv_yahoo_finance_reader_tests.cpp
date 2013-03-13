@@ -21,8 +21,7 @@ namespace stsc
 					class datafeed_processor : public stsc::datafeed::datafeed_processor
 					{
 						typedef boost::shared_ptr< std::string > stock_name_ptr;
-						typedef boost::shared_ptr< common::price_bar > bar_ptr;
-						typedef std::vector< bar_ptr > bars;
+						typedef std::vector< common::price_bar > bars;
 					public:
 						std::map< std::string, bars > datafeed_;
 					private:
@@ -32,7 +31,7 @@ namespace stsc
 					public:
 						explicit datafeed_processor(){}
 						virtual ~datafeed_processor(){}
-						virtual void process_bar( const stock_name_ptr& stock_name, bar_ptr& new_bar )
+						virtual void process_bar( const stock_name_ptr& stock_name, const common::price_bar& new_bar )
 						{
 							boost::mutex::scoped_lock lock( protect_map_ );
 							datafeed_[ *stock_name ].push_back( new_bar );
@@ -45,7 +44,7 @@ namespace stsc
 					{
 						system_utilities::common::time_tracker tt;
 						datafeed_processor dp;
-						yahoo_finance_reader yfr( dp, SOURCE_DIR "/tests/data/yahoo_finance_to_binary_data", BINARY_DIR, true );
+						yahoo_finance_reader yfr( dp, SOURCE_DIR "/tests/data/yahoo_finance_to_binary_data", true );
 						yfr.process( thread_size );
 						return tt.milliseconds();						
 					}
@@ -56,10 +55,8 @@ namespace stsc
 					using namespace boost::filesystem;
 
 					datafeed_processor dp;
-					BOOST_CHECK_THROW( yahoo_finance_reader( dp, SOURCE_DIR "/unknown/please/be/unexisted/folder", BINARY_DIR ), std::exception );
-					BOOST_CHECK_THROW( yahoo_finance_reader( dp, SOURCE_DIR "/CMakeLists.txt", BINARY_DIR ), std::exception );
-					BOOST_CHECK_THROW( yahoo_finance_reader( dp, SOURCE_DIR, SOURCE_DIR "/unexisted/out/folder" ), std::exception );
-					BOOST_CHECK_THROW( yahoo_finance_reader( dp, SOURCE_DIR, SOURCE_DIR "/CMakeLists.txt" ), std::exception );
+					BOOST_CHECK_THROW( yahoo_finance_reader( dp, SOURCE_DIR "/unknown/please/be/unexisted/folder" ), std::exception );
+					BOOST_CHECK_THROW( yahoo_finance_reader( dp, SOURCE_DIR "/CMakeLists.txt" ), std::exception );
 				}
 				void yahoo_finance_reader_unit_tests()
 				{
@@ -72,7 +69,7 @@ namespace stsc
 					BOOST_CHECK_EQUAL( yahoo_finance_reader::file_is_datafeed_file_( "A1.csv" ), false );
 
 					datafeed_processor dp;
-					yahoo_finance_reader yfr( dp, SOURCE_DIR "/tests/data/yahoo_finance_to_binary_data", BINARY_DIR, true );
+					yahoo_finance_reader yfr( dp, SOURCE_DIR "/tests/data/yahoo_finance_to_binary_data", true );
 					BOOST_CHECK_EQUAL( yfr.datafeed_files_.size(), 4ul );
 					yfr.datafeed_files_.pop_back();
 					yfr.datafeed_files_.pop_back();
