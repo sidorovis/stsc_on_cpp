@@ -3,3 +3,4 @@
 _build_*_*
 _start_msvc.bat
 
+.DS_Store
