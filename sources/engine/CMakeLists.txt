@@ -20,4 +20,7 @@ find_package( system_utilities ${SEARCH_PARAMETERS} COMPONENTS
 	timer
 )
 
+add_source_list( ${module_name} algorithms "algorithms/*.cpp" )
+add_source_list( ${module_name} algorithms "algorithms/*.h" )
+
 compile_project( ${module_name} "*.cpp" "*.h" STATIC libraries ${module_name} common system_utilities Boost )
