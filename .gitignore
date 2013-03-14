@@ -4,3 +4,5 @@ _build_*_*
 _start_msvc.bat
 
 .DS_Store
+data/yahoo_datafeed
+data/binary_yahoo_datafeed

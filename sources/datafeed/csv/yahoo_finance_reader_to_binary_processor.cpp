@@ -1,5 +1,7 @@
 #include <csv/yahoo_finance_reader_to_binary_processor.h>
 
+#include <iostream>
+
 #include <binary/writer.h>
 
 namespace stsc
