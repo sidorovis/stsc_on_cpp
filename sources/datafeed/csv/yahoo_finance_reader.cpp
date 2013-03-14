@@ -27,18 +27,15 @@ namespace stsc
 			const long yahoo_finance_reader::epoch_day_ = 1;
 
 			//
-			yahoo_finance_reader::yahoo_finance_reader( datafeed_processor& dp, const std::string& datafeed_folder, const std::string& output_folder, const bool protected_scan )
+			yahoo_finance_reader::yahoo_finance_reader( datafeed_processor& dp, const std::string& datafeed_folder, const bool protected_scan )
 				: datafeed_processor_( dp )
 				, protected_scan_( protected_scan )
 			{
 				using namespace boost::filesystem;
 				path datafeed_path( datafeed_folder );
-				path output( output_folder );
 
 				if ( !exists( datafeed_path ) || !is_directory( datafeed_path ) )
 					throw std::logic_error( "datafeed_folder: " + datafeed_folder + " should exists and be directory" );
-				if ( !exists( output ) || !is_directory( output ) )
-					throw std::logic_error( "output_folder: " + output_folder + " should exists and be directory" );
 
 				for ( directory_iterator i( datafeed_path ), end ; i != end ; ++i )
 				{
@@ -130,22 +127,22 @@ namespace stsc
 					if ( protected_scan_ && !boost::regex_match( line, r ) )
 						throw std::logic_error( "error while parsing line: " + boost::lexical_cast< std::string >( index_line )  + "(" + file_name + ")" );
 
-					boost::shared_ptr< common::price_bar > bar( new common::price_bar() );
+					common::price_bar bar;
 
 					const int elements = sscanf( line.c_str(), "%hd-%hd-%hd,%f,%f,%f,%f,%f", 
 						&year,
 						&month,
 						&day,
-						&(bar->open_),
-						&(bar->high_),
-						&(bar->low_),
-						&(bar->close_),
-						&(bar->volume_)
+						&(bar.open_),
+						&(bar.high_),
+						&(bar.low_),
+						&(bar.close_),
+						&(bar.volume_)
 						 );
 					static const int right_element_amount = 8;
 					if ( elements != right_element_amount )
 						throw std::logic_error( "bad line: '" + line + "' at line: " + boost::lexical_cast< std::string >( index_line ) + "(" + file_name + ")"  ); 
-					bar->time_ = create_time_( year, month, day );
+					bar.time_ = create_time_( year, month, day );
 					datafeed_processor_.process_bar( stock_name, bar );
 					++index_line;
 				}

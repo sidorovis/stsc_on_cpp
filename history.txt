@@ -14,6 +14,7 @@
  [00.00.00.06], (13-Mar-2013), Ivan Sidarau
 ---------------------------------------------------------------------------
 [+] adding csv/yahoo_finance_reader multithread processor that read yahoo EOD history datafeed files
+[+] adding integration tests for yahoo_finance to stsc binary datafeed processing algorithm
 
  [00.00.00.05], (12-Mar-2013), Ivan Sidarau
 ---------------------------------------------------------------------------
