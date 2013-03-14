@@ -19,6 +19,7 @@ find_package( system_utilities ${SEARCH_PARAMETERS} COMPONENTS
 	system_processor
 	property_reader
 	timer
+	time_tracker
 )
 
 compile_project( ${tests_name} "*.cpp" "*.h" BINARY tests ${tests_name} ${module_name} common system_utilities Boost )

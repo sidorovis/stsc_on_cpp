@@ -27,9 +27,9 @@ namespace stsc
 			typedef float float_type;
 
 			float_type open_;
-			float_type close_;
 			float_type high_;
 			float_type low_;
+			float_type close_;
 
 			float_type volume_;
 		};

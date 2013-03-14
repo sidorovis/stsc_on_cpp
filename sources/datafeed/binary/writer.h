@@ -3,13 +3,16 @@
 
 #include <ostream>
 
-#include <binary_format.h>
+#include <binary/format.h>
 
 namespace stsc
 {
 	namespace datafeed
 	{
-		std::ostream& operator<<( std::ostream& out, const binary_period& bp );
+		namespace binary
+		{
+			std::ostream& operator<<( std::ostream& out, const period& bp );
+		}
 	}
 }
 

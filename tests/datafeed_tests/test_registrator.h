@@ -6,10 +6,19 @@ namespace stsc
 	{
 		namespace datafeed
 		{
-			void binary_period_header_sizeof_tests();
-			void binary_period_constructor_tests();
+			namespace binary
+			{
+				void period_header_sizeof_tests();
+				void period_constructor_tests();
 
-			void binary_write_read_unit_tests();
+				void write_read_unit_tests();
+			}
+			namespace csv
+			{
+				void yahoo_finance_reader_constructor_tests();
+				void yahoo_finance_reader_unit_tests();
+				void yahoo_finance_reader_performance_tests();
+			}
 		}
 	}
 }

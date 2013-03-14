@@ -1,0 +1,82 @@
+#ifndef _STSC_DATAFEED_CSV_YAHOO_FINANCE_READER_H_
+#define _STSC_DATAFEED_CSV_YAHOO_FINANCE_READER_H_
+
+#include <string>
+#include <list>
+#include <fstream>
+
+#include <boost/noncopyable.hpp>
+#include <boost/thread/mutex.hpp>
+
+#include <bar_types.h>
+
+#include <datafeed_processor.h>
+
+namespace stsc
+{
+	namespace tests_
+	{
+		namespace datafeed
+		{
+			namespace csv
+			{
+				void yahoo_finance_reader_unit_tests();
+			}
+		}
+	}
+	namespace datafeed
+	{
+		namespace csv
+		{
+			namespace details
+			{
+				struct yahoo_finance_file
+				{
+					std::string file_name;
+					std::string file_path;
+					explicit yahoo_finance_file( const std::string&, const std::string& );
+				};
+				typedef boost::shared_ptr< yahoo_finance_file > yahoo_finance_file_ptr;
+
+				template< bool >
+				void check_yahoo_finance_file_line_by_regexp( const std::string& line );
+
+			}
+
+			class yahoo_finance_reader : virtual protected boost::noncopyable
+			{
+				static const long epoch_year_;
+				static const long epoch_month_;
+				static const long epoch_day_;
+
+				friend void stsc::tests_::datafeed::csv::yahoo_finance_reader_unit_tests();
+
+				datafeed_processor& datafeed_processor_;
+
+				boost::mutex file_vector_mutex_;
+				std::list< details::yahoo_finance_file_ptr > datafeed_files_;
+
+				const bool protected_scan_;
+
+			public:
+				explicit yahoo_finance_reader( datafeed_processor& dp, const std::string& datafeed_folder, const std::string& output_folder, const bool protected_scan = true );
+				~yahoo_finance_reader();
+				//
+				void process( const size_t thread_size = 1ul );
+			private:
+				static bool file_is_datafeed_file_( const std::string& file_name );
+				void processing_thread_();
+
+				const details::yahoo_finance_file_ptr file_path_to_process_();
+
+				static const bool first_line_is_correct_( std::ifstream& file );
+				void process_datafeed_( std::ifstream& file, const std::string& file_name );
+				const std::string create_stock_name_( const std::string& file_name );
+				//
+				static const long create_time_( const short year, const short month, const short day );
+			};
+		}
+	}
+}
+
+#endif // _STSC_DATAFEED_CSV_YAHOO_FINANCE_READER_H_

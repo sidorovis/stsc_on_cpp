@@ -3,13 +3,16 @@
 
 #include <istream>
 
-#include <binary_format.h>
+#include <binary/format.h>
 
 namespace stsc
 {
 	namespace datafeed
 	{
-		std::istream& operator>>( std::istream& out, binary_period& bp );
+		namespace binary
+		{
+			std::istream& operator>>( std::istream& out, period& bp );
+		}
 	}
 }
 

@@ -6,6 +6,20 @@
 [+] : new feature
 
 
+ [00.00.00.07], (14-Mar-2013), Ivan Sidarau
+---------------------------------------------------------------------------
+[+] adding full with length=(1..4) yahoo finance stock list tickers to data
+[+] adding one and multithread yahoo finance datafeed receiver
+
+ [00.00.00.06], (13-Mar-2013), Ivan Sidarau
+---------------------------------------------------------------------------
+[+] adding csv/yahoo_finance_reader multithread processor that read yahoo EOD history datafeed files
+
+ [00.00.00.05], (12-Mar-2013), Ivan Sidarau
+---------------------------------------------------------------------------
+[+] move binary reader/writer to stsc::datafeed::binary namespace
+[+] adding csv/yahoo_finance_reader prototype
+
  [00.00.00.04], (12-Mar-2013), Ihar Marozau
 ---------------------------------------------------------------------------
 [*] fix #ifndef #endif directive name
