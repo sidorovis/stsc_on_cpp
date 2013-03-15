@@ -67,7 +67,6 @@ folder = Pathname.new(ARGV[0]) if ARGV.size > 0
 
 raise Exception.new( "folder #{folder} should exist") unless folder.exist?
 
-
 Dir.foreach( folder ) do |item|
     next if item == '.' or item == '..'
     if /\w+\.csv/ =~ item
