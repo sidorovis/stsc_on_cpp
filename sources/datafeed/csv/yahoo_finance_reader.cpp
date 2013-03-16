@@ -60,7 +60,7 @@ namespace stsc
 			//
 			bool yahoo_finance_reader::file_is_datafeed_file_( const std::string& file_name )
 			{
-				const boost::regex r("\\u{1,8}\\.csv");
+				const boost::regex r("[a-zA-Z]{1,8}\\.csv");
 				return boost::regex_match( file_name, r );
 			}
 			void yahoo_finance_reader::processing_thread_()
