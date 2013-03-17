@@ -6,6 +6,13 @@
 [+] : new feature
 
 
+ [00.00.00.07], (15-Mar-2013), Ihar Marozau
+---------------------------------------------------------------------------
+[*] fix memory leak in signals_storage
+[*] fix memory leak in signal_map
+[+] make separate algorithms for moving_median_series and moving_median_indicator
+[+] tests for moving mediaa_series and moving_median_indicator
+
  [00.00.00.07], (14-Mar-2013), Ivan Sidarau
 ---------------------------------------------------------------------------
 [+] adding full with length=(1..4) yahoo finance stock list tickers to data

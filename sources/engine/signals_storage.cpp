@@ -8,16 +8,10 @@ namespace stsc
 		{
 			signals_storage::~signals_storage()
 			{
-				for( vectors::iterator i = data_.begin() ; i != data_.end() ; ++i )
-					delete i->second;
 			}
 			void signals_storage::destroy_vector( const std::string& name )
 			{
-				vectors::iterator i = data_.find( name );
-				if ( i == data_.end() )
-					return;
-				delete i->second;
-				data_.erase( i );
+				data_.erase( name );
 			}
 			std::ostream& operator<<( std::ostream& out, const signals_storage& ss )
 			{
