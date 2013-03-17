@@ -24,8 +24,8 @@ namespace stsc
 				common::bar_type b2;
 				BOOST_CHECK_NO_THROW( svtc.insert( &b2, new double( 1.3 ) ) );
 				{
-					boost::shared_ptr< double > throw_double( new double( 1.3 ) );
-					BOOST_CHECK_THROW( svtc.insert( &b2, throw_double.get() ), std::exception );
+					const double* throw_double( new double( 1.3 ) );
+					BOOST_CHECK_THROW( svtc.insert( &b2, throw_double ), std::exception );
 				}
 
 				const double* e = svtc.at( &b2 );

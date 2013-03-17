@@ -27,14 +27,14 @@ namespace stsc
 			median_set lower_median_set_;
 			median_set bigger_median_set_;
 			real_values real_values_;
-			size_t window_;
+			const size_t window_;
 
 		public:
-			explicit moving_median( const size_t& window )
-				: window_( window )
+			explicit moving_median( const size_t window )
+				: window_( window % 2 ? window : window + 1 )
 			{
-				if ( window_ < 3 ) window_  = 3;
-				if ( window_ % 2 == 0 ) ++window_;
+				if ( window_ < 3 )
+					throw std::invalid_argument( "moving median window should be bigger than 3" );
 			}
 
 		public:
@@ -51,7 +51,7 @@ namespace stsc
 
 				normalize_sets();
 			}
-			const value_type get_median()  
+			const value_type get_median()
 			{
 				if ( real_values_.size() >= window_ )
 					return get_last_element( lower_median_set_ );
@@ -106,7 +106,6 @@ namespace stsc
 				while ( bigger_median_set_.size() > window_ / 2)
 					lower_median_set_.insert( pop_first_element( bigger_median_set_ ));
 			}
-
 		};
 	}	
 }

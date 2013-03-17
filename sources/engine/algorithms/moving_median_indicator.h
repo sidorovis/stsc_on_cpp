@@ -25,21 +25,18 @@ namespace stsc
 
 		private:
 			typedef on_stock_algorithm_prototype< common::open_signal > base_type;
-			const common::bar_data_types::value data_type_in_use_;
 
-			typedef moving_median< common::bar_data::float_type > moving_median_type;
-			typedef boost::shared_ptr< moving_median_type > moving_median_ptr;
-			moving_median_ptr mm_;
+			stsc::engine::signal_vector< common::bar_data::float_type > moving_median_series_;
+
 			const common::bar_data::float_type bigger_than_;
 			const common::bar_data::float_type less_than_;
 			
 		public:
-			explicit moving_median_indicator( const std::string& name, 
-											strategies_engine& se, 
-											const size_t moving_median_window,
+			explicit moving_median_indicator( const std::string& name,
+											strategies_engine& se,
+											const std::string& moving_median_subscription,
 											const common::bar_data::float_type bigger_than,
-											const common::bar_data::float_type less_than,
-											const common::bar_data_types::value type = common::bar_data_types::close );
+											const common::bar_data::float_type less_than );
 			~moving_median_indicator();
 
 			virtual void process( const bar_type& b );
