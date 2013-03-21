@@ -6,6 +6,6 @@ include( environment.cmake required )
 
 modules( common engine datafeed )
 
-binaries()
+binaries( yahoo_finance_to_binary_data )
 
 compile()

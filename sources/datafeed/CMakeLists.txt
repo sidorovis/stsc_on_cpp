@@ -25,4 +25,5 @@ add_source_list( ${module_name} binary "binary/*.cpp" )
 add_source_list( ${module_name} binary "binary/*.h" )
 add_source_list( ${module_name} csv "csv/*.cpp" )
 add_source_list( ${module_name} csv "csv/*.h" )
+
 compile_project( ${module_name} "*.cpp" "*.h" STATIC libraries ${module_name} common system_utilities Boost )
