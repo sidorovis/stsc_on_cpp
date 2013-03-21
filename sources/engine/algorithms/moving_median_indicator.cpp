@@ -1,5 +1,6 @@
 #include "moving_median_indicator.h"
 
+#include <math.h>
 #include <strategies_engine.h>
 
 namespace stsc
