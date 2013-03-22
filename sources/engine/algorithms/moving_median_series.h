@@ -10,7 +10,7 @@ namespace stsc
 {
 	namespace engine
 	{
-		template< stsc::common::bar_data_types::value T = stsc::common::bar_data_types::close >
+		template< stsc::common::bar_data_type::value T = stsc::common::bar_data_type::close >
 		class moving_median_series : public on_stock_algorithm_prototype< stsc::common::bar_data::float_type >
 		{
 		public:
@@ -38,7 +38,7 @@ namespace stsc
 				using namespace stsc::common;
 				mm_->add_element( bar_data_adapter< T >::get( b ) );
 				if ( mm_->mature() )
-					registrate_signal( b, new stsc::common::bar_data::float_type( mm_->get_median() ) );
+					registrate_signal( b, new bar_data::float_type( mm_->get_median() ) );
 			}
 		};
 	}

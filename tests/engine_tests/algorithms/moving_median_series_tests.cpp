@@ -33,8 +33,8 @@ namespace stsc
 						BOOST_CHECK_NO_THROW( mms.reset( new moving_median_series_type( "test_moving_median_close", *se_, 3 ) ) );
 					}
 					{
-						boost::shared_ptr< moving_median_series< stsc::common::bar_data_types::open > > test_mms_open;
-						BOOST_CHECK_NO_THROW( test_mms_open.reset( new moving_median_series< stsc::common::bar_data_types::open >( "test_moving_median_open", *se_, 3 ) ) );
+						boost::shared_ptr< moving_median_series< stsc::common::bar_data_type::open > > test_mms_open;
+						BOOST_CHECK_NO_THROW( test_mms_open.reset( new moving_median_series< stsc::common::bar_data_type::open >( "test_moving_median_open", *se_, 3 ) ) );
 					}
 				}
 				void simple_work_tests()
