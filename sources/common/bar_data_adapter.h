@@ -5,52 +5,52 @@
 
 namespace stsc
 {
-	namespace engine
+	namespace common
 	{
-		template< stsc::common::bar_data_types::value T = stsc::common::bar_data_types::close >
+		template< bar_data_type::value T = bar_data_type::close >
 		struct bar_data_adapter
 		{
-			static const stsc::common::bar_data::float_type get( const stsc::common::bar_data& b )
+			static const bar_data::float_type get( const bar_data& b )
 			{
 				return b.close_;
 			}
 		};
 		template<>
-		struct bar_data_adapter< stsc::common::bar_data_types::close > 
+		struct bar_data_adapter< bar_data_type::close > 
 		{	
-			static const stsc::common::bar_data::float_type get( const stsc::common::bar_data& b )
+			static const bar_data::float_type get( const bar_data& b )
 			{
 				return b.close_;
 			}
 		};
 		template<>
-		struct bar_data_adapter< stsc::common::bar_data_types::open > 
+		struct bar_data_adapter< bar_data_type::open > 
 		{	
-			static const stsc::common::bar_data::float_type get( const stsc::common::bar_data& b )
+			static const bar_data::float_type get( const bar_data& b )
 			{
 				return b.open_;
 			}
 		};
 		template<>
-		struct bar_data_adapter< stsc::common::bar_data_types::high > 
+		struct bar_data_adapter< bar_data_type::high > 
 		{	
-			static const stsc::common::bar_data::float_type get( const stsc::common::bar_data& b )
+			static const bar_data::float_type get( const bar_data& b )
 			{
 				return b.high_;
 			}
 		};
 		template<>
-		struct bar_data_adapter< stsc::common::bar_data_types::low > 
+		struct bar_data_adapter< bar_data_type::low > 
 		{	
-			static const stsc::common::bar_data::float_type get( const stsc::common::bar_data& b )
+			static const bar_data::float_type get( const bar_data& b )
 			{
 				return b.low_;
 			}
 		};
 		template<>
-		struct bar_data_adapter< stsc::common::bar_data_types::volume > 
+		struct bar_data_adapter< bar_data_type::volume > 
 		{	
-			static const stsc::common::bar_data::float_type get( const stsc::common::bar_data& b )
+			static const bar_data::float_type get( const bar_data& b )
 			{
 				return b.volume_;
 			}
