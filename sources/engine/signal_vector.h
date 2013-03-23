@@ -2,6 +2,7 @@
 #define _STSC_ENGINE_SIGNAL_VECTOR_H_
 
 #include <map>
+#include <stdexcept>
 
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
