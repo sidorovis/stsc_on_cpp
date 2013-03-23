@@ -8,7 +8,7 @@ then
 	export BUILD_TYPE=Release
 fi
 
-export BUILD_FOLDER=_gcc_build_"$BUILD_TYPE"
+export BUILD_FOLDER=_xcode_build_$BUILD_TYPE
 
 if [ ! -d $BUILD_FOLDER ];
 then
@@ -16,5 +16,5 @@ then
 fi
 
 cd $BUILD_FOLDER
-cmake -DVERBOSE=ON -DSOLUTION_NAME=$SOLUTION_NAME -DCMAKE_BUILD_TYPE=$BUILD_TYPE -G "Unix Makefiles" ../ 
+cmake -DVERBOSE=ON -DSOLUTION_NAME=$SOLUTION_NAME -DCMAKE_BUILD_TYPE=$BUILD_TYPE -G "Xcode" ../ 
 cd ../
