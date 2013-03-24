@@ -47,7 +47,8 @@ namespace stsc
 			template< typename signal_type >
 			struct signal_map : boost::noncopyable
 			{
-				typedef std::map< const common::bar_type* const, const signal_type* > map;
+				typedef boost::shared_ptr< const signal_type > signal_type_ptr;
+				typedef std::map< const common::bar_type* const, const signal_type_ptr > map;
 				map map_;
 			public:
 				explicit signal_map()
@@ -59,8 +60,6 @@ namespace stsc
 				}
 				void clear()
 				{
-					for( typename map::iterator i = map_.begin() ; i != map_.end() ; ++i )
-						delete i->second;
 					map_.clear();
 				}
 			};
@@ -103,7 +102,7 @@ namespace stsc
 			};
 			void insert( const common::bar_type* bar, const signal_type* data )
 			{
-				if ( !( signals_map_->map_.insert( std::make_pair( bar, data ) ).second ) )
+				if ( !( signals_map_->map_.insert( std::make_pair( bar, typed_signal_map::signal_type_ptr( data ) ) ).second ) )
 					throw std::logic_error( "impossible to add to signal on single bar" );
 			}
 			const signal_type* at( const common::bar_type* bar ) const 

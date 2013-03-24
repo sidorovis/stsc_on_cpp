@@ -7,7 +7,7 @@ namespace stsc
 {
 	namespace common
 	{
-		namespace bar_data_types
+		namespace bar_data_type
 		{
 			enum value
 			{

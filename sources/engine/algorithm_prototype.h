@@ -14,6 +14,7 @@ namespace stsc
 		{
 			struct algorithm_storage;
 		};
+		class strategies_engine; 
 		//
 
 		class algorithm

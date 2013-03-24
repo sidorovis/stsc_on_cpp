@@ -28,12 +28,11 @@ namespace stsc
 						BOOST_CHECK_EQUAL( sizeof( median.window_ ), sizeof( size_t ) );
 					}
 					{
-						moving_median< double > median( 2 );
-						BOOST_CHECK_EQUAL( median.window_, 3 );
+						BOOST_CHECK_THROW( moving_median< double > median( 1 ), std::invalid_argument );
 					}
 					{
-						moving_median< double > median( 44 );
-						BOOST_CHECK_EQUAL( median.window_, 45 );
+						moving_median< double > median( 4 );
+						BOOST_CHECK_EQUAL( median.window_, 5 );
 					}
 				}
 				static void simple_work_tests()
