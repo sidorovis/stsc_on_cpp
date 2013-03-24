@@ -2,6 +2,7 @@
 #define _STSC_ENGINE_SIGNAL_VECTOR_H_
 
 #include <map>
+#include <stdexcept>
 
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
@@ -106,7 +107,7 @@ namespace stsc
 			}
 			const signal_type* at( const common::bar_type* bar ) const 
 			{
-				typed_signal_map::map::const_iterator i = signals_map_->map_.find( bar );
+				typename typed_signal_map::map::const_iterator i = signals_map_->map_.find( bar );
 				if ( i == signals_map_->map_.end() )
 					return NULL;
 				return &(*(i->second));

@@ -11,7 +11,6 @@ namespace stsc
 {
 	namespace engine
 	{
-
 		class strategies_engine : protected boost::noncopyable
 		{
 			template< typename output_signal_type >

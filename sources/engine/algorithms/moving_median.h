@@ -3,6 +3,7 @@
 
 #include <deque>
 #include <set>
+#include <stdexcept>
 
 namespace stsc
 {
@@ -64,22 +65,22 @@ namespace stsc
 			}
 
 		private:
-			const value_type pop_first_element( median_set& S ) 
+			const value_type pop_first_element( median_set& mset )
 			{
-				const T result = *( S.begin() );
-				S.erase( S.begin() );
+				const value_type result = *( mset.begin() );
+				mset.erase( mset.begin() );
 				return result;
 			}
-			const value_type pop_last_element( median_set& S ) 
+			const value_type pop_last_element( median_set& mset ) 
 			{
-				median_set::iterator cit = --S.end();
-				const T result = *cit;
-				S.erase( cit );
+				typename median_set::iterator i;// = --(mset.end());
+				const value_type result = *i;
+				mset.erase( i );
 				return result;
 			}
-			const value_type get_last_element( const median_set &S )  
+			const value_type get_last_element( const median_set &mset )
 			{					
-				return *( S.rbegin() );
+				return *( mset.rbegin() );
 			}
 			void pop_element()
 			{

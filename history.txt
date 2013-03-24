@@ -5,11 +5,14 @@
 [-] : delete bug
 [+] : new feature
 
+ [00.00.00.07], (24-Mar-2013), Ihar Marozau
+---------------------------------------------------------------------------
+[-] add startegy_engine declaration to algorithm_prototype
+
  [00.00.00.07], (22-Mar-2013), Ihar Marozau
 ---------------------------------------------------------------------------
 [+] remove bar_data_adapter to stsc::common namespace
 [+] rename namespace bar_data_types into bar_data_type
-
 
  [00.00.00.07], (15-Mar-2013), Ihar Marozau
 ---------------------------------------------------------------------------

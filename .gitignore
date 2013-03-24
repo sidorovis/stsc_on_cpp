@@ -2,8 +2,11 @@
 
 _build_*_*
 _start_msvc.bat
+_xcode_build_Debug
 
 .DS_Store
 data/yahoo_datafeed
 data/yahoo_datafeed.zip
 data/binary_yahoo_datafeed
+
+

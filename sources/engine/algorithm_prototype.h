@@ -4,7 +4,7 @@
 #include <string>
 #include <boost/noncopyable.hpp>
 
-#include <signal_vector.h>
+#include <signals_storage.h>
 
 namespace stsc
 {
@@ -12,10 +12,9 @@ namespace stsc
 	{
 		namespace details
 		{
-			struct signals_storage;
 			struct algorithm_storage;
 		};
-		class strategies_engine;
+		class strategies_engine; 
 		//
 
 		class algorithm
@@ -68,7 +67,7 @@ namespace stsc
 		template< typename output_signal_type >
 		class on_stock_algorithm_prototype : public details::algorithm_prototype< common::price_bar, output_signal_type >
 		{
-			typedef algorithm_prototype< common::price_bar, output_signal_type > typed_algorithm;
+			typedef typename algorithm_prototype< common::price_bar, output_signal_type > typed_algorithm;
 			strategies_engine& strategies_engine_;
 
 		protected:
