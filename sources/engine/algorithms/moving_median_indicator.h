@@ -3,10 +3,14 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <algorithm_prototype.h>
 #include <bar_types.h>
 #include <signal_types.h>
-#include <algorithms\moving_median.h>
+
+#include <algorithm_prototype.h>
+#include <strategies_engine.h>
+
+#include <algorithms/moving_median.h>
+
 
 namespace stsc
 {
