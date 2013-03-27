@@ -12,10 +12,10 @@ namespace stsc
 {
 	namespace engine
 	{
-		// algorithm_prototype is a template for algorithms
-		// please inherit algorithm_prototype (at least algorithm_prototype< common::bar_type, void >) to create correct algortihms
-		// Attention, never delete signals that where created by algortihm, storage should delete it automatically
-		// see tests/algorithm_storage_tests/algorithm_examples.h to see algortihm examples
+		/// algorithm_prototype is a template for algorithms
+		/// please inherit algorithm_prototype (at least algorithm_prototype< common::bar_type, void >) to create correct algortihms
+		/// Attention, never delete signals that where created by algortihm, storage should delete it automatically
+		/// see tests/algorithm_storage_tests/algorithm_examples.h to see algortihm examples
 
 		namespace details
 		{

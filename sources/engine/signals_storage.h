@@ -15,7 +15,8 @@ namespace stsc
 		{
 			struct signals_storage : public boost::noncopyable
 			{
-				typedef std::map< std::string, data_vector* const > vectors;
+				typedef boost::shared_ptr< data_vector > data_vector_ptr;
+				typedef std::map< std::string, data_vector_ptr > vectors;
 				vectors data_;
 
 				~signals_storage();
@@ -24,9 +25,9 @@ namespace stsc
 				signal_vector< output_signal_type >& create_vector( const std::string& name )
 				{
 					typedef signal_vector< output_signal_type > vector;
-					std::pair< vectors::iterator, bool > res = data_.insert( std::make_pair( name, new vector() ) );
+					std::pair< vectors::iterator, bool > res = data_.insert( std::make_pair( name, data_vector_ptr( new vector() ) ) );
 					if ( res.second )
-						return dynamic_cast< vector& >( *(res.first->second) );
+						return dynamic_cast< vector& >( *(res.first->second.get()) );
 					throw std::logic_error( "signal_vector '" + name + "' exist" );
 				}
 				void destroy_vector( const std::string& name );
@@ -39,7 +40,7 @@ namespace stsc
 						throw std::logic_error( "subscription to unknown signal_vector '" + name + "'" );
 					i->second->subscription_check( typeid( output_signal_type ) );
 					typedef const signal_vector< output_signal_type >* const reference;
-					reference vector = dynamic_cast< reference >( i->second );
+					reference vector = dynamic_cast< reference >( i->second.get() );
 					if ( !vector )
 						throw std::logic_error( "subscription to unknown signal_vector '" + name + "' type" );
 					return *vector;

@@ -4,7 +4,6 @@ set SOLUTION_NAME=stsc
 
 set BOOST_ROOT=d:\usr\boost_1_47_0
 set BOOST_PROCESS_ROOT=d:\usr\boost.process
-set BOOST_ROOT=d:\usr\boost_1_47_0
 set SYSTEM_UTILITIES_ROOT=d:\usr\system_utilities
 
 set BUILD_TYPE=Debug
