@@ -73,7 +73,7 @@ namespace stsc
 			}
 			const value_type pop_last_element( median_set& mset ) 
 			{
-				typename median_set::iterator i;// = --(mset.end());
+				typename median_set::iterator i = --(mset.end());
 				const value_type result = *i;
 				mset.erase( i );
 				return result;

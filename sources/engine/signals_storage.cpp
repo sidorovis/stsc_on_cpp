@@ -19,6 +19,9 @@ namespace stsc
 				delete i->second;
 				data_.erase( i );
 			}
+			//
+
+			//
 			std::ostream& operator<<( std::ostream& out, const signals_storage& ss )
 			{
 				out << "signal_vectors: ";

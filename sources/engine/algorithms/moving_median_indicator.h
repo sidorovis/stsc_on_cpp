@@ -6,8 +6,7 @@
 #include <bar_types.h>
 #include <signal_types.h>
 
-#include <algorithm_prototype.h>
-#include <strategies_engine.h>
+#include <on_stock_algorithm_prototype.h>
 
 #include <algorithms/moving_median.h>
 
@@ -44,8 +43,8 @@ namespace stsc
 											const common::bar_data::float_type bigger_than,
 											const common::bar_data::float_type less_than,
 											const common::bar_data_types::value type = common::bar_data_types::close );
-			~moving_median_indicator();
-
+			virtual ~moving_median_indicator();
+		private:
 			virtual void process( const bar_type& b );
 		};
 	}
