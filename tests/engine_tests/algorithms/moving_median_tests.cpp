@@ -90,7 +90,7 @@ namespace stsc
 					}
 					{ /// simple adding the same value						
 						moving_median< double > median( 5 );
-						for ( double i = 0.0; i < 1000; i++ )
+						for ( size_t i = 0 ; i < 1000 ; ++i )
 							BOOST_CHECK_NO_THROW( median.add_element( 0.9999999990621 ) );
 					}
 				}

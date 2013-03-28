@@ -8,6 +8,8 @@
 #include <boost/thread.hpp>
 #include <boost/lexical_cast.hpp>
 
+#include <time_helper.h>
+
 namespace stsc
 {
 	namespace datafeed
@@ -22,9 +24,6 @@ namespace stsc
 				{
 				}
 			}
-			const long yahoo_finance_reader::epoch_year_ = 1970;
-			const long yahoo_finance_reader::epoch_month_ = 1;
-			const long yahoo_finance_reader::epoch_day_ = 1;
 
 			//
 			yahoo_finance_reader::yahoo_finance_reader( datafeed_processor& dp, const std::string& datafeed_folder, const bool protected_scan )
@@ -142,7 +141,7 @@ namespace stsc
 					static const int right_element_amount = 8;
 					if ( elements != right_element_amount )
 						throw std::logic_error( "bad line: '" + line + "' at line: " + boost::lexical_cast< std::string >( index_line ) + "(" + file_name + ")"  ); 
-					bar.time_ = create_time_( year, month, day );
+					bar.time_ = common::create_eod_time( year, month, day );
 					datafeed_processor_.process_bar( stock_name, bar );
 					++index_line;
 				}
@@ -163,14 +162,6 @@ namespace stsc
 					throw std::logic_error("bad file name, no stock_name value at file name: " + file_name);
 
 				return stock_name;
-			}
-			//
-			const long yahoo_finance_reader::create_time_( const short year, const short month, const short day )
-			{
-				using namespace boost::gregorian;
-
-				const date epoch_date( epoch_year_, epoch_month_, epoch_day_ );
-				return ( date( year, month, day ) - epoch_date ).days();
 			}
 		}
 	}

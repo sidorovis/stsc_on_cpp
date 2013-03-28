@@ -42,10 +42,6 @@ namespace stsc
 
 			class yahoo_finance_reader : virtual protected boost::noncopyable
 			{
-				static const long epoch_year_;
-				static const long epoch_month_;
-				static const long epoch_day_;
-
 				friend void stsc::tests_::datafeed::csv::yahoo_finance_reader_unit_tests();
 
 				datafeed_processor& datafeed_processor_;
@@ -69,8 +65,6 @@ namespace stsc
 				static const bool first_line_is_correct_( std::ifstream& file );
 				void process_datafeed_( std::ifstream& file, const std::string& file_name );
 				const std::string create_stock_name_( const std::string& file_name );
-				//
-				static const long create_time_( const short year, const short month, const short day );
 			};
 		}
 	}

@@ -22,6 +22,12 @@ namespace stsc
 
 				void yahoo_finance_reader_performance_tests();
 			}
+
+			void eod_datafeed_storage_constructor_tests();
+			void eod_datafeed_storage_read_datafeed_tests();
+			void eod_datafeed_storage_multithread_read_datafeed_tests();
+
+			void eod_datafeed_storage_read_performance_tests();
 		}
 	}
 }

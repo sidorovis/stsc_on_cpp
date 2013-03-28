@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include <algorithm>
+
 #include <binary/writer.h>
 
 namespace stsc
@@ -39,9 +41,12 @@ namespace stsc
 				for( datafeed_map::iterator i = datafeed_.begin() ; i != datafeed_.end() ; ++i )
 				{
 					const std::string file_path = (output_folder / (*i->first)).string();
-					std::ofstream file( file_path.c_str() );
+					std::ofstream file( file_path.c_str(), std::ios::binary );
 
 					datafeed::binary::period& p = i->second;
+
+					std::reverse( p.bars.begin(), p.bars.end() );
+
 					p.header.finished = 1ul;
 					p.header.version = 1ul;
 					p.header.elements_size = static_cast< boost::uint32_t >( p.bars.size() );
