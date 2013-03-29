@@ -16,13 +16,14 @@ namespace stsc
 			void eod_datafeed_storage_constructor_tests()
 			{
 				datafeed_storage_manager m;
-				BOOST_CHECK_THROW( eod_datafeed_storage( m, "" ), std::exception );
-				BOOST_CHECK_NO_THROW( eod_datafeed_storage( m, SOURCE_DIR "/tests/data/binary_data_example/" ) );
+				BOOST_CHECK_THROW( eod_datafeed_storage( m, "", 0, 0 ), std::exception );
+				BOOST_CHECK_THROW( eod_datafeed_storage( m, SOURCE_DIR "/tests/data/binary_data_example/", 0, 0 ), std::exception );
+				BOOST_CHECK_NO_THROW( eod_datafeed_storage( m, SOURCE_DIR "/tests/data/binary_data_example/", 0, 1 ) );
 			}
 			void eod_datafeed_storage_read_datafeed_tests()
 			{
 				datafeed_storage_manager m;
-				eod_datafeed_storage eds( m, SOURCE_DIR "/tests/data/binary_data_example/" );
+				eod_datafeed_storage eds( m, SOURCE_DIR "/tests/data/binary_data_example/", 0, 1 );
 				BOOST_CHECK_THROW( eds.add_stock_to_parse( "aapl" ), std::exception );
 				BOOST_CHECK_NO_THROW( eds.add_stock_to_parse( "a" ) );
 				BOOST_CHECK_NO_THROW( eds.add_stock_to_parse( "amh" ) );
@@ -33,7 +34,7 @@ namespace stsc
 			void eod_datafeed_storage_multithread_read_datafeed_tests()
 			{
 				datafeed_storage_manager m;
-				eod_datafeed_storage eds( m, SOURCE_DIR "/tests/data/binary_data_example/" );
+				eod_datafeed_storage eds( m, SOURCE_DIR "/tests/data/binary_data_example/", 0, 1 );
 				BOOST_CHECK_NO_THROW( eds.add_stock_to_parse( "a" ) );
 				BOOST_CHECK_NO_THROW( eds.add_stock_to_parse( "amh" ) );
 				BOOST_CHECK_NO_THROW( eds.add_stock_to_parse( "brkr" ) );
@@ -54,7 +55,7 @@ namespace stsc
 				if ( !exists( binary_datafeed_folder ) )
 					return;
 				datafeed_storage_manager m;
-				eod_datafeed_storage eds( m, binary_datafeed_folder );
+				eod_datafeed_storage eds( m, binary_datafeed_folder, 0, 0 );
 				for( directory_iterator i( binary_datafeed_folder ), end ; i != end ; ++i  )
 					BOOST_CHECK_NO_THROW( eds.add_stock_to_parse( i->path().filename() ) );
 				BOOST_CHECK_NO_THROW( eds.multithread_read_datafeed() );

@@ -11,7 +11,8 @@ namespace stsc
 	{
 		namespace binary
 		{
-			std::istream& operator>>( std::istream& out, period& bp );
+			std::istream& operator>>( std::istream& in, period& bp );
+			std::istream& read_part( std::istream& in, period& bp, const long from, const long to );
 		}
 	}
 }

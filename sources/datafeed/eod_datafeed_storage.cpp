@@ -10,10 +10,15 @@ namespace stsc
 {
 	namespace datafeed
 	{
-		eod_datafeed_storage::eod_datafeed_storage( datafeed_storage_manager& manager, const std::string& datafeed_file_path )
+		eod_datafeed_storage::eod_datafeed_storage( datafeed_storage_manager& manager, const std::string& datafeed_file_path, const long from, const long to )
 			: manager_( manager )
 			, datafeed_file_path_( datafeed_file_path )
+			, from_( from )
+			, to_( to )
 		{
+			if ( from_ >= to_ )
+				throw std::invalid_argument("from should be < than to");
+
 			if ( !( boost::filesystem::exists( datafeed_file_path ) && boost::filesystem::is_directory( datafeed_file_path ) ) )
 				throw std::invalid_argument("eod_datafeed_storage constructor should be called with datafeed folder, wrong datafeed folder: '" + datafeed_file_path + "'");
 		}
@@ -58,15 +63,11 @@ namespace stsc
 		void eod_datafeed_storage::read_period_( const boost::filesystem::path& from, binary::period& to )
 		{
 			const std::string file_path = from.string();
-			std::ifstream in( file_path.c_str(), std::ios::binary );
+			std::ifstream in( file_path.c_str(), std::ios_base::binary );
 			if ( !in.is_open() )
 				manager_.file_reading_error( file_path );
 			else
 				in >> to;
-		}
-		//
-		void eod_datafeed_storage::process_period( const long from, const long to )
-		{
 		}
 		//
 		std::ostream& operator<<( std::ostream& out, const eod_datafeed_storage& eds )

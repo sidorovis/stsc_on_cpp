@@ -41,7 +41,7 @@ namespace stsc
 				for( datafeed_map::iterator i = datafeed_.begin() ; i != datafeed_.end() ; ++i )
 				{
 					const std::string file_path = (output_folder / (*i->first)).string();
-					std::ofstream file( file_path.c_str(), std::ios::binary );
+					std::ofstream file( file_path.c_str(), std::ios_base::binary );
 
 					datafeed::binary::period& p = i->second;
 

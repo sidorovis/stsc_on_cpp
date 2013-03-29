@@ -17,7 +17,8 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 	ts1->add( BOOST_TEST_CASE( &period_header_sizeof_tests ) );
 	ts1->add( BOOST_TEST_CASE( &period_constructor_tests ) );
 
-	ts1->add( BOOST_TEST_CASE( &write_read_unit_tests ) );
+	ts1->add( BOOST_TEST_CASE( &period_write_read_unit_tests ) );
+	ts1->add( BOOST_TEST_CASE( &period_write_read_part_unit_tests ) );
 
 	ts1->add( BOOST_TEST_CASE( &yahoo_finance_reader_constructor_tests ) );
 	ts1->add( BOOST_TEST_CASE( &yahoo_finance_reader_unit_tests ) );

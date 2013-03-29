@@ -5,9 +5,11 @@
 [-] : delete bug
 [+] : new feature
 
+
  [00.00.00.08], (27-Mar-2013), Ivan Sidarau
 ---------------------------------------------------------------------------
 [+] adding eod_datafeed_storage source code files
+[+] adding read_data( ..., from, to ) read full file and than cut it to smallest version usng from-to interval to substract necessary bars
 
  [00.00.00.07], (24-Mar-2013), Ihar Marozau
 ---------------------------------------------------------------------------
