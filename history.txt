@@ -6,6 +6,11 @@
 [+] : new feature
 
 
+ [00.00.00.09], (03-Apr-2013), Ivan Sidarau
+---------------------------------------------------------------------------
+[+] adding eod_datafeed_splitter
+[+]fix bug into datafeed_creating by eod_datafeed_storage
+
  [00.00.00.08], (27-Mar-2013), Ivan Sidarau
 ---------------------------------------------------------------------------
 [+] adding eod_datafeed_storage source code files

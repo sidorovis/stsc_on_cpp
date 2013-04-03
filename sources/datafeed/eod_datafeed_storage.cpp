@@ -10,13 +10,14 @@ namespace stsc
 {
 	namespace datafeed
 	{
-		eod_datafeed_storage::eod_datafeed_storage( datafeed_storage_manager& manager, const std::string& datafeed_file_path, const long from, const long to )
+		//
+		eod_datafeed_storage::eod_datafeed_storage( datafeed_manager& manager, const std::string& datafeed_file_path, const long from, const long to )
 			: manager_( manager )
 			, datafeed_file_path_( datafeed_file_path )
-			, from_( from )
-			, to_( to )
+			, period_from_( from )
+			, period_to_( to )
 		{
-			if ( from_ >= to_ )
+			if ( period_from_ >= period_to_ )
 				throw std::invalid_argument("from should be < than to");
 
 			if ( !( boost::filesystem::exists( datafeed_file_path ) && boost::filesystem::is_directory( datafeed_file_path ) ) )
@@ -26,15 +27,20 @@ namespace stsc
 		{
 		}
 		//
-		void eod_datafeed_storage::add_stock_to_parse( const std::string& stock_name )
+		eod_datafeed_storage& eod_datafeed_storage::add_stock_to_parse( const std::string& stock_name )
 		{
 			using namespace boost::filesystem;
 			const path file_path = datafeed_file_path_ / stock_name;
-			if ( !exists( file_path ) || is_directory( file_path ) || names_to_parse_.find( stock_name ) != names_to_parse_.end() )
+			
+			if ( !exists( file_path ) || is_directory( file_path ) )
 				throw std::invalid_argument( "no datafeed file '" + stock_name + "' at " + datafeed_file_path_.string() );
-			names_to_parse_.insert( stock_name );
-			if ( !files_to_parse_.push( new std::string( stock_name ) ) )
-				throw std::logic_error( "eod_datafeed_storage can't add file_path to process, it seems that processing had been started before" );
+
+			if ( !names_to_parse_.add_name( stock_name ) )
+				throw std::logic_error( "stock name '" + stock_name + "' added to parse before" );
+
+			if ( !stock_names_queue_.push( new shared_string( names_to_parse_.get_shared( stock_name ) ) ) )
+				throw std::logic_error( "eod_datafeed_storage can't add stock_name to processing queue, it seems that processing had been already finished" );
+			return *this;
 		}
 		void eod_datafeed_storage::read_datafeed()
 		{
@@ -52,12 +58,23 @@ namespace stsc
 		{
 			while( true )
 			{
-				boost::shared_ptr< std::string > stock_name( files_to_parse_.ts_pop() );
+				boost::shared_ptr< shared_string > stock_name( stock_names_queue_.ts_pop() );
 				if ( !stock_name )
 					break;
-				const boost::filesystem::path file_path = datafeed_file_path_ / (*stock_name);
-				binary::period* p = market_data_.get_for_edit( *stock_name );
+				const boost::filesystem::path file_path = datafeed_file_path_ / (*(*stock_name));
+
+				details::stock_data::datafeed_period p( new binary::period() );
 				read_period_( file_path, *p );
+
+				if ( ! p->bars.empty() )
+				{
+					details::stock_data_ptr stock_data( new details::stock_data( *stock_name ) );
+					stock_data->set_datafeed( p );
+					{
+						boost::mutex::scoped_lock lock( protect_datafeed_ );
+						datafeed_.insert( std::make_pair( stock_data->current_day(), stock_data ) );
+					}
+				}
 			}
 		}
 		void eod_datafeed_storage::read_period_( const boost::filesystem::path& from, binary::period& to )
@@ -67,16 +84,12 @@ namespace stsc
 			if ( !in.is_open() )
 				manager_.file_reading_error( file_path );
 			else
-				in >> to;
+				read_part( in, to, period_from_, period_to_ );
 		}
 		//
 		std::ostream& operator<<( std::ostream& out, const eod_datafeed_storage& eds )
 		{
-			out << eds.names_to_parse_.size() << std::endl;
-			size_t size = 0;
-			for( eod_datafeed_storage::stock_names_set::const_iterator i = eds.names_to_parse_.begin() ; i != eds.names_to_parse_.end() ; ++i  )
-				size += eds.market_data_.get_for_read( *i )->bars.size();
-			out << size << std::endl;
+			out << "eod_datafeed_storage(" << eds.datafeed_file_path_ << " | " << eds.period_from_ << "|" << eds.period_to_ << ")";
 			return out;
 		}
 	}
