@@ -23,4 +23,7 @@ find_package( system_utilities ${SEARCH_PARAMETERS} COMPONENTS
 add_source_list( ${module_name} algorithms "algorithms/*.cpp" )
 add_source_list( ${module_name} algorithms "algorithms/*.h" )
 
+add_source_list( ${module_name} signal_storages "signal_storages/*.cpp" )
+add_source_list( ${module_name} signal_storages "signal_storages/*.h" )
+
 compile_project( ${module_name} "*.cpp" "*.h" STATIC libraries ${module_name} common system_utilities Boost )
