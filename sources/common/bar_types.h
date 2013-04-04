@@ -3,10 +3,15 @@
 
 #include <ostream>
 
+#include <boost/shared_ptr.hpp>
+
 namespace stsc
 {
 	namespace common
 	{
+		typedef size_t index;
+		typedef boost::shared_ptr< std::string > shared_string;
+
 		namespace bar_data_type
 		{
 			enum value

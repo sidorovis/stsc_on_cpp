@@ -33,7 +33,7 @@ namespace stsc
 			typedef std::list< details::stock_data_ptr > stock_data_list;
 			boost::mutex protect_elements_to_delete_insert_;
 			stock_data_list elements_to_delete_insert_;
-			common::bar_type last_bar_;
+			details::on_period on_period_bar_;
 
 			boost::condition tasks_solved_;
 			size_t tasks_to_process_;

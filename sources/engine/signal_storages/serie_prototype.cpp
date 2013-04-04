@@ -4,7 +4,7 @@ namespace stsc
 {
 	namespace engine
 	{
-		namespace details
+		namespace signal_storages
 		{
 			namespace
 			{

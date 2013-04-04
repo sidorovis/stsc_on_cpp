@@ -6,6 +6,11 @@
 [+] : new feature
 
 
+ [00.00.00.10], (04-Apr-2013), Ivan Sidarau
+---------------------------------------------------------------------------
+[+] adding vector_serie and map_serie for each_bar signals algorithm and sparse signals algorithms
+[+] adding on_stock_bar, on_bar. on_period structures that will be sent to algorithms as bar data
+
  [00.00.00.09], (03-Apr-2013), Ivan Sidarau
 ---------------------------------------------------------------------------
 [+] adding eod_datafeed_splitter

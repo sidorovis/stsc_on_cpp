@@ -7,7 +7,7 @@ namespace stsc
 {
 	namespace engine
 	{
-		namespace details
+		namespace signal_storages
 		{
 			template< typename signal_type >
 			class serie_prototype

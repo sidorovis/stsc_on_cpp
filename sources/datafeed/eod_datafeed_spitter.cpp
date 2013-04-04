@@ -34,13 +34,13 @@ namespace stsc
 
 				if ( start != end )
 				{
-					const common::bar_type last_day_bar = dynamic_cast< const common::bar_type& >(*(start->second->ci));
-					last_bar_ = last_day_bar;
+					const details::on_bar last_day_bar = start->second->create_on_bar();
+					on_period_bar_ = start->second->create_on_period();
 					
 					for ( sorted_datafeed::const_iterator i = start ; i != end ; ++i )
 					{
-						manager_.new_bar_on_stock( i->second->stock_name, *(i->second->ci) );
-						++(i->second->ci);
+						manager_.new_bar_on_stock( i->second->create_on_stock_bar() );
+						i->second->increment();
 						elements_to_delete_insert_.push_back( i->second );
 					}
 					datafeed_.erase( processing_date );
@@ -52,7 +52,7 @@ namespace stsc
 					datafeed_.erase( processing_date );
 			}
 			
-			manager_.new_bar_on_period( last_bar_ );
+			manager_.new_bar_on_period( on_period_bar_ );
 		}
 		void eod_datafeed_spitter::multithread_spit_datafeed( const size_t thread_amount )
 		{
@@ -72,8 +72,8 @@ namespace stsc
 
 				if ( start != end )
 				{
-					const common::bar_type last_day_bar = dynamic_cast< const common::bar_type& >(*(start->second->ci));
-					last_bar_ = last_day_bar;
+					const details::on_bar last_day_bar = start->second->create_on_bar();
+					on_period_bar_ = start->second->create_on_period();
 
 					for ( sorted_datafeed::const_iterator i = start ; i != end ; ++i )
 						processing_bar_tasks_.push( new sorted_datafeed::const_iterator( i ) );
@@ -88,11 +88,10 @@ namespace stsc
 					datafeed_.erase( processing_date );
 			}
 			
-			manager_.new_bar_on_period( last_bar_ );
-
 			processing_bar_tasks_.stop();
-			tg.join_all();
+			manager_.new_bar_on_period( on_period_bar_ );
 
+			tg.join_all();
 		}
 		//
 		void eod_datafeed_spitter::add_next_day_()
@@ -116,8 +115,8 @@ namespace stsc
 				if ( !ci )
 					break;
 				sorted_datafeed::const_iterator& i = *ci;
-				manager_.new_bar_on_stock( i->second->stock_name, *(i->second->ci) );
-				++(i->second->ci);
+				manager_.new_bar_on_stock( i->second->create_on_stock_bar() );
+				i->second->increment();
 				{
 					boost::mutex::scoped_lock lock( protect_elements_to_delete_insert_ );
 					elements_to_delete_insert_.push_back( i->second );

@@ -16,11 +16,11 @@ namespace stsc
 		namespace signal_storages
 		{
 			template< typename signal_type >
-			class map_serie
+			class map_serie : serie_prototype< signal_type >
 			{
 				typedef boost::shared_ptr< signal_type > signal_type_ptr;
 				typedef boost::shared_ptr< signal_type const > signal_type_const_ptr;
-				typedef std::map< const common::bar_type*, signal_type_ptr > signals_map;
+				typedef std::map< const common::index, signal_type_ptr > signals_map;
 			public:
 				typedef typename signals_map::value_compare value_compare;
 				typedef typename signals_map::allocator_type allocator_type;
@@ -50,41 +50,25 @@ namespace stsc
 					signals_map_.clear();
 				}
 				//
-				void insert( const common::bar_type& key, const signal_type_ptr& signal_ptr )
-				{
-					return insert( &key, signal_ptr );
-				}
-				void insert( const common::bar_type& key, signal_type* const signal_ptr )
-				{
-					return insert( &key, signal_type_ptr( signal_ptr ) );
-				}
-				void insert( const common::bar_type* const key, signal_type* const signal_ptr )
-				{
-					return insert( key, signal_type_ptr( signal_ptr ) );
-				}
-				void insert( const common::bar_type* const key, const signal_type_ptr& signal_ptr )
+				void insert( const common::index& key, const signal_type_ptr& signal_ptr )
 				{
 					const bool inserted = signals_map_.insert( std::make_pair( key, signal_ptr ) ).second;
 					if ( !inserted )
 						throw std::logic_error( "map_serie can't insert element (possible it already stored)" );
 				}
-				//
-				const signal_type& at( const common::bar_type& key ) const
+				void insert( const common::index& key, signal_type* const signal_ptr )
 				{
-					return at( &key );
+					return insert( key, signal_type_ptr( signal_ptr ) );
 				}
-				const signal_type& at( const common::bar_type* const key ) const
+				//
+				const signal_type& at( const common::index& key ) const
 				{
 					const_iterator ci = signals_map_.find( key );
 					if ( ci != signals_map_.end() )
 						return *(ci->second);
 					throw std::invalid_argument( "unexisted key for map_serie" );
 				}
-				const signal_type_ptr ptr_at( const common::bar_type& key ) const
-				{
-					return ptr_at( &key );
-				}
-				const signal_type_ptr ptr_at( const common::bar_type* const key ) const
+				const signal_type_ptr ptr_at( const common::index& key ) const
 				{
 					const_iterator ci = signals_map_.find( key );
 					if ( ci != signals_map_.end() )
