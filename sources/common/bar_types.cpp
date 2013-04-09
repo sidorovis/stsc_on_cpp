@@ -5,6 +5,29 @@ namespace stsc
 {
 	namespace common
 	{
+		on_stock_bar::on_stock_bar( const shared_string& sn, const common::price_bar& b, const size_t i )
+			: stock_name( sn )
+			, value( b )
+			, index( i )
+		{
+		}
+		on_bar::on_bar( const common::bar_type& b, const size_t i )
+			: value( b )
+			, index( i )
+		{
+		}
+		on_period::on_period( const common::bar_type& b, const size_t i )
+			: value( b )
+			, index( i )
+		{
+		}
+		on_period::on_period()
+		{
+		}
+		//
+
+		//
+
 		std::ostream& operator<<( std::ostream& out, const bar_type& bar )
 		{
 			out << "bar( " << bar.time_ << " )";

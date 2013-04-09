@@ -34,7 +34,7 @@ namespace stsc
 
 				if ( start != end )
 				{
-					const details::on_bar last_day_bar = start->second->create_on_bar();
+					const common::on_bar last_day_bar = start->second->create_on_bar();
 					on_period_bar_ = start->second->create_on_period();
 					
 					for ( sorted_datafeed::const_iterator i = start ; i != end ; ++i )
@@ -72,7 +72,7 @@ namespace stsc
 
 				if ( start != end )
 				{
-					const details::on_bar last_day_bar = start->second->create_on_bar();
+					const common::on_bar last_day_bar = start->second->create_on_bar();
 					on_period_bar_ = start->second->create_on_period();
 
 					for ( sorted_datafeed::const_iterator i = start ; i != end ; ++i )

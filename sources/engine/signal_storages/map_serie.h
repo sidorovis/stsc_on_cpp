@@ -2,12 +2,12 @@
 #define _STSC_ENGINE_SIGNAL_STORAGES_MAP_SERIE_H_
 
 #include <map>
+#include <sstream>
 
 #include <boost/noncopyable.hpp>
+#include <boost/shared_ptr.hpp>
 
-#include <bar_types.h>
-
-#include <signal_storages/serie_prototype.h>
+#include <signal_storages/serie.h>
 
 namespace stsc
 {
@@ -16,11 +16,12 @@ namespace stsc
 		namespace signal_storages
 		{
 			template< typename signal_type >
-			class map_serie : serie_prototype< signal_type >
+			class map_serie : public serie< signal_type >
 			{
-				typedef boost::shared_ptr< signal_type > signal_type_ptr;
-				typedef boost::shared_ptr< signal_type const > signal_type_const_ptr;
+			private:
 				typedef std::map< const common::index, signal_type_ptr > signals_map;
+
+				static const std::type_info& container_type_info_;
 			public:
 				typedef typename signals_map::value_compare value_compare;
 				typedef typename signals_map::allocator_type allocator_type;
@@ -41,10 +42,18 @@ namespace stsc
 				explicit map_serie()
 				{
 				}
-				~map_serie()
+				virtual ~map_serie()
 				{
 				}
 				//
+				virtual void container_check( const std::type_info& ti ) const
+				{
+					std::stringstream error_line;
+					error_line << "serie signal type with " << container_type_info_.name() << " decline subscription on " << ti.name();
+					if ( ti != container_type_info_ )
+						throw std::logic_error( error_line.str() );
+				}
+			public:
 				void clear()
 				{
 					signals_map_.clear();
@@ -60,6 +69,10 @@ namespace stsc
 				{
 					return insert( key, signal_type_ptr( signal_ptr ) );
 				}
+				void insert( const common::index& key, const signal_type& signal_ptr )
+				{
+					return insert( key, signal_type_ptr( new signal_type( signal_ptr ) ) );
+				}
 				//
 				const signal_type& at( const common::index& key ) const
 				{
@@ -73,7 +86,15 @@ namespace stsc
 					const_iterator ci = signals_map_.find( key );
 					if ( ci != signals_map_.end() )
 						return ci->second;
-					throw std::invalid_argument( "unexisted key for map_serie" );
+					return signal_type_ptr();
+				}
+				const size_t size() const
+				{
+					return signals_map_.size();
+				}
+				const bool empty() const
+				{
+					return signals_map_.empty();
 				}
 				//
 				iterator begin()
@@ -93,15 +114,10 @@ namespace stsc
 					return signals_map_.end();
 				}
 				//
-				const size_t size() const
-				{
-					return signals_map_.size();
-				}
-				const bool empty() const
-				{
-					return signals_map_.empty();
-				}
 			};
+			//
+			template< typename signal_type >
+			const std::type_info& map_serie< signal_type >::container_type_info_ = typeid( map_serie< signal_type >::signals_map );
 		}
 	}
 }

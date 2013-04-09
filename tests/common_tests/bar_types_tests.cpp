@@ -10,6 +10,21 @@ namespace stsc
 	{
 		namespace common
 		{
+			void check_existance_of_basic_types()
+			{
+				BOOST_CHECK_NO_THROW( index( 14 ) );
+				BOOST_CHECK_NO_THROW( shared_string( new std::string("hello tests") ) );
+				BOOST_CHECK_NO_THROW( bar_data_type::value );
+
+				BOOST_CHECK_NO_THROW( bar_data_type::open );
+				BOOST_CHECK_NO_THROW( bar_data_type::high );
+				BOOST_CHECK_NO_THROW( bar_data_type::low );
+				BOOST_CHECK_NO_THROW( bar_data_type::close );
+
+				BOOST_CHECK_NO_THROW( bar_data_type::volume );
+			}
+
+			//
 			void bar_type_constructor_tests()
 			{
 				bar_type bar;
@@ -52,6 +67,23 @@ namespace stsc
 				stream.precision( 3 );
 				stream << bar;
 				BOOST_CHECK_EQUAL( stream.str(), "bar( 156||45.650|45.670|45.330|45.340 100000.000 )" );
+			}
+			//
+			void on_stock_bar_tests()
+			{
+				shared_string s( new std::string( "asd" ) );
+				price_bar b;
+				BOOST_CHECK_NO_THROW( on_stock_bar( s, b, 14 ) );
+			}
+			void on_bar_tests()
+			{
+				bar_type b;
+				BOOST_CHECK_NO_THROW( on_bar( b, 15 ) );
+			}
+			void on_period_tests()
+			{
+				bar_type b;
+				BOOST_CHECK_NO_THROW( on_period( b, 16 ) );
 			}
 		}
 	}

@@ -41,6 +41,35 @@ namespace stsc
 		struct price_bar : public bar_type, public bar_data
 		{
 		};
+
+		//
+		struct on_stock_bar
+		{
+			typedef common::shared_string shared_string;
+
+			const shared_string& stock_name;
+			const common::price_bar& value;
+			const size_t index;
+			//
+			explicit on_stock_bar( const shared_string& sn, const common::price_bar& b, const size_t i );
+		};
+		struct on_bar
+		{
+			const common::bar_type value;
+			const size_t index;
+			//
+			explicit on_bar( const common::bar_type& b, const size_t i );
+		};
+		struct on_period
+		{
+			common::bar_type value;
+			size_t index;
+			//
+			explicit on_period( const common::bar_type& b, const size_t i );
+			explicit on_period();
+		};
+
+		//
 		std::ostream& operator<<( std::ostream& out, const bar_type& bar );
 		std::ostream& operator<<( std::ostream& out, const price_bar& bar );
 	}

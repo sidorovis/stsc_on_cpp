@@ -3,11 +3,7 @@
 
 #include <vector>
 
-#include <boost/shared_ptr.hpp>
-
-#include <bar_types.h>
-
-#include <signal_storages/serie_prototype.h>
+#include <signal_storages/serie.h>
 
 namespace stsc
 {
@@ -15,12 +11,17 @@ namespace stsc
 	{
 		namespace signal_storages
 		{
+
 			template< typename signal_type, signal_type default_value = signal_type(), size_t default_increment = 10, size_t default_size = 56 >
-			class vector_serie : serie_prototype< signal_type >
+			class vector_serie : public serie< signal_type >
 			{
+			private:
+
 				typedef boost::shared_ptr< signal_type > signal_type_ptr;
-				typedef boost::shared_ptr< signal_type const > signal_type_const_ptr;
 				typedef std::vector< signal_type_ptr > signals_vector;
+
+				static const std::type_info& container_type_info_;
+
 			public:
 				typedef typename signals_vector::allocator_type allocator_type;
 				typedef typename signals_vector::size_type size_type;
@@ -41,18 +42,16 @@ namespace stsc
 				{
 					signals_vector_.reserve( default_size );
 				}
-				~vector_serie()
+				virtual ~vector_serie()
 				{
 				}
 				//
-				size_t size() const
+				virtual void container_check( const std::type_info& ti ) const
 				{
-					return signals_vector_.size();
+					if ( ti != container_type_info_ )
+						throw std::logic_error( std::string("serie container type with ") + container_type_info_.name() + " decline subscription on " + ti.name() );
 				}
-				const bool empty() const
-				{
-					return signals_vector_.empty();
-				}
+			public:
 				void clear()
 				{
 					signals_vector_.clear();
@@ -74,6 +73,7 @@ namespace stsc
 				{
 					return insert( key, signal_type_ptr( new signal_type( signal_ptr ) ) );
 				}
+				//
 				const signal_type& at( const common::index& key ) const
 				{
 					if ( signals_vector_.size() <= key || signals_vector_[ key ] == NULL )
@@ -88,7 +88,18 @@ namespace stsc
 					else
 						return signals_vector_[ key ];
 				}
+				const size_t size() const
+				{
+					return signals_vector_.size();
+				}
+				const bool empty() const
+				{
+					return signals_vector_.empty();
+				}
 			};
+			template< typename signal_type, signal_type default_value, size_t default_increment, size_t default_size >
+			const std::type_info& vector_serie< signal_type, default_value, default_increment, default_size >::container_type_info_ = 
+				typeid( vector_serie< signal_type, default_value, default_increment, default_size >::signals_vector );
 		}
 	}
 }
