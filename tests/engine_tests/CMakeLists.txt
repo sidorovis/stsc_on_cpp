@@ -24,9 +24,12 @@ find_package( system_utilities ${SEARCH_PARAMETERS} COMPONENTS
 add_source_list( ${tests_name} algorithms "algorithms/*.cpp" )
 add_source_list( ${tests_name} algorithms "algorithms/*.h" )
 
-add_source_list( ${tests_name} signal_storages "signal_storages/*.cpp" )
-add_source_list( ${tests_name} signal_storages "signal_storages/*.h" )
+add_source_list( ${tests_name} series_storage "series_storage/*.cpp" )
+add_source_list( ${tests_name} series_storage "series_storage/*.h" )
 
-compile_project( ${tests_name} "*.cpp" "*.h" BINARY tests ${tests_name} ${module_name} common system_utilities Boost )
+add_source_list( ${tests_name} algorithms_storage "algorithms_storage/*.cpp" )
+add_source_list( ${tests_name} algorithms_storage "algorithms_storage/*.h" )
+
+compile_project( ${tests_name} "*.cpp" "*.h" BINARY tests ${tests_name} ${module_name} datafeed common system_utilities Boost )
 register_test( ${tests_name} 1.0 1.0 )
 
