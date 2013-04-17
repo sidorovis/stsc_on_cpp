@@ -6,6 +6,10 @@
 [+] : new feature
 
 
+ [00.00.00.12], (17-Apr-2013), Ivan Sidarau
+---------------------------------------------------------------------------
+[+] fixing allmost all code to work with new memory model (map and vector based)
+
  [00.00.00.10], (04-Apr-2013), Ivan Sidarau
 ---------------------------------------------------------------------------
 [+] adding vector_serie and map_serie for each_bar signals algorithm and sparse signals algorithms

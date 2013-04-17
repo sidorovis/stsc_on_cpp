@@ -14,7 +14,7 @@ namespace stsc
 			{
 				void vector_serie_unit_tests()
 				{
-					typedef vector_serie< int, 0, 10, 30000 > v_int_type;
+					typedef vector_serie< int, 10, 30000 > v_int_type;
 					v_int_type v_int;
 					BOOST_CHECK_EQUAL( v_int.size(), 0ul );
 					BOOST_CHECK_EQUAL( v_int.empty(), true );

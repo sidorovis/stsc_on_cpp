@@ -37,8 +37,8 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 	{
 		ts1->add( BOOST_TEST_CASE( &yahoo_finance_reader_performance_tests ) );
 		ts1->add( BOOST_TEST_CASE( &eod_datafeed_storage_read_performance_tests ) ); 
+		ts1->add( BOOST_TEST_CASE( &eod_datafeed_spitter_multithread_spit_datafeed_performance_tests ) );
 	}
-	ts1->add( BOOST_TEST_CASE( &eod_datafeed_spitter_multithread_spit_datafeed_performance_tests ) );
 
 	return ts1;
 }

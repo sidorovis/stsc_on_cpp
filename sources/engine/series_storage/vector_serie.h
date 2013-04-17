@@ -12,7 +12,7 @@ namespace stsc
 		namespace series_storage
 		{
 
-			template< typename signal_type, signal_type default_value = signal_type(), size_t default_increment = 10, size_t default_size = 56 >
+			template< typename signal_type, size_t default_increment = 2, size_t default_size = 56 >
 			class vector_serie : public serie< signal_type >
 			{
 			private:
@@ -60,7 +60,7 @@ namespace stsc
 				void insert( const common::index& key, const signal_type_ptr& signal_ptr )
 				{
 					if ( signals_vector_->capacity() <= key )
-						signals_vector_->reserve( key + 1 + default_increment );
+						signals_vector_->reserve( (key + 1) * default_increment );
 					if ( signals_vector_->size() <= key )
 						signals_vector_->resize( key + 1 );
 					(*signals_vector_)[ key ] = signal_ptr;
@@ -81,10 +81,10 @@ namespace stsc
 					else
 						return *( (*signals_vector_)[ key ] );
 				}
-				const signal_type_ptr ptr_at( const common::index& key ) const
+				const signal_type_const_ptr ptr_at( const common::index& key ) const
 				{
 					if ( signals_vector_->size() <= key )
-						return signal_type_ptr();
+						return signal_type_const_ptr();
 					else
 						return (*signals_vector_)[ key ];
 				}
@@ -98,9 +98,9 @@ namespace stsc
 				}
 
 			};
-			template< typename signal_type, signal_type default_value, size_t default_increment, size_t default_size >
-			const std::type_info& vector_serie< signal_type, default_value, default_increment, default_size >::container_type_info_ = 
-				typeid( vector_serie< signal_type, default_value, default_increment, default_size >::signals_vector );
+			template< typename signal_type, size_t default_increment, size_t default_size >
+			const std::type_info& vector_serie< signal_type, default_increment, default_size >::container_type_info_ = 
+				typeid( vector_serie< signal_type, default_increment, default_size >::signals_vector );
 		}
 	}
 }

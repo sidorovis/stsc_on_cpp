@@ -20,24 +20,21 @@ namespace stsc
 				void details_algorithm_prototypes_constructor_tests();
 
 				void on_stock_algorithm_tests();
+				void on_bar_algorithm_tests();
+				void on_period_algorithm_tests();
 			}
 
-			//void signal_vector_unit_tests();
-			//void details_signals_storage_unit_tests();
+			namespace algorithms
+			{
+				void details_moving_median_constructor_tests();
+				void details_moving_median_simple_work_tests();
+				
+				void moving_median_series_constructor_tests();
+				void moving_median_series_simple_work_tests();
 
-			//void strategies_engine_constructor_tests();
-			//void algorithm_prototypes_constructor_tests();
-
-			//void algorithm_prototype_constructor_tests();
-
-			//void moving_median_constructor_tests();
-			//void moving_median_simple_work_tests();
-			//
-			//void moving_median_series_constructor_tests();
-			//void moving_median_series_simple_work_tests();
-
-			//void moving_median_indicator_constructor_tests();
-			//void moving_median_indicator_simple_work_tests();
+				void moving_median_indicator_constructor_tests();
+				void moving_median_indicator_simple_work_tests();
+			}
 		}
 	}
 }

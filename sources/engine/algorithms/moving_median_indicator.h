@@ -6,7 +6,7 @@
 #include <bar_types.h>
 #include <signal_types.h>
 
-#include <on_stock_algorithm_prototype.h>
+#include <algorithms_storage/on_stock_algorithm.h>
 
 #include <algorithms/moving_median.h>
 
@@ -17,33 +17,35 @@ namespace stsc
 	{
 		namespace engine
 		{
-			class moving_median_indicator_tests;
+			namespace algorithms
+			{
+				class moving_median_indicator_tests;
+			}
 		}
 	}
 	namespace engine
 	{
-		class moving_median_indicator : public on_stock_algorithm_prototype< common::open_signal >
+		namespace algorithms
 		{
-			friend class stsc::tests_::engine::moving_median_indicator_tests;
+			class moving_median_indicator : public algorithms_storage::on_stock_algorithm< common::open_signal >
+			{
+				friend class stsc::tests_::engine::algorithms::moving_median_indicator_tests;
 
-		private:
-			typedef on_stock_algorithm_prototype< common::open_signal > base_type;
+			private:
+				typedef algorithms_storage::on_stock_algorithm< common::open_signal > base_type;
 
-			stsc::engine::signal_vector< common::bar_data::float_type > moving_median_series_;
+				typedef common::bar_data::float_type float_type;
 
-			const common::bar_data::float_type bigger_than_;
-			const common::bar_data::float_type less_than_;
-			
-		public:
-			explicit moving_median_indicator( const std::string& name,
-											strategies_engine& se,
-											const std::string& moving_median_subscription,
-											const common::bar_data::float_type bigger_than,
-											const common::bar_data::float_type less_than );
-			virtual ~moving_median_indicator();
+				const float_type bigger_than_;
+				const float_type less_than_;
+				
+			public:
+				explicit moving_median_indicator( const std::string& name, const float_type bigger_than, const float_type less_than );
+				virtual ~moving_median_indicator();
 
-			virtual void process( const bar_type& b );
-		};
+				virtual void process( const bar_type& b );
+			};
+		}
 	}
 }
 

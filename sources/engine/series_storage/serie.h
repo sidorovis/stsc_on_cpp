@@ -27,6 +27,7 @@ namespace stsc
 			{
 			public:
 				typedef boost::shared_ptr< signal_type > signal_type_ptr;
+				typedef boost::shared_ptr< const signal_type > signal_type_const_ptr;
 			protected:
 				virtual ~serie(){}
 			private:
@@ -47,7 +48,7 @@ namespace stsc
 				virtual void insert( const common::index& key, const signal_type& signal_ptr ) = 0;
 				//
 				virtual const signal_type& at( const common::index& key ) const = 0;
-				virtual const signal_type_ptr ptr_at( const common::index& key ) const = 0;
+				virtual const signal_type_const_ptr ptr_at( const common::index& key ) const = 0;
 				virtual const size_t size() const = 0;
 				virtual const bool empty() const = 0;
 			};

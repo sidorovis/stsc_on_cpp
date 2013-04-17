@@ -84,7 +84,7 @@ namespace stsc
 						return *(ci->second);
 					throw std::invalid_argument( "unexisted key for map_serie" );
 				}
-				const signal_type_ptr ptr_at( const common::index& key ) const
+				const signal_type_const_ptr ptr_at( const common::index& key ) const
 				{
 					const_iterator ci = signals_map_->find( key );
 					if ( ci != signals_map_->end() )

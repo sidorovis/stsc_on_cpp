@@ -16,6 +16,7 @@ namespace stsc
 				const serie_type& serie_;
 
 				typedef boost::shared_ptr< signal_type > signal_type_ptr;
+				typedef boost::shared_ptr< const signal_type > signal_type_const_ptr;
 			public:
 				explicit serie_subscription( const serie_type& serie )
 					: serie_( serie )
@@ -38,7 +39,7 @@ namespace stsc
 				{
 					return serie_.at( key );
 				}
-				const signal_type_ptr ptr_at( const common::index& key ) const
+				const signal_type_const_ptr ptr_at( const common::index& key ) const
 				{
 					return serie_.ptr_at( key );
 				}

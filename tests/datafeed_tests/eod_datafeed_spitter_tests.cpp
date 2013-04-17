@@ -22,28 +22,28 @@ namespace stsc
 					boost::mutex m;
 					std::vector< std::string > actions_;
 					std::vector< long > times_;
-					virtual void new_bar_on_stock( const shared_string& stock_name, const common::price_bar& bar )
+					virtual void new_bar_on_stock( const common::on_stock_bar& bar )
 					{
 						std::stringstream s;
-						s << "nbos|" << *stock_name << "|" << bar;
+						s << "nbos|" << *bar.stock_name << "|" << bar.value;
 						boost::mutex::scoped_lock lock( m );
-						times_.push_back( bar.time_ );
+						times_.push_back( bar.value.time_ );
 						actions_.push_back( s.str() );
 					}
-					virtual void new_bar_on_bar( const common::bar_type& bar )
+					virtual void new_bar_on_bar( const common::on_bar& bar )
 					{
 						std::stringstream s;
-						s << "nbob|" << bar;
+						s << "nbob|" << bar.value;
 						boost::mutex::scoped_lock lock( m );
-						times_.push_back( bar.time_ );
+						times_.push_back( bar.value.time_ );
 						actions_.push_back( s.str() );
 					}
-					virtual void new_bar_on_period( const common::bar_type& bar )
+					virtual void new_bar_on_period( const common::on_period& bar )
 					{
 						std::stringstream s;
-						s << "nbop|" << bar;
+						s << "nbop|" << bar.value;
 						boost::mutex::scoped_lock lock( m );
-						times_.push_back( bar.time_ );
+						times_.push_back( bar.value.time_ );
 						actions_.push_back( s.str() );
 					}
 					virtual void file_reading_error( const std::string& file_path )
@@ -56,7 +56,7 @@ namespace stsc
 				};
 				struct datafeed_manager_non_synchronized_test_helper : public datafeed_manager
 				{
-					virtual void new_bar_on_stock( const shared_string& stock_name, const common::price_bar& bar )
+					virtual void new_bar_on_stock( const common::on_stock_bar& bar )
 					{
 						std::string a = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 						for ( int i = 0 ; i < 1000 ; ++i )

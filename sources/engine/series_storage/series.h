@@ -7,6 +7,8 @@
 #include <boost/shared_ptr.hpp>
 
 #include <series_storage/serie.h>
+#include <series_storage/map_serie.h>
+#include <series_storage/vector_serie.h>
 
 namespace stsc
 {

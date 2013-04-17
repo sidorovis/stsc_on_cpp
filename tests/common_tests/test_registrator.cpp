@@ -14,10 +14,17 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 
 	ts1->add( BOOST_TEST_CASE( &create_extract_eod_time_tests ) );
 
+	ts1->add( BOOST_TEST_CASE( &check_existance_of_basic_types ) );
 	ts1->add( BOOST_TEST_CASE( &bar_type_constructor_tests ) );
 	ts1->add( BOOST_TEST_CASE( &bar_type_ostream_operator_tests ) );
 	ts1->add( BOOST_TEST_CASE( &price_bar_constructor_tests ) );
 	ts1->add( BOOST_TEST_CASE( &price_bar_ostream_operator_tests ) );
+
+	ts1->add( BOOST_TEST_CASE( &bar_data_adapter_tests ) );
+
+	ts1->add( BOOST_TEST_CASE( &on_stock_bar_tests ) );
+	ts1->add( BOOST_TEST_CASE( &on_bar_tests ) );
+	ts1->add( BOOST_TEST_CASE( &on_period_tests ) );
 
 	ts1->add( BOOST_TEST_CASE( &signal_subtypes_tests ) );
 	ts1->add( BOOST_TEST_CASE( &close_signal_constructor_tests ) );

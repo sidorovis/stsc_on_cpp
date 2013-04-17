@@ -9,3 +9,4 @@ Stock Trading Strategies Creator (STSC) is a bunch of utilities on C++ that coul
 
  * datafeed. Module 'datafeed' that read/write/store/share datafeed. 
 
+ * engine. Module 'engine' store all algorithm prototypes, processing procedures, subscription and data distribution procedures.

@@ -19,9 +19,9 @@ namespace stsc
 				class algorithm_prototype : public algorithm
 				{
 				protected:
-					typedef input_type bar_type;
-					typedef output_type signal_type;
-					typedef boost::shared_ptr< signal_type > signal_type_ptr;
+					typedef typename input_type bar_type;
+					typedef typename output_type signal_type;
+					typedef typename boost::shared_ptr< signal_type > signal_type_ptr;
 
 				protected:
 					explicit algorithm_prototype( const std::string& name );
