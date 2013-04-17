@@ -35,6 +35,11 @@ namespace stsc
 				void moving_median_indicator_constructor_tests();
 				void moving_median_indicator_simple_work_tests();
 			}
+
+			namespace algorithms_storage
+			{
+				void algorithms_constructor_tests();
+			}
 		}
 	}
 }
