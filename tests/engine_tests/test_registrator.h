@@ -13,7 +13,9 @@ namespace stsc
 
 				void serie_subscription_unit_tests();
 
-				void details_on_stock_series_storage_unit_tests();
+				void details_on_bar_serie_unit_tests();
+				void details_on_period_serie_unit_tests();
+				void details_on_stock_serie_unit_tests();
 			}
 			namespace algorithms_storage
 			{

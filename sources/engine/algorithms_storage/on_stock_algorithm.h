@@ -1,7 +1,7 @@
 #ifndef _STSC_ENGINE_ALGORITHMS_STORAGE_ON_STOCK_ALGORITHM_H_
 #define _STSC_ENGINE_ALGORITHMS_STORAGE_ON_STOCK_ALGORITHM_H_
 
-#include <series_storage/series.h>
+#include <series_storage/on_stock_serie.h>
 #include <algorithms_storage/algorithm_prototype.h>
 
 namespace stsc
@@ -13,12 +13,12 @@ namespace stsc
 			template< typename output_signal_type >
 			class on_stock_algorithm : public details::algorithm_prototype< common::on_stock_bar, output_signal_type >
 			{
-				typedef typename algorithm_prototype< common::on_stock_bar, output_signal_type > typed_algorithm;
+				typedef typename algorithm_prototype< common::on_stock_bar, signal_type > typed_algorithm;
 			protected:
-				typedef typename series_storage::details::on_stock_series_storage< typename signal_type > storage;
-				typedef typename storage::serie_ptr serie_ptr;
+				typedef typename series_storage::details::on_stock_serie< signal_type > serie_type;
+				typedef typename serie_type::serie_ptr serie_ptr;
 			private:
-				storage storage_;
+				serie_type storage_;
 			protected:
 				explicit on_stock_algorithm( const std::string& name );
 				virtual ~on_stock_algorithm();
@@ -30,6 +30,8 @@ namespace stsc
 				virtual void register_signal( const bar_type& b, const signal_type& signal );
 				virtual void register_signal( const bar_type& b, signal_type* const signal );
 				virtual void register_signal( const bar_type& b, const signal_type_ptr& s );
+				//
+				//void subscribe( const std::string& subscribe_to_name );
 			private:
 				virtual void process( const bar_type& b ) = 0;
 				virtual serie_ptr serie_prototype() const = 0;

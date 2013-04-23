@@ -17,7 +17,9 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 
 	ts1->add( BOOST_TEST_CASE( &serie_subscription_unit_tests ) );
 
-	ts1->add( BOOST_TEST_CASE( &details_on_stock_series_storage_unit_tests ) );
+	ts1->add( BOOST_TEST_CASE( &details_on_bar_serie_unit_tests ) );
+	ts1->add( BOOST_TEST_CASE( &details_on_period_serie_unit_tests ) );
+	ts1->add( BOOST_TEST_CASE( &details_on_stock_serie_unit_tests ) );
 
 	using namespace stsc::tests_::engine::algorithms_storage;
 

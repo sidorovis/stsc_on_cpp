@@ -1,7 +1,12 @@
 #ifndef _STSC_ENGINE_SERIES_STORAGE_SERIE_SUBSCRIPTION_H_
 #define _STSC_ENGINE_SERIES_STORAGE_SERIE_SUBSCRIPTION_H_
 
-#include <series_storage/serie.h>
+#include <typeinfo> 
+#include <sstream>
+
+#include <boost/shared_ptr.hpp>
+
+#include <bar_types.h>
 
 namespace stsc
 {
@@ -9,54 +14,47 @@ namespace stsc
 	{
 		namespace series_storage
 		{
-			template< typename signal_type >
-			class serie_subscription
+			class serie_subscription_prototype
 			{
-				typedef serie< signal_type > serie_type;
-				const serie_type& serie_;
+			protected:
+				virtual ~serie_subscription_prototype();
+			public:
+				virtual void subscription_check( const std::type_info& ti ) const = 0;
+///				virtual void container_check( const std::type_info& ti ) const = 0; TODO define is it really need to exists
+			};
 
+			template< typename output_type >
+			class serie_subscription : public serie_subscription_prototype
+			{
+			protected:
+				typedef typename output_type signal_type;
+			private:
+				static const std::type_info& signal_type_info_;
+			public:
 				typedef boost::shared_ptr< signal_type > signal_type_ptr;
 				typedef boost::shared_ptr< const signal_type > signal_type_const_ptr;
-			public:
-				explicit serie_subscription( const serie_type& serie )
-					: serie_( serie )
-				{
-				}
-				~serie_subscription()
-				{
-				}
 				//
-				void subscription_check( const std::type_info& ti ) const
-				{
-					return serie_.subscription_check( ti );
-				}
-				void container_check( const std::type_info& ti ) const
-				{
-					return serie_.container_check( ti );
-				}
+				explicit serie_subscription(){}
+				virtual ~serie_subscription(){}
 				//
-				const signal_type& at( const common::index& key ) const
-				{
-					return serie_.at( key );
-				}
-				const signal_type_const_ptr ptr_at( const common::index& key ) const
-				{
-					return serie_.ptr_at( key );
-				}
-				const size_t size() const
-				{
-					return serie_.size();
-				}
-				const bool empty() const
-				{
-					return serie_.empty();
-				}
+				virtual void subscription_check( const std::type_info& ti ) const;
+				//
+				virtual const signal_type& at( const common::index key ) const = 0;
+				virtual const signal_type_const_ptr ptr_at( const common::index key ) const = 0;
+				virtual const size_t size() const = 0;
+				virtual const bool empty() const = 0;
 			};
-			//
+
 			template< typename signal_type >
-			serie_subscription< signal_type > make_subscription( const serie< signal_type >& s )
+			const std::type_info& serie_subscription< signal_type >::signal_type_info_ = typeid( signal_type );
+
+			template< typename signal_type >
+			void serie_subscription< signal_type >::subscription_check( const std::type_info& ti ) const
 			{
-				return serie_subscription< signal_type >( s );
+				std::stringstream error_line;
+				error_line << "serie signal type with " << signal_type_info_.name() << " decline subscription on " << ti.name();
+				if ( ti != signal_type_info_ )
+					throw std::logic_error( error_line.str() );
 			}
 		}
 	}

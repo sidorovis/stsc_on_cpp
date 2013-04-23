@@ -2,6 +2,7 @@
 #define _STSC_ENGINE_SERIES_STORAGE_SERIE_H_
 
 #include <typeinfo> 
+#include <sstream>
 
 #include <boost/shared_ptr.hpp>
 
@@ -33,13 +34,7 @@ namespace stsc
 			private:
 				static const std::type_info& signal_type_info_;
 			public:
-				virtual void subscription_check( const std::type_info& ti ) const
-				{
-					std::stringstream error_line;
-					error_line << "serie signal type with " << signal_type_info_.name() << " decline subscription on " << ti.name();
-					if ( ti != signal_type_info_ )
-						throw std::logic_error( error_line.str() );
-				}
+				virtual void subscription_check( const std::type_info& ti ) const;
 				virtual void container_check( const std::type_info& ti ) const = 0;
 				//
 				virtual void clear() = 0;
@@ -55,6 +50,16 @@ namespace stsc
 
 			template< typename signal_type >
 			const std::type_info& serie< signal_type >::signal_type_info_ = typeid( signal_type );
+
+			template< typename signal_type >
+			void serie< signal_type >::subscription_check( const std::type_info& ti ) const
+			{
+				std::stringstream error_line;
+				error_line << "serie signal type with " << signal_type_info_.name() << " decline subscription on " << ti.name();
+				if ( ti != signal_type_info_ )
+					throw std::logic_error( error_line.str() );
+			}
+
 		}
 	}
 }

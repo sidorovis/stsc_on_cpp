@@ -1,4 +1,4 @@
-#include <series_storage/series.h>
+#include <series_storage/on_period_serie.h>
 
 namespace stsc
 {
@@ -6,6 +6,9 @@ namespace stsc
 	{
 		namespace series_storage
 		{
+			namespace details
+			{
+			}
 		}
 	}
 }

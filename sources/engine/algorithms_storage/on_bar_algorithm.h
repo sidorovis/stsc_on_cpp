@@ -1,7 +1,7 @@
 #ifndef _STSC_ENGINE_ALGORITHMS_STORAGE_ON_BAR_ALGORITHM_H_
 #define _STSC_ENGINE_ALGORITHMS_STORAGE_ON_BAR_ALGORITHM_H_
 
-#include <series_storage/series.h>
+#include <series_storage/on_bar_serie.h>
 #include <algorithms_storage/algorithm_prototype.h>
 
 namespace stsc
@@ -13,11 +13,12 @@ namespace stsc
 			template< typename output_signal_type >
 			class on_bar_algorithm : public details::algorithm_prototype< common::on_bar, output_signal_type >
 			{
-				typedef typename algorithm_prototype< common::on_bar, output_signal_type > typed_algorithm;
+				typedef typename algorithm_prototype< common::on_bar, signal_type > typed_algorithm;
 			protected:
-				typedef typename boost::shared_ptr< series_storage::serie< signal_type > > serie_ptr;
+				typedef typename series_storage::details::on_bar_serie< signal_type > serie_type;
+				typedef typename serie_type::serie_ptr serie_ptr;
 			private:
-				serie_ptr serie_;
+				serie_type storage_;
 			protected:
 				explicit on_bar_algorithm( const std::string& name );
 				virtual ~on_bar_algorithm();
@@ -46,7 +47,7 @@ namespace stsc
 			template< typename output_signal_type >
 			void on_bar_algorithm< output_signal_type >::register_serie()
 			{
-				serie_ = serie_prototype();
+				storage_.serie_ = serie_prototype();
 			}
 			//
 			template< typename output_signal_type >
@@ -62,7 +63,7 @@ namespace stsc
 			template< typename output_signal_type >
 			void on_bar_algorithm< output_signal_type >::register_signal( const bar_type& b, const signal_type_ptr& signal )
 			{
-				serie_->insert( b.index, signal );
+				storage_.serie_->insert( b.index, signal );
 			}
 		}
 	}

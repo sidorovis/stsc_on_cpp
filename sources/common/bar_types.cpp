@@ -25,9 +25,6 @@ namespace stsc
 		{
 		}
 		//
-
-		//
-
 		std::ostream& operator<<( std::ostream& out, const bar_type& bar )
 		{
 			out << "bar( " << bar.time_ << " )";
