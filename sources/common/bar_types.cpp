@@ -5,9 +5,13 @@ namespace stsc
 {
 	namespace common
 	{
-		on_stock_bar::on_stock_bar( const shared_string& sn, const common::price_bar& b, const size_t i )
-			: stock_name( sn )
-			, value( b )
+		shared_string make_shared_string( const std::string& str )
+		{
+			return shared_string( new std::string( str ) );
+		}
+		//
+		on_stock_bar::on_stock_bar( const common::price_bar& b, const size_t i )
+			: value( b )
 			, index( i )
 		{
 		}

@@ -2,19 +2,27 @@
 
 #include <math.h>
 
+#include <series_storage/map_serie.h>
+
 namespace stsc
 {
 	namespace engine
 	{
 		namespace algorithms
 		{
-			moving_median_indicator::moving_median_indicator( const std::string& name,
-															const float_type bigger_than,
-															const float_type less_than )
-				: base_type( name )
-				, bigger_than_( bigger_than )
-				, less_than_( less_than )
-				
+
+			moving_median_indicator_init_data::moving_median_indicator_init_data( const std::string& serie_id, const float_type bigger, const float_type less )
+				: moving_median_serie_id( serie_id )
+				, bigger_than( bigger )
+				, less_than( less )
+			{
+			}
+
+			moving_median_indicator::moving_median_indicator( const init_type& init )
+				: base_type( init, series_storage::create_map_serie_ptr< signal_type >() )
+				, moving_median_serie_( subscribe< float_type >( init.parameters.moving_median_serie_id ) )
+				, bigger_than_( init.parameters.bigger_than )
+				, less_than_( init.parameters.less_than )
 			{
 				if ( bigger_than_ >= less_than_ )
 					throw std::invalid_argument( "moving_median_indicator: bigger_than value is bigger than less_than value" );
@@ -24,16 +32,17 @@ namespace stsc
 			}
 			void moving_median_indicator::process( const bar_type& b )
 			{
-				//const common::bar_data::float_type* price = moving_median_series_.ptr_at( &b );
-				//if ( price )
-				//{
-				//	const common::bar_data::float_type diff = b.close_ - *price;
-				//	if ( fabs( diff ) > bigger_than_  && fabs( diff ) < less_than_ )
-				//	{
-				//		const common::open_signal::side side = diff < 0 ? common::open_signal::side_long : common::open_signal::side_short;
-				//		registrate_signal( b, new common::open_signal( side ) );
-				//	}
-				//}
+				serie_type::signal_type_const_ptr mmse = moving_median_serie_->ptr_at( b.index );
+				if ( mmse )
+				{
+					const common::bar_data::float_type diff = b.value.close_ - *mmse;
+					if ( fabs( diff ) > bigger_than_  && fabs( diff ) < less_than_ )
+					{
+						using common::open_signal;
+						const open_signal::side side = ( diff < 0 ) ? open_signal::side_long : open_signal::side_short;
+						register_signal( b, new open_signal( side ) );
+					}
+				}
 			}
 		}
 	}

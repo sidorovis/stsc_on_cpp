@@ -101,6 +101,12 @@ namespace stsc
 			template< typename signal_type, size_t default_increment, size_t default_size >
 			const std::type_info& vector_serie< signal_type, default_increment, default_size >::container_type_info_ = 
 				typeid( vector_serie< signal_type, default_increment, default_size >::signals_vector );
+			//
+			template< typename signal_type >
+			serie_ptr< signal_type > create_vector_serie_ptr()
+			{
+				return serie_ptr< signal_type >( new vector_serie< signal_type >() );
+			}
 		}
 	}
 }

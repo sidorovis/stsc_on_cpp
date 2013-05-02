@@ -6,6 +6,13 @@
 [+] : new feature
 
 
+ [00.00.00.13], (02-May-2013), Ivan Sidarau
+---------------------------------------------------------------------------
+[+] adding algorithm_manager
+[+] adding create methods for map, vector serie
+[+] adding make method for string_share
+[+] changing init type for on_stock_algorithm, now it template
+
  [00.00.00.12], (17-Apr-2013), Ivan Sidarau
 ---------------------------------------------------------------------------
 [+] fixing allmost all code to work with new memory model (map and vector based)

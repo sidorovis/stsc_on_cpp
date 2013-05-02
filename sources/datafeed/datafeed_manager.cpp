@@ -37,7 +37,7 @@ namespace stsc
 			//
 			common::on_stock_bar stock_data::create_on_stock_bar() const
 			{
-				return common::on_stock_bar( stock_name, *ci, index );
+				return common::on_stock_bar( *ci, index );
 			}
 			common::on_bar stock_data::create_on_bar() const
 			{

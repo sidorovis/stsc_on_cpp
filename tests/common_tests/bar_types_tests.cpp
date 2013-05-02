@@ -10,6 +10,10 @@ namespace stsc
 	{
 		namespace common
 		{
+			void create_shared_string_tests()
+			{
+				BOOST_CHECK_EQUAL( make_shared_string( "hello" )->c_str(), "hello" );
+			}
 			void check_existance_of_basic_types()
 			{
 				BOOST_CHECK_NO_THROW( index( 14 ) );
@@ -63,7 +67,7 @@ namespace stsc
 				bar.low_ = 45.33f;
 				bar.volume_ = 100000.0f;
 				std::stringstream stream;
-				stream.setf(std::ios::fixed,std::ios::floatfield);
+				stream.setf( std::ios::fixed,std::ios::floatfield );
 				stream.precision( 3 );
 				stream << bar;
 				BOOST_CHECK_EQUAL( stream.str(), "bar( 156||45.650|45.670|45.330|45.340 100000.000 )" );
@@ -71,9 +75,8 @@ namespace stsc
 			//
 			void on_stock_bar_tests()
 			{
-				shared_string s( new std::string( "asd" ) );
 				price_bar b;
-				BOOST_CHECK_NO_THROW( on_stock_bar( s, b, 14 ) );
+				BOOST_CHECK_NO_THROW( on_stock_bar( b, 14 ) );
 			}
 			void on_bar_tests()
 			{

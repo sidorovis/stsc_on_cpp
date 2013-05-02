@@ -15,12 +15,6 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 	ts1->add( BOOST_TEST_CASE( &map_serie_unit_tests ) );
 	ts1->add( BOOST_TEST_CASE( &vector_serie_unit_tests ) );
 
-	ts1->add( BOOST_TEST_CASE( &serie_subscription_unit_tests ) );
-
-	ts1->add( BOOST_TEST_CASE( &details_on_bar_serie_unit_tests ) );
-	ts1->add( BOOST_TEST_CASE( &details_on_period_serie_unit_tests ) );
-	ts1->add( BOOST_TEST_CASE( &details_on_stock_serie_unit_tests ) );
-
 	using namespace stsc::tests_::engine::algorithms_storage;
 
 	ts1->add( BOOST_TEST_CASE( &details_algorithm_prototypes_constructor_tests ) );
@@ -36,10 +30,14 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 	ts1->add( BOOST_TEST_CASE( &moving_median_series_constructor_tests ) );
 	ts1->add( BOOST_TEST_CASE( &moving_median_series_simple_work_tests ) );
 
-	ts1->add( BOOST_TEST_CASE( &moving_median_indicator_constructor_tests ) );
-	ts1->add( BOOST_TEST_CASE( &moving_median_indicator_simple_work_tests ) );
+	//ts1->add( BOOST_TEST_CASE( &moving_median_indicator_constructor_tests ) );
+	//ts1->add( BOOST_TEST_CASE( &moving_median_indicator_simple_work_tests ) );
 
-	ts1->add( BOOST_TEST_CASE( &algorithms_constructor_tests ) );
+	using namespace stsc::tests_::engine;
+
+	ts1->add( BOOST_TEST_CASE( &algorithm_manager_constructor_tests ) );
+	ts1->add( BOOST_TEST_CASE( &algorithm_manager_add_stocks_tests ) );
+	ts1->add( BOOST_TEST_CASE( &algorithm_manager_create_on_stock_algorithm_tests ) );
 
 	return ts1;
 }

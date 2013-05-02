@@ -8,6 +8,8 @@ namespace stsc
 		{
 			void create_extract_eod_time_tests();
 
+			void create_shared_string_tests();
+
 			void check_existance_of_basic_types();
 			void bar_type_constructor_tests();
 			void bar_type_ostream_operator_tests();

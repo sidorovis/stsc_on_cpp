@@ -4,7 +4,7 @@
 
 #include <bar_types.h>
 
-#include <algorithms_storage/algorithm_examples.h>
+#include <algorithm_examples.h>
 
 namespace stsc
 {
@@ -16,8 +16,11 @@ namespace stsc
 			{
 				void on_period_algorithm_tests()
 				{
-					on_period_test_algorithm algo( "test_algo" );
-					algo.register_serie();
+					using namespace stsc::engine::algorithms_storage;
+
+ 					algorithm_manager_helper algorithm_manager;
+
+					on_period_test_algorithm algo( details::algorithm_init( "test_algo", algorithm_manager ) );
 					
 					common::bar_type bt;
 					common::on_period b1( bt, 1 );

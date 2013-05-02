@@ -18,6 +18,7 @@ find_package( system_utilities ${SEARCH_PARAMETERS} COMPONENTS
 	system_processor
 	property_reader
 	timer
+	shared_name_storage
 )
 
 add_source_list( ${module_name} algorithms "algorithms/*.cpp" )

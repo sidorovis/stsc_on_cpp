@@ -12,6 +12,8 @@ namespace stsc
 		typedef size_t index;
 		typedef boost::shared_ptr< std::string > shared_string;
 
+		shared_string make_shared_string( const std::string& str );
+
 		namespace bar_data_type
 		{
 			enum value
@@ -45,13 +47,10 @@ namespace stsc
 		//
 		struct on_stock_bar
 		{
-			typedef common::shared_string shared_string;
-
-			const shared_string& stock_name;
 			const common::price_bar& value;
 			const size_t index;
 			//
-			explicit on_stock_bar( const shared_string& sn, const common::price_bar& b, const size_t i );
+			explicit on_stock_bar( const common::price_bar& b, const size_t i );
 		};
 		struct on_bar
 		{

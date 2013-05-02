@@ -8,7 +8,7 @@ namespace stsc
 		{
 			namespace details
 			{
-				algorithm::algorithm( const std::string& name )
+				algorithm::algorithm( const common::shared_string& name )
 					: name_( name )
 				{
 				}

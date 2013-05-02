@@ -25,7 +25,7 @@ namespace stsc
 					virtual void new_bar_on_stock( const common::on_stock_bar& bar )
 					{
 						std::stringstream s;
-						s << "nbos|" << *bar.stock_name << "|" << bar.value;
+						s << "nbos|" << bar.value;
 						boost::mutex::scoped_lock lock( m );
 						times_.push_back( bar.value.time_ );
 						actions_.push_back( s.str() );

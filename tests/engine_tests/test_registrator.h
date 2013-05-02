@@ -10,12 +10,6 @@ namespace stsc
 			{
 				void map_serie_unit_tests();
 				void vector_serie_unit_tests();
-
-				void serie_subscription_unit_tests();
-
-				void details_on_bar_serie_unit_tests();
-				void details_on_period_serie_unit_tests();
-				void details_on_stock_serie_unit_tests();
 			}
 			namespace algorithms_storage
 			{
@@ -38,10 +32,9 @@ namespace stsc
 				void moving_median_indicator_simple_work_tests();
 			}
 
-			namespace algorithms_storage
-			{
-				void algorithms_constructor_tests();
-			}
+			void algorithm_manager_constructor_tests();
+			void algorithm_manager_add_stocks_tests();
+			void algorithm_manager_create_on_stock_algorithm_tests();
 		}
 	}
 }

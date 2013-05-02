@@ -1,8 +1,8 @@
 #ifndef _STSC_ENGINE_ALGORITHMS_STORAGE_ON_STOCK_ALGORITHM_H_
 #define _STSC_ENGINE_ALGORITHMS_STORAGE_ON_STOCK_ALGORITHM_H_
 
-#include <series_storage/on_stock_serie.h>
 #include <algorithms_storage/algorithm_prototype.h>
+#include <algorithm_manager.h>
 
 namespace stsc
 {
@@ -10,36 +10,81 @@ namespace stsc
 	{
 		namespace algorithms_storage
 		{
+			template< typename init_type >
+			struct on_stock_algorithm_init : public details::algorithm_init
+			{
+				const init_type parameters;
+				common::shared_string stock_name;
+
+				explicit on_stock_algorithm_init( 
+					const common::shared_string& n, 
+					const algorithm_manager& m,
+					const init_type& p,
+					const common::shared_string& sn );
+				explicit on_stock_algorithm_init( 
+					const common::shared_string& n, 
+					const algorithm_manager& m,
+					const init_type& p );
+				explicit on_stock_algorithm_init( 
+					const common::shared_string& n, 
+					const algorithm_manager& m );
+			};
+			//
+			template< typename init_type >
+			on_stock_algorithm_init< init_type >::on_stock_algorithm_init( 
+					const common::shared_string& n, 
+					const algorithm_manager& m,
+					const init_type& p,
+					const common::shared_string& sn
+					)
+				: details::algorithm_init( n, m )
+				, parameters( p )
+				, stock_name( sn )
+			{
+			}
+			//
+			template< typename init_type >
+			on_stock_algorithm_init< init_type >::on_stock_algorithm_init( 
+					const common::shared_string& n, 
+					const algorithm_manager& m,
+					const init_type& p
+					)
+				: details::algorithm_init( n, m )
+				, parameters( p )
+			{
+			}
+			//
+			template< typename init_type >
+			on_stock_algorithm_init< init_type >::on_stock_algorithm_init( 
+					const common::shared_string& n, 
+					const algorithm_manager& m
+					)
+				: details::algorithm_init( n, m )
+				, parameters()
+			{
+			}
+			//
 			template< typename output_signal_type >
 			class on_stock_algorithm : public details::algorithm_prototype< common::on_stock_bar, output_signal_type >
 			{
-				typedef typename algorithm_prototype< common::on_stock_bar, signal_type > typed_algorithm;
+				typedef typename algorithm_prototype< common::on_stock_bar, signal_type > base_class;
+				common::shared_string stock_name_;
 			protected:
-				typedef typename series_storage::details::on_stock_serie< signal_type > serie_type;
-				typedef typename serie_type::serie_ptr serie_ptr;
-			private:
-				serie_type storage_;
-			protected:
-				explicit on_stock_algorithm( const std::string& name );
+				template< typename algorithm_init >
+				explicit on_stock_algorithm( const algorithm_init& init, typed_serie_ptr& serie );
 				virtual ~on_stock_algorithm();
-			public:
-				/// should be called before process()
-				template< typename const_iterator_type >
-				void register_stock_list( const_iterator_type from, const_iterator_type to );
-			protected:
-				virtual void register_signal( const bar_type& b, const signal_type& signal );
-				virtual void register_signal( const bar_type& b, signal_type* const signal );
-				virtual void register_signal( const bar_type& b, const signal_type_ptr& s );
 				//
-				//void subscribe( const std::string& subscribe_to_name );
+				template< typename subscription_signal_type >
+				series_storage::const_serie_ptr< subscription_signal_type > subscribe( const std::string& subscription_name );
 			private:
 				virtual void process( const bar_type& b ) = 0;
-				virtual serie_ptr serie_prototype() const = 0;
 			};
 
 			template< typename output_signal_type >
-			on_stock_algorithm< output_signal_type >::on_stock_algorithm( const std::string& name )
-				: typed_algorithm( name )
+				template< typename algorithm_init >
+			on_stock_algorithm< output_signal_type >::on_stock_algorithm( const algorithm_init& init, typed_serie_ptr& serie )
+				: base_class( init, serie )
+				, stock_name_( init.stock_name )
 			{
 			}
 			template< typename output_signal_type >
@@ -48,28 +93,10 @@ namespace stsc
 			}
 			//
 			template< typename output_signal_type >
-				template< typename const_iterator_type >
-			void on_stock_algorithm< output_signal_type >::register_stock_list( const_iterator_type from, const_iterator_type to )
+			template< typename subscription_signal_type >
+			series_storage::const_serie_ptr< subscription_signal_type > on_stock_algorithm< output_signal_type >::subscribe( const std::string& subscription_name )
 			{
-				for ( const_iterator_type i = from ; i != to ; ++i )
-					storage_.series_[ *i ] = serie_prototype();
-			}
-			template< typename output_signal_type >
-			void on_stock_algorithm< output_signal_type >::register_signal( const bar_type& b, const signal_type& signal )
-			{
-				return typed_algorithm::register_signal( b, signal );
-			}
-			template< typename output_signal_type >
-			void on_stock_algorithm< output_signal_type >::register_signal( const bar_type& b, signal_type* const signal )
-			{
-				return typed_algorithm::register_signal( b, signal );
-			}
-			template< typename output_signal_type >
-			void on_stock_algorithm< output_signal_type >::register_signal( const bar_type& b, const signal_type_ptr& signal )
-			{
-				if ( storage_.series_.find( b.stock_name ) == storage_.series_.end() )
-					throw std::logic_error( "inserting new stock to on_stock_algorithm, after initialization is deprecated" );
-				storage_.series_[ b.stock_name ]->insert( b.index, signal );
+				return algorithms_.subscribe_on_stock< subscription_signal_type >( subscription_name, stock_name_ );
 			}
 		}
 	}

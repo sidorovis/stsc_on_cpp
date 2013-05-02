@@ -121,6 +121,12 @@ namespace stsc
 			//
 			template< typename signal_type >
 			const std::type_info& map_serie< signal_type >::container_type_info_ = typeid( map_serie< signal_type >::signals_map );
+			//
+			template< typename signal_type >
+			serie_ptr< signal_type > create_map_serie_ptr()
+			{
+				return serie_ptr< signal_type >( new map_serie< signal_type >() );
+			}
 		}
 	}
 }
