@@ -63,6 +63,8 @@ namespace stsc
 			~eod_datafeed_storage();
 			//
 			eod_datafeed_storage& add_stock_to_parse( const std::string& stock_name );
+			template< typename iterator_type >
+			void add_stocks( iterator_type from, iterator_type to );
 			//
 			void read_datafeed();
 			void multithread_read_datafeed( const size_t thread_amount = 4ul );
@@ -70,6 +72,13 @@ namespace stsc
 			void read_datafeed_from_file_storage_();
 			void read_period_( const boost::filesystem::path& from, binary::period& to );
 		};
+
+		template< typename iterator_type >
+		void eod_datafeed_storage::add_stocks( iterator_type from, iterator_type to )
+		{
+			for ( iterator_type i = from ; i != to ; ++i )
+				add_stock_to_parse( *i );
+		}
 
 		std::ostream& operator<<( std::ostream& out, const eod_datafeed_storage& eds );
 	}

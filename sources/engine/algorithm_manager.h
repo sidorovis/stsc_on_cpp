@@ -4,11 +4,7 @@
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 
-#include <bar_types.h>
-
 #include <shared_name_storage.h>
-
-#include <series_storage/serie.h>
 
 #include <algorithms_storage/algorithm.h>
 
@@ -16,14 +12,6 @@ namespace stsc
 {
 	namespace engine
 	{
-		namespace algorithms_storage
-		{
-			namespace details
-			{
-				class algorithm;
-			}
-		}
-
 		class algorithm_manager : virtual public boost::noncopyable
 		{
 			friend class stsc::engine::algorithms_storage::details::algorithm;
@@ -158,7 +146,7 @@ namespace stsc
 			if ( on_bar == on_bar_algorithms_.end() )
 				throw std::logic_error( "subscription on unknown on_bar algorithm " + *subscription_name ); 
 			const algorithm& algo = *(on_bar->second);
-			algo.subscription_chech( typeid( subscription_signal_type ) );
+			algo.subscription_check( typeid( subscription_signal_type ) );
 			typedef typename algorithms_storage::details::algorithm_with_serie< subscription_signal_type > typed_algorithm;
 			const typed_algorithm& typed_algo = dynamic_cast< const typed_algorithm& >( algo );
 			return series_storage::const_serie_ptr< subscription_signal_type >( typed_algo.serie_ );
@@ -177,7 +165,7 @@ namespace stsc
 			if ( on_period == on_period_algorithms_.end() )
 				throw std::logic_error( "subscription on unknown on_bar algorithm " + *subscription_name ); 
 			const algorithm& algo = *(on_period->second);
-			algo.subscription_chech( typeid( subscription_signal_type ) );
+			algo.subscription_check( typeid( subscription_signal_type ) );
 			typedef typename algorithms_storage::details::algorithm_with_serie< subscription_signal_type > typed_algorithm;
 			const typed_algorithm& typed_algo = dynamic_cast< const typed_algorithm& >( algo );
 			return series_storage::const_serie_ptr< subscription_signal_type >( typed_algo.serie_ );

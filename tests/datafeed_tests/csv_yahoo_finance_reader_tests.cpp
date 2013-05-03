@@ -18,7 +18,7 @@ namespace stsc
 			{
 				namespace
 				{
-					class datafeed_processor : public stsc::datafeed::datafeed_processor
+					class datafeed_processor : public stsc::datafeed::stock_datafeed_processor
 					{
 						typedef boost::shared_ptr< std::string > stock_name_ptr;
 						typedef std::vector< common::price_bar > bars;

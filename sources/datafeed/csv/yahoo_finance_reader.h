@@ -10,7 +10,7 @@
 
 #include <bar_types.h>
 
-#include <datafeed_processor.h>
+#include <stock_datafeed_processor.h>
 
 namespace stsc
 {
@@ -44,7 +44,7 @@ namespace stsc
 			{
 				friend void stsc::tests_::datafeed::csv::yahoo_finance_reader_unit_tests();
 
-				datafeed_processor& datafeed_processor_;
+				stock_datafeed_processor& datafeed_processor_;
 
 				boost::mutex file_vector_mutex_;
 				std::list< details::yahoo_finance_file_ptr > datafeed_files_;
@@ -52,7 +52,7 @@ namespace stsc
 				const bool protected_scan_;
 
 			public:
-				explicit yahoo_finance_reader( datafeed_processor& dp, const std::string& datafeed_folder, const bool protected_scan = true );
+				explicit yahoo_finance_reader( stock_datafeed_processor& dp, const std::string& datafeed_folder, const bool protected_scan = true );
 				~yahoo_finance_reader();
 				//
 				void process( const size_t thread_size = 1ul );

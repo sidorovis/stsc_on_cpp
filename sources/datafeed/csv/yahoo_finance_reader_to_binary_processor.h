@@ -9,7 +9,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/thread/mutex.hpp>
 
-#include <datafeed_processor.h>
+#include <stock_datafeed_processor.h>
 #include <binary/format.h>
 
 namespace stsc
@@ -18,7 +18,7 @@ namespace stsc
 	{
 		namespace csv
 		{
-			class yahoo_finance_to_binary_data : public datafeed::datafeed_processor
+			class yahoo_finance_to_binary_data : public datafeed::stock_datafeed_processor
 			{
 				typedef boost::shared_ptr< std::string > stock_name_ptr;
 

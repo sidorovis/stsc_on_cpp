@@ -26,7 +26,7 @@ namespace stsc
 			}
 
 			//
-			yahoo_finance_reader::yahoo_finance_reader( datafeed_processor& dp, const std::string& datafeed_folder, const bool protected_scan )
+			yahoo_finance_reader::yahoo_finance_reader( stock_datafeed_processor& dp, const std::string& datafeed_folder, const bool protected_scan )
 				: datafeed_processor_( dp )
 				, protected_scan_( protected_scan )
 			{
