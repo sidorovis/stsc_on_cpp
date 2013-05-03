@@ -56,7 +56,7 @@ namespace stsc
 
 				BOOST_CHECK_NO_THROW( am.create_on_period_algorithm< algorithms_storage::on_period_test_algorithm >( "Bob Marley", 0 ) );
 				BOOST_CHECK_NO_THROW( am.create_on_period_algorithm< algorithms_storage::on_period_test_algorithm >( "Demian Marley", 0 ) );
-				BOOST_CHECK_THROW( am.create_on_period_algorithm< algorithms_storage::on_period_test_algorithm >( "Demin Marley", 0 ), std::exception );
+				BOOST_CHECK_THROW( am.create_on_period_algorithm< algorithms_storage::on_period_test_algorithm >( "Demian Marley", 0 ), std::exception );
 			}
 		}
 	}
