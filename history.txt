@@ -6,6 +6,10 @@
 [+] : new feature
 
 
+ [00.00.00.13], (03-May-2013), Ivan Sidarau
+---------------------------------------------------------------------------
+[+] adding create_on_bar_algorithm, create_on_period_methods
+
  [00.00.00.13], (02-May-2013), Ivan Sidarau
 ---------------------------------------------------------------------------
 [+] adding algorithm_manager

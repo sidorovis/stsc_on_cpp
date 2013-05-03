@@ -37,8 +37,26 @@ namespace stsc
 				algorithm_manager am;
 				add_stocks( am );
 
-				BOOST_CHECK_NO_THROW( am.create_on_stock_algorithm< algorithms_storage::on_stock_test_algorithm >( "Alai Oli", 15 ) );
-				BOOST_CHECK_THROW( am.create_on_stock_algorithm< algorithms_storage::on_stock_test_algorithm >( "Alai Oli", 15 ), std::exception );
+				BOOST_CHECK_NO_THROW( am.create_on_stock_algorithm< algorithms_storage::on_stock_test_algorithm >( "Alai Oli", 0 ) );
+				BOOST_CHECK_THROW( am.create_on_stock_algorithm< algorithms_storage::on_stock_test_algorithm >( "Alai Oli", 0 ), std::exception );
+			}
+			void algorithm_manager_create_on_bar_algorithm_tests()
+			{
+				algorithm_manager am;
+				add_stocks( am );
+				
+				BOOST_CHECK_NO_THROW( am.create_on_bar_algorithm< algorithms_storage::on_bar_test_algorithm >( "Beatles", 0 ) );
+				BOOST_CHECK_NO_THROW( am.create_on_bar_algorithm< algorithms_storage::on_bar_test_algorithm >( "New Beatles", 0 ) );
+				BOOST_CHECK_THROW( am.create_on_bar_algorithm< algorithms_storage::on_bar_test_algorithm >( "Beatles", 0 ), std::exception );
+			}
+			void algorithm_manager_create_on_period_algorithm_tests()
+			{
+				algorithm_manager am;
+				add_stocks( am );
+
+				BOOST_CHECK_NO_THROW( am.create_on_period_algorithm< algorithms_storage::on_period_test_algorithm >( "Bob Marley", 0 ) );
+				BOOST_CHECK_NO_THROW( am.create_on_period_algorithm< algorithms_storage::on_period_test_algorithm >( "Demian Marley", 0 ) );
+				BOOST_CHECK_THROW( am.create_on_period_algorithm< algorithms_storage::on_period_test_algorithm >( "Demin Marley", 0 ), std::exception );
 			}
 		}
 	}

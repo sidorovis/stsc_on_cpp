@@ -28,17 +28,18 @@ namespace stsc
 		{
 			friend class stsc::engine::algorithms_storage::details::algorithm;
 
-			typedef algorithms_storage::details::algorithm algorithm;
-			typedef boost::shared_ptr< algorithm > algorithm_ptr;
-
 			typedef system_utilities::common::shared_name_storage shared_name_storage;
 			shared_name_storage algorithm_names_;
 			shared_name_storage stock_names_;
-
-			typedef std::map< common::shared_string, algorithm_ptr > stock_algorithms;
-			typedef std::map< common::shared_string, stock_algorithms > on_stock_algorithms;
+		public:
+			typedef algorithms_storage::details::algorithm algorithm;
+			typedef boost::shared_ptr< algorithm > algorithm_ptr;
 
 			typedef std::map< common::shared_string, algorithm_ptr > algorithms;
+			typedef algorithms::const_iterator const_iterator;
+			typedef std::pair< const_iterator, const_iterator > on_stock_algorithm_sequence;
+		private:
+			typedef std::map< common::shared_string, algorithms > on_stock_algorithms;
 
 			on_stock_algorithms on_stock_algorithms_;
 			algorithms on_bar_algorithms_;
@@ -54,7 +55,13 @@ namespace stsc
 			void add_stocks( const iterator_type from, const iterator_type to );
 			//
 			template< typename algorithm_type, typename init_type >
-			void create_on_stock_algorithm( const std::string& algorithm_name, const init_type& init );
+			on_stock_algorithm_sequence create_on_stock_algorithm( const std::string& algorithm_name, const init_type& init );
+			//
+			template< typename algorithm_type, typename init_type >
+			algorithm_ptr create_on_bar_algorithm( const std::string& algorithm_name, const init_type& init );
+			//
+			template< typename algorithm_type, typename init_type >
+			algorithm_ptr create_on_period_algorithm( const std::string& algorithm_name, const init_type& init );
 			//
 			template< typename subscription_signal_type >
 			series_storage::const_serie_ptr< subscription_signal_type > subscribe_on_stock( const shared_string& subscription_name, const shared_string& stock_name ) const;
@@ -70,10 +77,10 @@ namespace stsc
 		}
 		//
 		template< typename algorithm_type, typename init_type >
-		void algorithm_manager::create_on_stock_algorithm( const std::string& algorithm_name, const init_type& init )
+		algorithm_manager::on_stock_algorithm_sequence algorithm_manager::create_on_stock_algorithm( const std::string& algorithm_name, const init_type& init )
 		{
 			if ( !algorithm_names_.add_name( algorithm_name ) )
-				throw std::logic_error( "algorithm name '" + algorithm_name + "' had been added before" );
+				throw std::logic_error( "on stock algorithm name '" + algorithm_name + "' had been added before" );
 			const common::shared_string& shared_algo_name = algorithm_names_.get_shared( algorithm_name );
 			on_stock_algorithm_init< typename init_type > initialization( shared_algo_name, *this, init );
 
@@ -83,8 +90,34 @@ namespace stsc
 				algorithm_ptr ptr( new algorithm_type( initialization ) );
 				on_stock_algorithms_[ shared_algo_name ][ initialization.stock_name ] = ptr;
 			}
+			return on_stock_algorithm_sequence( on_stock_algorithms_[ shared_algo_name ].begin(), on_stock_algorithms_[ shared_algo_name ].end() );
 		}
+		//
+		template< typename algorithm_type, typename init_type >
+		algorithm_manager::algorithm_ptr algorithm_manager::create_on_bar_algorithm( const std::string& algorithm_name, const init_type& init )
+		{
+			if ( !algorithm_names_.add_name( algorithm_name ) )
+				throw std::logic_error( "on bar algorithm name '" + algorithm_name + "' had been added before" );
+			const common::shared_string& shared_algo_name = algorithm_names_.get_shared( algorithm_name );
+			on_stock_algorithm_init< typename init_type > initialization( shared_algo_name, *this, init );
 
+			algorithm_ptr ptr( new algorithm_type( initialization ) );
+			on_bar_algorithms_[ shared_algo_name ] = ptr;
+			return ptr;
+		}
+		//
+		template< typename algorithm_type, typename init_type >
+		algorithm_manager::algorithm_ptr algorithm_manager::create_on_period_algorithm( const std::string& algorithm_name, const init_type& init )
+		{
+			if ( !algorithm_names_.add_name( algorithm_name ) )
+				throw std::logic_error( "on period algorithm name '" + algorithm_name + "' had been added before" );
+			const common::shared_string& shared_algo_name = algorithm_names_.get_shared( algorithm_name );
+			on_stock_algorithm_init< typename init_type > initialization( shared_algo_name, *this, init );
+
+			algorithm_ptr ptr( new algorithm_type( initialization ) );
+			on_period_algorithms_[ shared_algo_name ] = ptr;
+			return ptr;
+		}
 		//
 		template< typename subscription_signal_type >
 		series_storage::const_serie_ptr< subscription_signal_type > algorithm_manager::subscribe_on_stock( const shared_string& subscription_name, const shared_string& stock_name ) const
@@ -92,7 +125,7 @@ namespace stsc
 			on_stock_algorithms::const_iterator on_stock = on_stock_algorithms_.find( subscription_name );
 			if ( on_stock == on_stock_algorithms_.end() )
 				throw std::logic_error( "subscription on unknown on_stock algorithm " + *subscription_name );
-			stock_algorithms::const_iterator algo_iter = on_stock->second.find( stock_name );
+			algorithms::const_iterator algo_iter = on_stock->second.find( stock_name );
 			if ( algo_iter == on_stock->second.end() )
 				throw std::logic_error( "subscription on unknown on_stock algorithm " + *subscription_name + " on stock " + *stock_name );
 			const algorithm& algo = *( algo_iter->second );

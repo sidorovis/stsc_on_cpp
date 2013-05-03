@@ -34,7 +34,10 @@ namespace stsc
 
 			void algorithm_manager_constructor_tests();
 			void algorithm_manager_add_stocks_tests();
+
 			void algorithm_manager_create_on_stock_algorithm_tests();
+			void algorithm_manager_create_on_bar_algorithm_tests();
+			void algorithm_manager_create_on_period_algorithm_tests();
 		}
 	}
 }

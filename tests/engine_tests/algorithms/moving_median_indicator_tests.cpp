@@ -28,50 +28,69 @@ namespace stsc
 				public:
 					explicit moving_median_indicator_tests()
 					{
-						am_.reset( new stsc::engine::algorithm_manager() );
+					}
+					void add_stocks()
+					{
+						using stsc::engine::algorithm_manager;
+						am_.reset( new algorithm_manager() );
+						BOOST_CHECK_EQUAL( am_.get() != NULL, true );
+						char* st[] = { "aapl", "goog" };
+						am_->add_stocks( st, st + 2 );
 					}
 					void constructor_tests()
 					{
-						typedef moving_median_indicator_init_data mmiid;
-						typedef moving_median_indicator::init_type mmiinit;
-						mmiinit mmi_init( common::make_shared_string( "mmi" ), *am_, mmiid( "moving_median_close", 10.0, 20.0 ) );
-						moving_median_series_init mms_init( common::make_shared_string( "moving_median_close" ), *am_ );
-						mmi_ptr mmi;
+						using stsc::engine::algorithm_manager;
 
-						BOOST_CHECK_THROW( new moving_median_indicator( mmi_init ), std::logic_error );
-						mms_ptr mms;
-						BOOST_CHECK_NO_THROW( mms.reset( new moving_median_series<>( mms_init ) ) );
-						BOOST_CHECK_NO_THROW( mmi.reset( new moving_median_indicator( mmi_init ) ) );
+						typedef moving_median_indicator_init_data mmiid;
+						add_stocks();
+
+						typedef algorithm_manager::on_stock_algorithm_sequence algos_type;
+						algos_type series, indicators;
+
+						BOOST_CHECK_THROW( am_->create_on_stock_algorithm< moving_median_indicator >( "mmi", mmiid( "moving_median_close", 10.0, 20.0 ) ), std::logic_error );
+
+						add_stocks();
+
+						BOOST_CHECK_NO_THROW( series = (am_->create_on_stock_algorithm< moving_median_series<>, size_t >( "moving_median_close", 3 ) ) );
+						BOOST_CHECK_NO_THROW( indicators = am_->create_on_stock_algorithm< moving_median_indicator >( "mmi", mmiid( "moving_median_close", 10.0, 20.0 ) ) );
+
+						BOOST_CHECK_EQUAL( series.first != series.second, true );
+						BOOST_CHECK_EQUAL( indicators.first != indicators.second, true );
+
+						BOOST_CHECK_NO_THROW( indicators.first->second->subscription_check( typeid( common::open_signal ) ) );
+						moving_median_indicator* mmi = dynamic_cast< moving_median_indicator* >( indicators.first->second.get() );
+
 						BOOST_CHECK_EQUAL( mmi->bigger_than_, 10.0 );
 						BOOST_CHECK_EQUAL( mmi->less_than_, 20.0 );
-						BOOST_CHECK_THROW( new moving_median_indicator( mmi_init ), std::logic_error );
-						BOOST_CHECK_THROW( new moving_median_indicator( mmi_init ), std::invalid_argument );
-						BOOST_CHECK_THROW( new moving_median_indicator( mmi_init ), std::invalid_argument );
 					}
 					void simple_work_tests()
 					{
+						using stsc::engine::algorithm_manager;
+
 						typedef moving_median_indicator_init_data mmiid;
-						typedef moving_median_indicator::init_type mmiinit;
-						mmiinit mmi_init( common::make_shared_string( "mmi" ), *am_, mmiid( "moving_median_close", 10.0, 20.0 ) );
-						moving_median_series_init mms_init( common::make_shared_string( "moving_median_close" ), *am_ );
 
-						mmi_ptr mmi;
-						mms_ptr mms;
-						BOOST_CHECK_NO_THROW( mms.reset( new moving_median_series<>( mms_init ) ) );
-						BOOST_CHECK_NO_THROW( mmi.reset( new moving_median_indicator( mmi_init ) ) );
+						add_stocks();
+						typedef algorithm_manager::on_stock_algorithm_sequence algos_type;
+						algos_type series, indicators;
+						BOOST_CHECK_NO_THROW( series = (am_->create_on_stock_algorithm< moving_median_series<>, size_t >( "moving_median_close", 3 ) ) );
+						BOOST_CHECK_NO_THROW( indicators = am_->create_on_stock_algorithm< moving_median_indicator >( "mmi", mmiid( "moving_median_close", 10.0, 20.0 ) ) );
 
-						typedef boost::shared_ptr< common::price_bar > bar_ptr;
-						std::vector< bar_ptr > pb_vector;
+						BOOST_CHECK_EQUAL( series.first != series.second, true );
+						BOOST_CHECK_EQUAL( indicators.first != indicators.second, true );
+
+						BOOST_CHECK_NO_THROW( series.first->second->subscription_check( typeid( common::bar_data::float_type ) ) );
+						BOOST_CHECK_NO_THROW( indicators.first->second->subscription_check( typeid( common::open_signal ) ) );
+
+						moving_median_series<>* mms = dynamic_cast< moving_median_series<>* >( series.first->second.get() );
+						moving_median_indicator* mmi = dynamic_cast< moving_median_indicator* >( indicators.first->second.get() );
 
 						for ( size_t i = 1; i < 1000; ++i )
 						{
-							bar_ptr pb( new common::price_bar );
-							pb->close_ = common::price_bar::float_type( i );
-							pb->time_ = long( i );
-							pb_vector.push_back( pb );
+							common::price_bar pb;
+							pb.close_ = common::price_bar::float_type( i );
+							pb.time_ = long( i );
 
-							common::on_stock_bar osb( *pb, i );
-
+							common::on_stock_bar osb( pb, i );
 							BOOST_CHECK_NO_THROW( mms->process( osb ) );
 							BOOST_CHECK_NO_THROW( mmi->process( osb ) );
 						}

@@ -1,7 +1,8 @@
 #ifndef _STSC_ENGINE_ALGORITHMS_STORAGE_ON_STOCK_ALGORITHM_H_
 #define _STSC_ENGINE_ALGORITHMS_STORAGE_ON_STOCK_ALGORITHM_H_
 
-#include <algorithms_storage/algorithm_prototype.h>
+#include <algorithms_storage/algorithm_init.h>
+
 #include <algorithm_manager.h>
 
 namespace stsc
@@ -10,59 +11,6 @@ namespace stsc
 	{
 		namespace algorithms_storage
 		{
-			template< typename init_type >
-			struct on_stock_algorithm_init : public details::algorithm_init
-			{
-				const init_type parameters;
-				common::shared_string stock_name;
-
-				explicit on_stock_algorithm_init( 
-					const common::shared_string& n, 
-					const algorithm_manager& m,
-					const init_type& p,
-					const common::shared_string& sn );
-				explicit on_stock_algorithm_init( 
-					const common::shared_string& n, 
-					const algorithm_manager& m,
-					const init_type& p );
-				explicit on_stock_algorithm_init( 
-					const common::shared_string& n, 
-					const algorithm_manager& m );
-			};
-			//
-			template< typename init_type >
-			on_stock_algorithm_init< init_type >::on_stock_algorithm_init( 
-					const common::shared_string& n, 
-					const algorithm_manager& m,
-					const init_type& p,
-					const common::shared_string& sn
-					)
-				: details::algorithm_init( n, m )
-				, parameters( p )
-				, stock_name( sn )
-			{
-			}
-			//
-			template< typename init_type >
-			on_stock_algorithm_init< init_type >::on_stock_algorithm_init( 
-					const common::shared_string& n, 
-					const algorithm_manager& m,
-					const init_type& p
-					)
-				: details::algorithm_init( n, m )
-				, parameters( p )
-			{
-			}
-			//
-			template< typename init_type >
-			on_stock_algorithm_init< init_type >::on_stock_algorithm_init( 
-					const common::shared_string& n, 
-					const algorithm_manager& m
-					)
-				: details::algorithm_init( n, m )
-				, parameters()
-			{
-			}
 			//
 			template< typename output_signal_type >
 			class on_stock_algorithm : public details::algorithm_prototype< common::on_stock_bar, output_signal_type >
