@@ -67,6 +67,16 @@ namespace stsc
 			series_storage::const_serie_ptr< subscription_signal_type > subscribe_on_stock( const shared_string& subscription_name, const shared_string& stock_name ) const;
 			template< typename subscription_signal_type >
 			series_storage::const_serie_ptr< subscription_signal_type > subscribe_on_stock( const std::string& subscription_name, const shared_string& stock_name ) const;
+			//
+			template< typename subscription_signal_type >
+			series_storage::const_serie_ptr< subscription_signal_type > subscribe_on_bar( const shared_string& subscription_name ) const;
+			template< typename subscription_signal_type >
+			series_storage::const_serie_ptr< subscription_signal_type > subscribe_on_bar( const std::string& subscription_name ) const;
+			//
+			template< typename subscription_signal_type >
+			series_storage::const_serie_ptr< subscription_signal_type > subscribe_on_period( const shared_string& subscription_name ) const;
+			template< typename subscription_signal_type >
+			series_storage::const_serie_ptr< subscription_signal_type > subscribe_on_period( const std::string& subscription_name ) const;
 		};
 		//
 		template< typename iterator_type >
@@ -141,6 +151,43 @@ namespace stsc
 			return algorithm_manager::subscribe_on_stock< subscription_signal_type >( subs_shared, stock_name );
 		}
 		//
+		template< typename subscription_signal_type >
+		series_storage::const_serie_ptr< subscription_signal_type > algorithm_manager::subscribe_on_bar( const shared_string& subscription_name ) const
+		{
+			algorithms::const_iterator on_bar = on_bar_algorithms_.find( subscription_name );
+			if ( on_bar == on_bar_algorithms_.end() )
+				throw std::logic_error( "subscription on unknown on_bar algorithm " + *subscription_name ); 
+			const algorithm& algo = *(on_bar->second);
+			algo.subscription_chech( typeid( subscription_signal_type ) );
+			typedef typename algorithms_storage::details::algorithm_with_serie< subscription_signal_type > typed_algorithm;
+			const typed_algorithm& typed_algo = dynamic_cast< const typed_algorithm& >( algo );
+			return series_storage::const_serie_ptr< subscription_signal_type >( typed_algo.serie_ );
+		}
+		template< typename subscription_signal_type >
+		series_storage::const_serie_ptr< subscription_signal_type > algorithm_manager::subscribe_on_bar( const std::string& subscription_name ) const
+		{
+			const common::shared_string subs_shared = algorithm_names_.get_shared( subscription_name );
+			return algorithm_manager::subscribe_on_bar< subscription_signal_type >( subs_shared );
+		}
+		//
+		template< typename subscription_signal_type >
+		series_storage::const_serie_ptr< subscription_signal_type > algorithm_manager::subscribe_on_period( const shared_string& subscription_name ) const
+		{
+			algorithms::const_iterator on_period = on_period_algorithms_.find( subscription_name );
+			if ( on_period == on_period_algorithms_.end() )
+				throw std::logic_error( "subscription on unknown on_bar algorithm " + *subscription_name ); 
+			const algorithm& algo = *(on_period->second);
+			algo.subscription_chech( typeid( subscription_signal_type ) );
+			typedef typename algorithms_storage::details::algorithm_with_serie< subscription_signal_type > typed_algorithm;
+			const typed_algorithm& typed_algo = dynamic_cast< const typed_algorithm& >( algo );
+			return series_storage::const_serie_ptr< subscription_signal_type >( typed_algo.serie_ );
+		}
+		template< typename subscription_signal_type >
+		series_storage::const_serie_ptr< subscription_signal_type > algorithm_manager::subscribe_on_period( const std::string& subscription_name ) const
+		{
+			const common::shared_string subs_shared = algorithm_names_.get_shared( subscription_name );
+			return algorithm_manager::subscribe_on_bar< subscription_signal_type >( subs_shared );
+		}
 	}
 }
 
