@@ -5,7 +5,7 @@
 
 #include <boost/cstdint.hpp>
 
-#include <bar_types.h>
+#include <common/bar_types.h>
 
 namespace stsc
 {

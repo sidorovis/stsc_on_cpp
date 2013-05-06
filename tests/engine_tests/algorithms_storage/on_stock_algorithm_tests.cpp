@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <bar_types.h>
+#include <common/bar_types.h>
 
 #include <algorithms_storage/on_stock_algorithm.h>
 #include <algorithm_examples.h>

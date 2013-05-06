@@ -2,7 +2,7 @@
 
 #include <time_tracker.h>
 
-#include <time_helper.h>
+#include <common/time_helper.h>
 
 #include <eod_datafeed_storage.h>
 #include <eod_datafeed_spitter.h>
@@ -17,12 +17,21 @@ namespace stsc
 		{
 			namespace
 			{
-				struct datafeed_manager_test_helper : public datafeed_manager
+				struct datafeed_manager_test_helper : public eod_datafeed_spitter_manager, public eod_datafeed_storage_manager
 				{
+					static const std::string binary_datafeed_folder;
+
+					common::shared_name_storage sns;
+
 					boost::mutex m;
 					std::vector< std::string > actions_;
 					std::vector< long > times_;
-					virtual void new_bar_on_stock( const common::on_stock_bar& bar )
+
+					datafeed_manager_test_helper()
+					{
+					}
+
+					virtual void on_stock( const common::shared_string& name, const common::on_stock_bar& bar )
 					{
 						std::stringstream s;
 						s << "nbos|" << bar.value;
@@ -30,7 +39,7 @@ namespace stsc
 						times_.push_back( bar.value.time_ );
 						actions_.push_back( s.str() );
 					}
-					virtual void new_bar_on_bar( const common::on_bar& bar )
+					virtual void on_bar( const common::on_bar& bar )
 					{
 						std::stringstream s;
 						s << "nbob|" << bar.value;
@@ -38,13 +47,18 @@ namespace stsc
 						times_.push_back( bar.value.time_ );
 						actions_.push_back( s.str() );
 					}
-					virtual void new_bar_on_period( const common::on_period& bar )
+					virtual void on_period( const common::on_period& bar )
 					{
 						std::stringstream s;
 						s << "nbop|" << bar.value;
 						boost::mutex::scoped_lock lock( m );
 						times_.push_back( bar.value.time_ );
 						actions_.push_back( s.str() );
+					}
+					//
+					virtual const common::shared_name_storage& stock_names()
+					{
+						return sns;
 					}
 					virtual void file_reading_error( const std::string& file_path )
 					{
@@ -54,9 +68,10 @@ namespace stsc
 				public:
 					virtual ~datafeed_manager_test_helper(){}
 				};
-				struct datafeed_manager_non_synchronized_test_helper : public datafeed_manager
+				const std::string datafeed_manager_test_helper::binary_datafeed_folder = SOURCE_DIR "/data/binary_yahoo_datafeed";
+				struct datafeed_manager_non_synchronized_test_helper : public eod_datafeed_spitter_manager
 				{
-					virtual void new_bar_on_stock( const common::on_stock_bar& bar )
+					virtual void on_stock( const common::shared_string& name, const common::on_stock_bar& bar )
 					{
 						std::string a = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 						for ( int i = 0 ; i < 1000 ; ++i )
@@ -81,10 +96,12 @@ namespace stsc
 
 					eod_datafeed_storage storage( m, SOURCE_DIR "/data/binary_yahoo_datafeed", from, to );
 					size_t u = 0;
+					
 					for( directory_iterator i( binary_datafeed_folder ), end ; i != end && u < stock_size ; ++i, ++u  )
-						BOOST_CHECK_NO_THROW( storage.add_stock_to_parse( i->path().filename() ) );
+						BOOST_CHECK_NO_THROW( m.sns << i->path().filename() );
+
 					storage.multithread_read_datafeed();
-					eod_datafeed_spitter spitter( storage );
+					eod_datafeed_spitter spitter( m, storage );
 					BOOST_CHECK_NO_THROW( spitter.multithread_spit_datafeed( thread_amount ) );
 					BOOST_CHECK_NO_THROW( spitter.spit_datafeed() );
 					BOOST_CHECK_EQUAL( m.actions_.size(), result );
@@ -96,27 +113,23 @@ namespace stsc
 
 			void eod_datafeed_spitter_constructor_tests()
 			{
-				datafeed_manager m;
+				datafeed_manager_test_helper m;
 				const long from = common::create_eod_time( 2008, 01, 01 );
 				const long to = common::create_eod_time( 2008, 12, 31 );
+				m.sns << "a" << "brkr" << "xynh" << "amh" << "fve" << "idai" << "muv" << "sior" << "tpam";
 				eod_datafeed_storage storage( m, SOURCE_DIR "/tests/data/binary_data_example/", from, to );
-				storage.add_stock_to_parse( "a" ).add_stock_to_parse( "brkr" ).add_stock_to_parse( "xynh" );
-				storage.add_stock_to_parse( "amh" ).add_stock_to_parse( "fve" ).add_stock_to_parse( "idai" );
-				storage.add_stock_to_parse( "muv" ).add_stock_to_parse( "sior" ).add_stock_to_parse( "tpam" );
 				storage.read_datafeed();
-				BOOST_CHECK_NO_THROW( eod_datafeed_spitter spitter( storage ) );
+				BOOST_CHECK_NO_THROW( eod_datafeed_spitter spitter( m, storage ) );
 			}
 			void eod_datafeed_spitter_spit_datafeed_tests()
 			{
 				datafeed_manager_test_helper m;
 				const long from = common::create_eod_time( 2008, 01, 01 );
 				const long to = common::create_eod_time( 2008, 12, 31 );
+				m.sns << "a" << "brkr" << "xynh" << "amh" << "fve" << "idai" << "muv" << "sior" << "tpam";
 				eod_datafeed_storage storage( m, SOURCE_DIR "/tests/data/binary_data_example/", from, to );
-				storage.add_stock_to_parse( "a" ).add_stock_to_parse( "brkr" ).add_stock_to_parse( "xynh" );
-				storage.add_stock_to_parse( "amh" ).add_stock_to_parse( "fve" ).add_stock_to_parse( "idai" );
-				storage.add_stock_to_parse( "muv" ).add_stock_to_parse( "sior" ).add_stock_to_parse( "tpam" );
 				storage.read_datafeed();
-				eod_datafeed_spitter spitter( storage );
+				eod_datafeed_spitter spitter( m, storage );
 				BOOST_CHECK_NO_THROW( spitter.spit_datafeed() );
 				BOOST_CHECK_EQUAL( m.actions_.size(), 2261ul );
 				for ( size_t i = 1 ; i < m.times_.size() ; ++i )
@@ -127,12 +140,10 @@ namespace stsc
 				datafeed_manager_test_helper m;
 				const long from = common::create_eod_time( 2008, 01, 01 );
 				const long to = common::create_eod_time( 2008, 12, 31 );
+				m.sns << "a" << "brkr" << "xynh" << "amh" << "fve" << "idai" << "muv" << "sior" << "tpam";
 				eod_datafeed_storage storage( m, SOURCE_DIR "/tests/data/binary_data_example/", from, to );
-				storage.add_stock_to_parse( "a" ).add_stock_to_parse( "brkr" ).add_stock_to_parse( "xynh" );
-				storage.add_stock_to_parse( "amh" ).add_stock_to_parse( "fve" ).add_stock_to_parse( "idai" );
-				storage.add_stock_to_parse( "muv" ).add_stock_to_parse( "sior" ).add_stock_to_parse( "tpam" );
 				storage.read_datafeed();
-				eod_datafeed_spitter spitter( storage );
+				eod_datafeed_spitter spitter( m, storage );
 				BOOST_CHECK_NO_THROW( spitter.multithread_spit_datafeed() );
 				BOOST_CHECK_EQUAL( m.actions_.size(), 2261ul );
 				for ( size_t i = 1 ; i < m.times_.size() ; ++i )

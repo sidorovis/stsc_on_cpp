@@ -1,7 +1,7 @@
 #ifndef _STSC_COMMON_BAR_DATA_ADAPTER_H_
 #define _STSC_COMMON_BAR_DATA_ADAPTER_H_
 
-#include <bar_types.h>
+#include <common/bar_types.h>
 
 namespace stsc
 {

@@ -9,12 +9,13 @@
 #include <boost/noncopyable.hpp>
 #include <boost/thread/mutex.hpp>
 
-
 #include <ts_queue.h>
-#include <shared_name_storage.h>
+
+#include <common/types.h>
 
 #include <binary/format.h>
-#include <datafeed_manager.h>
+
+#include <stock_datafeed.h>
 
 namespace stsc
 {
@@ -22,15 +23,26 @@ namespace stsc
 	{
 		class eod_datafeed_storage;
 
+		class eod_datafeed_spitter_manager : virtual protected boost::noncopyable
+		{
+		public:
+			eod_datafeed_spitter_manager();
+			virtual ~eod_datafeed_spitter_manager();
+			//
+			virtual void on_stock( const common::shared_string& name, const common::on_stock_bar& bar );
+			virtual void on_bar( const common::on_bar& bar );
+			virtual void on_period( const common::on_period& bar );
+		};
+
 		class eod_datafeed_spitter : protected boost::noncopyable
 		{
-			datafeed_manager& manager_;
+			eod_datafeed_spitter_manager& manager_;
 			
 			boost::mutex protect_datafeed_;
-			typedef std::multimap< long, details::stock_data_ptr > sorted_datafeed;
+			typedef std::multimap< long, stock_datafeed_ptr > sorted_datafeed;
 			sorted_datafeed datafeed_;
 
-			typedef std::list< details::stock_data_ptr > stock_data_list;
+			typedef std::list< stock_datafeed_ptr > stock_data_list;
 			boost::mutex protect_elements_to_delete_insert_;
 			stock_data_list elements_to_delete_insert_;
 			common::on_period on_period_bar_;
@@ -41,7 +53,7 @@ namespace stsc
 			system_utilities::common::ts_queue< sorted_datafeed::const_iterator > processing_bar_tasks_;
 
 		public:
-			explicit eod_datafeed_spitter( eod_datafeed_storage& storage );
+			explicit eod_datafeed_spitter( eod_datafeed_spitter_manager& m, eod_datafeed_storage& storage );
 			~eod_datafeed_spitter();
 			//
 			void spit_datafeed();

@@ -16,6 +16,7 @@ find_package( system_utilities ${SEARCH_PARAMETERS} COMPONENTS
 	system_processor
 	property_reader
 	timer
+	shared_name_storage
 )
 
-compile_project( ${module_name} "*.cpp" "*.h" BINARY binaries ${module_name} common datafeed Boost )
+compile_project( ${module_name} "*.cpp" "*.h" BINARY binaries ${module_name} common datafeed system_utilities Boost )

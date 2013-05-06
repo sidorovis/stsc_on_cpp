@@ -36,11 +36,12 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 	using namespace stsc::tests_::engine;
 
 	ts1->add( BOOST_TEST_CASE( &algorithm_manager_constructor_tests ) );
-	ts1->add( BOOST_TEST_CASE( &algorithm_manager_add_stocks_tests ) );
 
 	ts1->add( BOOST_TEST_CASE( &algorithm_manager_create_on_stock_algorithm_tests ) );
 	ts1->add( BOOST_TEST_CASE( &algorithm_manager_create_on_bar_algorithm_tests ) );
 	ts1->add( BOOST_TEST_CASE( &algorithm_manager_create_on_period_algorithm_tests ) );
+
+	ts1->add( BOOST_TEST_CASE( &simulator_constructor_tests ) );
 
 	return ts1;
 }

@@ -6,7 +6,7 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <bar_types.h>
+#include <common/bar_types.h>
 
 #include <series_storage/map_serie.h>
 

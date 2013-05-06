@@ -18,7 +18,7 @@ namespace stsc
 
 			typedef system_utilities::common::shared_name_storage shared_name_storage;
 			shared_name_storage algorithm_names_;
-			shared_name_storage stock_names_;
+			const shared_name_storage& stock_names_;
 		public:
 			typedef algorithms_storage::details::algorithm algorithm;
 			typedef boost::shared_ptr< algorithm > algorithm_ptr;
@@ -36,11 +36,8 @@ namespace stsc
 			typedef common::shared_string shared_string;
 
 		public:
-			explicit algorithm_manager();
+			explicit algorithm_manager( const shared_name_storage& stock_names );
 			virtual ~algorithm_manager();
-			//
-			template< typename iterator_type >
-			void add_stocks( const iterator_type from, const iterator_type to );
 			//
 			template< typename algorithm_type, typename init_type >
 			on_stock_algorithm_sequence create_on_stock_algorithm( const std::string& algorithm_name, const init_type& init );
@@ -66,13 +63,6 @@ namespace stsc
 			template< typename subscription_signal_type >
 			series_storage::const_serie_ptr< subscription_signal_type > subscribe_on_period( const std::string& subscription_name ) const;
 		};
-		//
-		template< typename iterator_type >
-		void algorithm_manager::add_stocks( const iterator_type from, const iterator_type to )
-		{
-			for( iterator_type i = from ; i != to ; ++i )
-				stock_names_ << *i;
-		}
 		//
 		template< typename algorithm_type, typename init_type >
 		algorithm_manager::on_stock_algorithm_sequence algorithm_manager::create_on_stock_algorithm( const std::string& algorithm_name, const init_type& init )

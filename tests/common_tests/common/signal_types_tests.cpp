@@ -1,6 +1,6 @@
 #include <test_registrator.h>
 
-#include <signal_types.h>
+#include <common/signal_types.h>
 
 using namespace stsc::common;
 

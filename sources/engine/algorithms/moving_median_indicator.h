@@ -3,8 +3,8 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <bar_types.h>
-#include <signal_types.h>
+#include <common/bar_types.h>
+#include <common/signal_types.h>
 
 #include <algorithms_storage/on_stock_algorithm.h>
 

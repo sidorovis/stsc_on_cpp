@@ -8,7 +8,7 @@
 #include <boost/thread.hpp>
 #include <boost/lexical_cast.hpp>
 
-#include <time_helper.h>
+#include <common/time_helper.h>
 
 namespace stsc
 {

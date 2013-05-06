@@ -1,6 +1,6 @@
 #include <test_registrator.h>
 
-#include <time_helper.h>
+#include <common/time_helper.h>
 
 using namespace stsc::common;
 

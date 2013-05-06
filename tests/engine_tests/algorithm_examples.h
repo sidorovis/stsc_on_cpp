@@ -61,8 +61,11 @@ namespace stsc
 					virtual void process( const bar_type& b ); 
 				};
 			}
-			class algorithm_manager_helper : public stsc::engine::algorithm_manager
+			struct algorithm_manager_helper : public stsc::engine::algorithm_manager
 			{
+				common::shared_name_storage stock_names;
+				explicit algorithm_manager_helper();
+				~algorithm_manager_helper();
 			};
 		}
 	}

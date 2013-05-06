@@ -5,15 +5,12 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include <shared_name_storage.h>
+
 namespace stsc
 {
 	namespace common
 	{
-		typedef size_t index;
-		typedef boost::shared_ptr< std::string > shared_string;
-
-		shared_string make_shared_string( const std::string& str );
-
 		namespace bar_data_type
 		{
 			enum value

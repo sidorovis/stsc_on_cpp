@@ -8,7 +8,7 @@
 #include <boost/noncopyable.hpp>
 #include <boost/thread/mutex.hpp>
 
-#include <bar_types.h>
+#include <common/bar_types.h>
 
 #include <stock_datafeed_processor.h>
 

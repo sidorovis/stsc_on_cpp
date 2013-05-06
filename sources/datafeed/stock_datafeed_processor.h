@@ -6,7 +6,7 @@
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 
-#include <bar_types.h>
+#include <common/bar_types.h>
 
 namespace stsc
 {

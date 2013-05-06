@@ -1,6 +1,6 @@
 #include <test_registrator.h>
 
-#include <bar_types.h>
+#include <common/bar_types.h>
 
 using namespace stsc::common;
 
@@ -10,14 +10,9 @@ namespace stsc
 	{
 		namespace common
 		{
-			void create_shared_string_tests()
+			//
+			void bar_type_constructor_tests()
 			{
-				BOOST_CHECK_EQUAL( make_shared_string( "hello" )->c_str(), "hello" );
-			}
-			void check_existance_of_basic_types()
-			{
-				BOOST_CHECK_NO_THROW( index( 14 ) );
-				BOOST_CHECK_NO_THROW( shared_string( new std::string("hello tests") ) );
 				BOOST_CHECK_NO_THROW( bar_data_type::value );
 
 				BOOST_CHECK_NO_THROW( bar_data_type::open );
@@ -26,11 +21,7 @@ namespace stsc
 				BOOST_CHECK_NO_THROW( bar_data_type::close );
 
 				BOOST_CHECK_NO_THROW( bar_data_type::volume );
-			}
 
-			//
-			void bar_type_constructor_tests()
-			{
 				bar_type bar;
 				bar.time_ = 156l;
 				BOOST_CHECK_EQUAL( bar.time_, 156l );

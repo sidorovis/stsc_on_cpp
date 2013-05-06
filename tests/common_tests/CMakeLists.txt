@@ -19,7 +19,11 @@ find_package( system_utilities ${SEARCH_PARAMETERS} COMPONENTS
 	system_processor
 	property_reader
 	timer
+	shared_name_storage
 )
+
+add_source_list( ${tests_name} common "common/*.cpp" )
+add_source_list( ${tests_name} common "common/*.h" )
 
 compile_project( ${tests_name} "*.cpp" "*.h" BINARY tests ${tests_name} ${module_name} system_utilities Boost )
 register_test( ${tests_name} 1.0 1.0 )

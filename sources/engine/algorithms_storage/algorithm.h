@@ -4,7 +4,7 @@
 #include <typeinfo> 
 #include <string>
 
-#include <bar_types.h>
+#include <common/bar_types.h>
 
 #include <series_storage/serie.h>
 

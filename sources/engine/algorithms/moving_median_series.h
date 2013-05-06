@@ -1,8 +1,8 @@
 #ifndef _STSC_ENGINE_ALGORITHMS_MOVING_MEDIAN_SERIES_H_
 #define _STSC_ENGINE_ALGORITHMS_MOVING_MEDIAN_SERIES_H_
 
-#include <bar_types.h>
-#include <bar_data_adapter.h>
+#include <common/bar_types.h>
+#include <common/bar_data_adapter.h>
 
 #include <algorithms_storage/on_stock_algorithm.h>
 #include <series_storage/vector_serie.h>

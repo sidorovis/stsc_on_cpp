@@ -23,6 +23,7 @@ namespace stsc
 					typedef boost::shared_ptr< moving_median_indicator > mmi_ptr;
 					typedef boost::shared_ptr< stsc::engine::algorithm_manager > algorithm_manager_ptr;
 
+					common::shared_name_storage stock_names;
 					algorithm_manager_ptr am_;
 
 				public:
@@ -32,10 +33,9 @@ namespace stsc
 					void add_stocks()
 					{
 						using stsc::engine::algorithm_manager;
-						am_.reset( new algorithm_manager() );
+						am_.reset( new algorithm_manager( stock_names ) );
 						BOOST_CHECK_EQUAL( am_.get() != NULL, true );
-						char* st[] = { "aapl", "goog" };
-						am_->add_stocks( st, st + 2 );
+						stock_names << "aapl" << "goog";
 					}
 					void constructor_tests()
 					{

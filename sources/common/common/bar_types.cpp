@@ -1,15 +1,9 @@
-#include <bar_types.h>
-
+#include <common/bar_types.h>
 
 namespace stsc
 {
 	namespace common
 	{
-		shared_string make_shared_string( const std::string& str )
-		{
-			return shared_string( new std::string( str ) );
-		}
-		//
 		on_stock_bar::on_stock_bar( const common::price_bar& b, const size_t i )
 			: value( b )
 			, index( i )

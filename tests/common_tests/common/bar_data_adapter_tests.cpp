@@ -1,6 +1,6 @@
 #include <test_registrator.h>
 
-#include <bar_data_adapter.h>
+#include <common/bar_data_adapter.h>
 
 using namespace stsc::common;
 

@@ -58,6 +58,13 @@ namespace stsc
 						register_signal( b, true );
 				}
 			}
+			algorithm_manager_helper::algorithm_manager_helper()
+				: algorithm_manager( stock_names )
+			{
+			}
+			algorithm_manager_helper::~algorithm_manager_helper()
+			{
+			}
 		}
 	}
 }

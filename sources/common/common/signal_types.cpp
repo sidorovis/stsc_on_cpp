@@ -1,4 +1,4 @@
-#include <signal_types.h>
+#include <common/signal_types.h>
 
 namespace stsc
 {
