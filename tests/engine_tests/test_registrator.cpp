@@ -35,6 +35,22 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 
 	using namespace stsc::tests_::engine;
 
+	ts1->add( BOOST_TEST_CASE( &details_parameter_tests ) );
+	ts1->add( BOOST_TEST_CASE( &details_parameter_list_tests ) );
+	ts1->add( BOOST_TEST_CASE( &details_execution_tests ) );
+	ts1->add( BOOST_TEST_CASE( &details_execution_list_tests ) );
+
+	ts1->add( BOOST_TEST_CASE( &simulation_configuration_constructor_tests ) );
+	ts1->add( BOOST_TEST_CASE( &simulation_configuration_line_index_str_tests ) );
+	ts1->add( BOOST_TEST_CASE( &simulation_configuration_trim_line_tests ) );
+	ts1->add( BOOST_TEST_CASE( &simulation_configuration_check_and_append_next_line_unit_tests ) );
+	ts1->add( BOOST_TEST_CASE( &simulation_configuration_comment_tests ) );
+	ts1->add( BOOST_TEST_CASE( &simulation_configuration_process_line_tests ) );
+	ts1->add( BOOST_TEST_CASE( &simulation_configuration_process_instrument_list_tests ) );
+	ts1->add( BOOST_TEST_CASE( &simulation_configuration_divide_assignment_line_tests ) );
+	ts1->add( BOOST_TEST_CASE( &simulation_configuration_process_assignment_tests ) );
+	ts1->add( BOOST_TEST_CASE( &simulation_configuration_read_unit_tests ) );
+
 	ts1->add( BOOST_TEST_CASE( &algorithm_manager_constructor_tests ) );
 
 	ts1->add( BOOST_TEST_CASE( &algorithm_manager_create_on_stock_algorithm_tests ) );

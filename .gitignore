@@ -3,6 +3,7 @@
 _build_*_*
 _start_msvc.bat
 _xcode_build_Debug
+_gcc_build_Debug
 
 .DS_Store
 data/yahoo_datafeed

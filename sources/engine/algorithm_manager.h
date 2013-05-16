@@ -62,6 +62,8 @@ namespace stsc
 			series_storage::const_serie_ptr< subscription_signal_type > subscribe_on_period( const shared_string& subscription_name ) const;
 			template< typename subscription_signal_type >
 			series_storage::const_serie_ptr< subscription_signal_type > subscribe_on_period( const std::string& subscription_name ) const;
+			//
+			void clear();
 		};
 		//
 		template< typename algorithm_type, typename init_type >

@@ -32,6 +32,23 @@ namespace stsc
 				void moving_median_indicator_simple_work_tests();
 			}
 
+			void details_parameter_tests();
+			void details_parameter_list_tests();
+			void details_execution_tests();
+			void details_execution_list_tests();
+
+			void simulation_configuration_constructor_tests();
+			void simulation_configuration_line_index_str_tests();
+			void simulation_configuration_trim_line_tests();
+			void simulation_configuration_check_and_append_next_line_unit_tests();
+			void simulation_configuration_comment_tests();
+			void simulation_configuration_process_line_tests();
+			void simulation_configuration_process_instrument_list_tests();
+			void simulation_configuration_divide_assignment_line_tests();
+			void simulation_configuration_process_assignment_tests();
+
+			void simulation_configuration_read_unit_tests();
+
 			void algorithm_manager_constructor_tests();
 
 			void algorithm_manager_create_on_stock_algorithm_tests();
