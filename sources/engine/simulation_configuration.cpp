@@ -146,6 +146,19 @@ namespace stsc
 		{
 			return line[0] == '#';
 		}
+		std::string& simulation_configuration::delete_brackets_from_parameter_value_( std::string& value, char bracket_type, const std::string& execution_name, const std::string& line )
+		{
+			if ( !value.empty() && value[0] == bracket_type )
+			{
+				const size_t line_size = value.size();
+				if ( line_size == 1ul || value[ line_size - 1 ] != bracket_type )
+					throw std::invalid_argument( "bad parameter at execution line '" + execution_name + "' (" + line + "), " + bracket_type + " brackets incorrect" );
+				else
+					value = value.substr( 1ul, line_size - 2 );
+			}
+			return value;
+		}
+
 		void simulation_configuration::process_line_( const std::string& line, const size_t line_index )
 		{
 			if ( line[0] == '[' )
@@ -208,6 +221,36 @@ namespace stsc
 		details::execution_ptr simulation_configuration::generate_execution_ptr_( const std::string& execution_name, const std::string& algorithm_name, const std::string& parameters_str )
 		{
 			details::execution_ptr result = details::make_execution( execution_name, algorithm_name );
+
+			if ( parameters_str.empty() )
+				return result; 
+
+			typedef std::vector< std::string > strings;
+			strings parameters_vector;
+
+			boost::algorithm::split( parameters_vector, parameters_str, boost::algorithm::is_any_of( "," ) );
+			for( strings::iterator i = parameters_vector.begin() ; i != parameters_vector.end() ; ++i )
+			{
+				const std::string& line = trim_line_( *i );
+				const boost::regex check_parameter( "(\\w+) *= *(.+)" );
+				boost::smatch match;
+				if ( boost::regex_match( line, match, check_parameter ) )
+				{
+					const std::string name = match[1];
+					std::string value = match[2];
+
+					if ( value.empty() )
+						throw std::invalid_argument( "bad parameter at execution line '" + execution_name + "' (" + line + "), it cannot be blank" );
+
+					delete_brackets_from_parameter_value_( value, '"', execution_name, line );
+					delete_brackets_from_parameter_value_( value, '\'', execution_name, line );
+
+					result->add_parameter( name, value );
+					
+				}
+				else
+					throw std::invalid_argument( "bad parameter at execution line '" + execution_name + "' (" + line + ") " );
+			}
 
 			return result;
 		}

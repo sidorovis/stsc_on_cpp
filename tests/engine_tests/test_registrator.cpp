@@ -45,10 +45,12 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 	ts1->add( BOOST_TEST_CASE( &simulation_configuration_trim_line_tests ) );
 	ts1->add( BOOST_TEST_CASE( &simulation_configuration_check_and_append_next_line_unit_tests ) );
 	ts1->add( BOOST_TEST_CASE( &simulation_configuration_comment_tests ) );
-	ts1->add( BOOST_TEST_CASE( &simulation_configuration_process_line_tests ) );
+	ts1->add( BOOST_TEST_CASE( &simulation_configuration_delete_brackets_from_parameter_value_tests ) );
 	ts1->add( BOOST_TEST_CASE( &simulation_configuration_process_instrument_list_tests ) );
 	ts1->add( BOOST_TEST_CASE( &simulation_configuration_divide_assignment_line_tests ) );
+	ts1->add( BOOST_TEST_CASE( &simulation_configuration_generate_execution_ptr_tests ) );
 	ts1->add( BOOST_TEST_CASE( &simulation_configuration_process_assignment_tests ) );
+	ts1->add( BOOST_TEST_CASE( &simulation_configuration_process_line_tests ) );
 	ts1->add( BOOST_TEST_CASE( &simulation_configuration_read_unit_tests ) );
 
 	ts1->add( BOOST_TEST_CASE( &algorithm_manager_constructor_tests ) );

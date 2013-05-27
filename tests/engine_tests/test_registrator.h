@@ -42,11 +42,13 @@ namespace stsc
 			void simulation_configuration_trim_line_tests();
 			void simulation_configuration_check_and_append_next_line_unit_tests();
 			void simulation_configuration_comment_tests();
-			void simulation_configuration_process_line_tests();
+			void simulation_configuration_delete_brackets_from_parameter_value_tests();
 			void simulation_configuration_process_instrument_list_tests();
 			void simulation_configuration_divide_assignment_line_tests();
+			void simulation_configuration_generate_execution_ptr_tests();
 			void simulation_configuration_process_assignment_tests();
 
+			void simulation_configuration_process_line_tests();
 			void simulation_configuration_read_unit_tests();
 
 			void algorithm_manager_constructor_tests();

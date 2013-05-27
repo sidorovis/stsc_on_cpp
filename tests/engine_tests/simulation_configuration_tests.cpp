@@ -138,6 +138,30 @@ namespace stsc
 				BOOST_CHECK_EQUAL( simulation_configuration::comment_( "# comment line" ), true );
 				BOOST_CHECK_EQUAL( simulation_configuration::comment_( "non comment line" ), false );
 			}
+			void simulation_configuration_delete_brackets_from_parameter_value_tests()
+			{
+				std::string value = "";
+				BOOST_CHECK_NO_THROW( simulation_configuration::delete_brackets_from_parameter_value_( value, '"', "", "" ) );
+				value = "\"\"";
+				BOOST_CHECK_NO_THROW( simulation_configuration::delete_brackets_from_parameter_value_( value, '"', "", "" ) );
+				value = "''";
+				BOOST_CHECK_NO_THROW( simulation_configuration::delete_brackets_from_parameter_value_( value, '\'', "", "" ) );
+				BOOST_CHECK_EQUAL( value, "" );
+				value = "' hello worldwj epwjig '";
+				BOOST_CHECK_NO_THROW( simulation_configuration::delete_brackets_from_parameter_value_( value, '\'', "", "" ) );
+				BOOST_CHECK_EQUAL( value, " hello worldwj epwjig " );
+				value = "\"54g)Uhh;.!@#^%$())pohjf398h(G^\"'''\" 45 45h\"";
+				BOOST_CHECK_NO_THROW( simulation_configuration::delete_brackets_from_parameter_value_( value, '"', "", "" ) );
+				BOOST_CHECK_EQUAL( value, "54g)Uhh;.!@#^%$())pohjf398h(G^\"'''\" 45 45h" );
+				value = "'f4e545\"";
+				BOOST_CHECK_THROW( simulation_configuration::delete_brackets_from_parameter_value_( value, '\'', "", "" ), std::exception );
+				value = "\"th56 erg45'";
+				BOOST_CHECK_THROW( simulation_configuration::delete_brackets_from_parameter_value_( value, '"', "", "" ), std::exception );
+				value = "\"5yh546y";
+				BOOST_CHECK_THROW( simulation_configuration::delete_brackets_from_parameter_value_( value, '"', "", "" ), std::exception );
+				value = "\'5yh546y";
+				BOOST_CHECK_THROW( simulation_configuration::delete_brackets_from_parameter_value_( value, '\'', "", "" ), std::exception );
+			}
 			void simulation_configuration_process_instrument_list_tests()
 			{
 				common::shared_name_storage sns;
@@ -186,7 +210,23 @@ namespace stsc
 			}
 			void simulation_configuration_generate_execution_ptr_tests()
 			{
-				BOOST_ERROR( "TODO simulation_configuration_generate_execution_ptr_tests" );
+				common::shared_name_storage sns;
+				simulation_configuration sc( sns );
+				BOOST_CHECK_NO_THROW( sc.generate_execution_ptr_( "en", "an", "" ) );
+				BOOST_CHECK_NO_THROW( sc.generate_execution_ptr_( "en", "an", " a =1 ,v = 5.546 , gf = \"ergeg\", ytjy = 'erger', rt45 = \"e2 rger\" " ) );
+				details::execution_ptr ex = sc.generate_execution_ptr_( "en", "an", " a =1 ,v = 5.546 , gf = \"ergeg\", ytjy = 'erger', rt45 = \"e2 rger\" " );
+				ex->sort();
+				BOOST_CHECK_EQUAL( ex->parameters().size(), 5ul );
+				BOOST_CHECK_EQUAL( ex->parameters()[0]->name_, "a" );
+				BOOST_CHECK_EQUAL( ex->parameters()[0]->value< int >(), 1 );
+				BOOST_CHECK_EQUAL( ex->parameters()[1]->name_, "gf" );
+				BOOST_CHECK_EQUAL( ex->parameters()[1]->value< std::string >(), "ergeg" );
+				BOOST_CHECK_EQUAL( ex->parameters()[2]->name_, "rt45" );
+				BOOST_CHECK_EQUAL( ex->parameters()[2]->value< std::string >(), "e2 rger" );
+				BOOST_CHECK_EQUAL( ex->parameters()[3]->name_, "v" );
+				BOOST_CHECK_EQUAL( ex->parameters()[3]->value< double >(), 5.546 );
+				BOOST_CHECK_EQUAL( ex->parameters()[4]->name_, "ytjy" );
+				BOOST_CHECK_EQUAL( ex->parameters()[4]->value< std::string >(), "erger" );
 			}
 			void simulation_configuration_process_assignment_tests()
 			{
@@ -197,7 +237,7 @@ namespace stsc
 				BOOST_CHECK_THROW( sc.process_assignment_( "", 1 ), std::invalid_argument );
 				BOOST_CHECK_THROW( sc.process_assignment_( " | a = e()", 1 ), std::invalid_argument );
 				
-				sc.process_assignment_( "| i = a()", 1 );
+				BOOST_CHECK_THROW( sc.process_assignment_( "| i = a()", 1 ), std::logic_error );
 			}
 			void simulation_configuration_process_line_tests()
 			{
@@ -211,9 +251,16 @@ namespace stsc
 			void simulation_configuration_read_unit_tests()
 			{
 				common::shared_name_storage sns;
+				sns << "aapl" << "goog" << "ibm";
 				simulation_configuration sc( sns );
 				{
 					std::stringstream ss;
+					ss << "[aapl, goog, ibm]" << std::endl;
+					ss << "| a1 = e1( p1 = 123, p2 = '343452', p3 = 354.765 )" << std::endl;
+					ss << "| a2 = e2( v1 = \"qewd\", v2 = 345, v3 = hello world \\" << std::endl;
+					ss << "new child hood\" yeeeey )" << std::endl;
+					ss << "# | a2 = e2( v1 = \"qewd\", v2 = 345, v3 = hello world )" << std::endl;
+					ss << "| a3 = e3( s1 = 'ergwerg 45t4\"t45', s2 = 54.6425, s3 = lockway )" << std::endl;
 					BOOST_CHECK_NO_THROW( sc.read( ss ) );
 				}
 			}

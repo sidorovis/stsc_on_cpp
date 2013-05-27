@@ -22,6 +22,7 @@ namespace stsc
 			void simulation_configuration_process_instrument_list_tests();
 			void simulation_configuration_process_assignment_tests();
 			void simulation_configuration_divide_assignment_line_tests();
+			void simulation_configuration_generate_execution_ptr_tests();
 		}
 	}
 	namespace engine
@@ -119,6 +120,7 @@ namespace stsc
 			friend void stsc::tests_::engine::simulation_configuration_process_instrument_list_tests();
 			friend void stsc::tests_::engine::simulation_configuration_process_assignment_tests();
 			friend void stsc::tests_::engine::simulation_configuration_divide_assignment_line_tests();
+			friend void stsc::tests_::engine::simulation_configuration_generate_execution_ptr_tests();
 
 			const common::shared_name_storage& stock_names_;
 			details::stock_sets configuration_;
@@ -135,6 +137,7 @@ namespace stsc
 			static std::string& trim_line_( std::string& line );
 			static void check_and_append_next_line_( std::string& line, std::istream& stream, size_t& line_index );
 			static bool comment_( const std::string& line );
+			static std::string& delete_brackets_from_parameter_value_( std::string& value, char bracket_type, const std::string& execution_name, const std::string& line );
 		private:
 			void process_line_( const std::string& line, const size_t line_index );
 			void process_instrument_list_( const std::string& line, const size_t line_index );
