@@ -12,12 +12,12 @@ namespace stsc
 		{
 		}
 		//
-		void algorithm_manager::clear()
-		{
-			on_period_algorithms_.clear();
-			on_bar_algorithms_.clear();
-			on_stock_algorithms_.clear();
-			algorithm_names_.clear();
-		}
+		//void algorithm_manager::clear()
+		//{
+		//	on_period_algorithms_.clear();
+		//	on_bar_algorithms_.clear();
+		//	on_stock_algorithms_.clear();
+		//	algorithm_names_.clear();
+		//}
 	}
 }

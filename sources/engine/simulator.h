@@ -16,29 +16,29 @@ namespace stsc
 	{
 		class simulator : public boost::noncopyable
 		{
-			algorithm_manager algorithm_manager_;
+			//algorithm_manager algorithm_manager_;
 
-			long eod_from_;
-			long eod_to_;
-			common::shared_name_storage stock_names_;
+			//long eod_from_;
+			//long eod_to_;
+			//common::shared_name_storage stock_names_;
 
 		public:
 			explicit simulator();
 			~simulator();
-			//
-			void clear();
-			void set_processing_period( const long eod_from, const long eod_to );
+			////
+			//void clear();
+			//void set_processing_period( const long eod_from, const long eod_to );
 
-			template< typename iterator >
-			void set_stock_names( iterator from, iterator to );
+			//template< typename iterator >
+			//void set_stock_names( iterator from, iterator to );
 		};
 
-		template< typename iterator >
-		void simulator::set_stock_names( iterator from, iterator to )
-		{
-			for( iterator i = from ; i != to ; ++i )
-				stock_names << *i;
-		}
+		//template< typename iterator >
+		//void simulator::set_stock_names( iterator from, iterator to )
+		//{
+		//	for( iterator i = from ; i != to ; ++i )
+		//		stock_names << *i;
+		//}
 	}
 }
 
