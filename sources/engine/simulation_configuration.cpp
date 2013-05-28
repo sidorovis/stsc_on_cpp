@@ -69,6 +69,10 @@ namespace stsc
 				if ( !executions_.insert( std::make_pair( execution_name, e ) ).second )
 					throw std::logic_error( "it seems that execution '" + execution_name + "' had been added before for stock set: " + stock_set_str.str() );
 			}
+			bool stock_set::find_execution_name( const std::string& execution_name ) const
+			{
+				return executions_.find( execution_name ) != executions_.end();
+			}
 		};
 		simulation_configuration::simulation_configuration( const common::shared_name_storage& stock_names )
 			: stock_names_( stock_names )
@@ -202,6 +206,9 @@ namespace stsc
 
 			divide_assignment_line_( line, line_index, execution_name, algorithm_name, parameters_str );
 
+			if ( current_stock_set_->find_execution_name( execution_name ) )
+				throw std::logic_error( "adding already existing execution name at line: " + line_index_str_( line_index ) + " with execution_name: " + execution_name );
+
 			details::execution_ptr execution = generate_execution_ptr_( execution_name, algorithm_name, parameters_str );
 			current_stock_set_->add_execution( execution_name, execution );
 		}
@@ -233,6 +240,7 @@ namespace stsc
 			{
 				const std::string& line = trim_line_( *i );
 				const boost::regex check_parameter( "(\\w+) *= *(.+)" );
+				const boost::regex check_in_algorithm( "(\\w+)" );
 				boost::smatch match;
 				if ( boost::regex_match( line, match, check_parameter ) )
 				{
@@ -246,10 +254,16 @@ namespace stsc
 					delete_brackets_from_parameter_value_( value, '\'', execution_name, line );
 
 					result->add_parameter( name, value );
-					
 				}
 				else
-					throw std::invalid_argument( "bad parameter at execution line '" + execution_name + "' (" + line + ") " );
+				if ( boost::regex_match( line, match, check_in_algorithm ) )
+				{
+					const std::string algo_name = match[1];
+					if ( !current_stock_set_->find_execution_name( algo_name ) )
+						throw std::invalid_argument( "bad parameter at execution line '" + execution_name + "' (" + line + "), " + algo_name + " execution not registered at stock set" );
+				}
+				else
+					throw std::invalid_argument( "bad parameter at execution line '" + execution_name + "' (" + line + "), unknown parameter" );
 			}
 
 			return result;

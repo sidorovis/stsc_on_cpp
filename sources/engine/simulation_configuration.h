@@ -109,6 +109,7 @@ namespace stsc
 			public:
 				explicit stock_set( const stock_names& names );
 				void add_execution( const std::string& execution_name, const execution_ptr& e );
+				bool find_execution_name( const std::string& execution_name ) const;
 			};
 
 			typedef boost::shared_ptr< stock_set > stock_set_ptr;

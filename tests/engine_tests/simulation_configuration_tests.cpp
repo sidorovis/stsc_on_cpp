@@ -246,6 +246,9 @@ namespace stsc
 				simulation_configuration sc( sns );
 				BOOST_CHECK_NO_THROW( sc.process_line_( "[aapl ,ibm]", 1 ) );
 				BOOST_CHECK_NO_THROW( sc.process_line_( "| a1 = exe( h1 = '234', h5 = 543 )", 1 ) );
+				BOOST_CHECK_NO_THROW( sc.process_line_( "| a2 = exe( h1 = '234', h5 = 543, a1 )", 1 ) );
+				BOOST_CHECK_THROW( sc.process_line_( "| a2 = exe()", 1 ), std::logic_error );
+				BOOST_CHECK_THROW( sc.process_line_( "| a3 = exe( a4 )", 1 ), std::invalid_argument );
 				BOOST_CHECK_THROW( sc.process_line_( " a1 = exe( h1 = '234', h5 = 543 )", 1 ), std::logic_error );
 			}
 			void simulation_configuration_read_unit_tests()
@@ -260,7 +263,7 @@ namespace stsc
 					ss << "| a2 = e2( v1 = \"qewd\", v2 = 345, v3 = hello world \\" << std::endl;
 					ss << "new child hood\" yeeeey )" << std::endl;
 					ss << "# | a2 = e2( v1 = \"qewd\", v2 = 345, v3 = hello world )" << std::endl;
-					ss << "| a3 = e3( s1 = 'ergwerg 45t4\"t45', s2 = 54.6425, s3 = lockway )" << std::endl;
+					ss << "| a3 = e3( s1 = 'ergwerg 45t4\"t45', s2 = 54.6425, s3 = lockway, a2 )" << std::endl;
 					BOOST_CHECK_NO_THROW( sc.read( ss ) );
 				}
 			}
