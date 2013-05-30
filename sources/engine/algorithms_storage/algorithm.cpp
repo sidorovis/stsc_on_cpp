@@ -6,15 +6,12 @@ namespace stsc
 	{
 		namespace algorithms_storage
 		{
-			namespace details
+			algorithm::algorithm( const common::shared_string& name )
+				: name_( name )
 			{
-				algorithm::algorithm( const common::shared_string& name )
-					: name_( name )
-				{
-				}
-				algorithm::~algorithm()
-				{
-				}
+			}
+			algorithm::~algorithm()
+			{
 			}
 		}
 	}

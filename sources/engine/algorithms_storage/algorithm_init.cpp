@@ -1,4 +1,4 @@
-#include <algorithms_storage/algorithm_prototype.h>
+#include <algorithms_storage/algorithm_init.h>
 
 namespace stsc
 {
@@ -9,3 +9,4 @@ namespace stsc
 		}
 	}
 }
+
