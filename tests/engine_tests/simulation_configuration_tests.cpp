@@ -2,6 +2,8 @@
 
 #include <simulation_configuration.h>
 
+#include <boost/filesystem.hpp>
+
 using namespace stsc::engine;
 using namespace stsc::engine::details;
 
@@ -270,6 +272,43 @@ namespace stsc
 					ss << "# |S a2 = e2( v1 = \"qewd\", v2 = 345, v3 = hello world )" << std::endl;
 					ss << "|S a3 = e3( s1 = 'ergwerg 45t4\"t45', s2 = 54.6425, s3 = lockway, a2 )" << std::endl;
 					BOOST_CHECK_NO_THROW( sc.read( ss ) );
+				}
+			}
+			void simulation_configuration_integration_tests()
+			{
+				using namespace boost::filesystem;
+
+				static const std::string path_to_tests = SOURCE_DIR "/tests/data/simulation_configuration";
+
+				BOOST_CHECK_EQUAL( exists( path_to_tests ), true );
+				BOOST_CHECK_EQUAL( is_directory( path_to_tests ), true );
+
+				common::shared_name_storage sns;
+				sns << "aapl" << "goog" << "ibm" << "a" << "aa" << "epam" << "fb" << "qqq" << "spy" << "cle" << "adx" << "c" << "cli";
+
+				for( directory_iterator i( path_to_tests ), end ; i != end ; ++i )
+				{
+					bool good_test = true;
+					const std::string file_path = i->path().string();
+
+					if ( file_path.find( "_good.conf" ) != std::string::npos )
+						good_test = true;
+					else
+					if ( file_path.find( "_bad.conf" ) != std::string::npos )
+						good_test = false;
+					else
+						BOOST_ERROR( "cant find good or bad for simulation_configuration_integration_tests filename" );
+
+					std::ifstream in( file_path.c_str() );
+					simulation_configuration sc( sns );
+					if ( good_test == true )
+					{
+						BOOST_CHECK_NO_THROW( sc.read( in ) );
+					}
+					else 
+					{
+						BOOST_CHECK_THROW( sc.read( in ), std::exception );
+					}
 				}
 			}
 		}

@@ -53,6 +53,8 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 	ts1->add( BOOST_TEST_CASE( &simulation_configuration_process_line_tests ) );
 	ts1->add( BOOST_TEST_CASE( &simulation_configuration_read_unit_tests ) );
 
+	ts1->add( BOOST_TEST_CASE( &simulation_configuration_integration_tests ) );
+
 	ts1->add( BOOST_TEST_CASE( &algorithm_manager_constructor_tests ) );
 
 	ts1->add( BOOST_TEST_CASE( &algorithm_manager_create_on_stock_algorithm_tests ) );

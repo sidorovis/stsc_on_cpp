@@ -51,6 +51,8 @@ namespace stsc
 			void simulation_configuration_process_line_tests();
 			void simulation_configuration_read_unit_tests();
 
+			void simulation_configuration_integration_tests();
+
 			void algorithm_manager_constructor_tests();
 
 			void algorithm_manager_create_on_stock_algorithm_tests();
