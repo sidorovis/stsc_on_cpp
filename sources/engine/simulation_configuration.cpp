@@ -248,7 +248,39 @@ namespace stsc
 			typedef std::vector< std::string > strings;
 			strings parameters_vector;
 
-			boost::algorithm::split( parameters_vector, parameters_str, boost::algorithm::is_any_of( "," ) );
+			{ /// ',' split string; ',' that are into ' or " brackets not split string
+				static const char default_state_ = 0;
+
+				size_t from = 0, to = 0;
+				char opened_q = default_state_;
+				for( to = 0 ; to < parameters_str.size() ; ++to )
+				{
+					const char debug = parameters_str[ to ];
+					if ( debug == ',' && opened_q == default_state_ )
+					{
+						if ( to - from > 0 )
+							parameters_vector.push_back( parameters_str.substr( from , to - from ) );
+						from = to + 1;
+					}
+					else
+					if ( debug == '\'' && opened_q == default_state_ )
+						opened_q = '\'';
+					else
+					if ( debug == '"' && opened_q == default_state_ )
+						opened_q = '"';
+					else
+					if ( debug == '\'' && opened_q == '\'' )
+						opened_q = default_state_;
+					else
+					if ( debug == '"' && opened_q == '"' )
+						opened_q = default_state_;
+				}
+
+				if ( opened_q == default_state_ && to - from > 0 )
+					parameters_vector.push_back( parameters_str.substr( from , to - from ) );
+			}
+
+
 			for( strings::iterator i = parameters_vector.begin() ; i != parameters_vector.end() ; ++i )
 			{
 				const std::string& line = trim_line_( *i );

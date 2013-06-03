@@ -218,14 +218,14 @@ namespace stsc
 				common::shared_name_storage sns;
 				simulation_configuration sc( sns );
 				BOOST_CHECK_NO_THROW( sc.generate_execution_ptr_( "en", 'S', "an", "" ) );
-				BOOST_CHECK_NO_THROW( sc.generate_execution_ptr_( "en", 'S', "an", " a =1 ,v = 5.546 , gf = \"ergeg\", ytjy = 'erger', rt45 = \"e2 rger\" " ) );
-				details::execution_ptr ex = sc.generate_execution_ptr_( "en", 'S', "an", " a =1 ,v = 5.546 , gf = \"ergeg\", ytjy = 'erger', rt45 = \"e2 rger\" " );
+				BOOST_CHECK_NO_THROW( sc.generate_execution_ptr_( "en", 'S', "an", " a = \"1,all\" ,v = 5.546 , gf = \"ergeg\", ytjy = 'erger', rt45 = \"e2 rger\" " ) );
+				details::execution_ptr ex = sc.generate_execution_ptr_( "en", 'S', "an", " a =\"1,all\" ,v = 5.546 , gf = \"erge,g\", ytjy = 'erger', rt45 = \"e2 rger\" " );
 				ex->sort();
 				BOOST_CHECK_EQUAL( ex->parameters().size(), 5ul );
 				BOOST_CHECK_EQUAL( ex->parameters()[0]->name_, "a" );
-				BOOST_CHECK_EQUAL( ex->parameters()[0]->value< int >(), 1 );
+				BOOST_CHECK_EQUAL( ex->parameters()[0]->value< std::string >(), "1,all" );
 				BOOST_CHECK_EQUAL( ex->parameters()[1]->name_, "gf" );
-				BOOST_CHECK_EQUAL( ex->parameters()[1]->value< std::string >(), "ergeg" );
+				BOOST_CHECK_EQUAL( ex->parameters()[1]->value< std::string >(), "erge,g" );
 				BOOST_CHECK_EQUAL( ex->parameters()[2]->name_, "rt45" );
 				BOOST_CHECK_EQUAL( ex->parameters()[2]->value< std::string >(), "e2 rger" );
 				BOOST_CHECK_EQUAL( ex->parameters()[3]->name_, "v" );
