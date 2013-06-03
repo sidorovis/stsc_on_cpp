@@ -79,7 +79,7 @@ namespace stsc
 			void eod_datafeed_storage_multithread_read_datafeed_tests()
 			{
 				for ( size_t i = 1 ; i < 10 ; ++i )
-					eod_datafeed_storage_multithread_read_datafeed_performance_tests_helper( i );
+					BOOST_CHECK_NO_THROW( eod_datafeed_storage_multithread_read_datafeed_performance_tests_helper( i ) );
 			}
 			void eod_datafeed_storage_read_performance_tests()
 			{

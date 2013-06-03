@@ -72,12 +72,17 @@ namespace stsc
 			class execution
 			{
 			public:
+				static const char STOCK = 'S';
+				static const char BAR = 'B';
+				static const char PERIOD = 'P';
+
 				const std::string name_;
+				const char type_;
 				const std::string algorithm_name_;
 			private:
 				parameter_list parameters_;
 			public:
-				explicit execution( const std::string& name, const std::string& algorithm_name );
+				explicit execution( const std::string& name, const char type, const std::string& algorithm_name );
 				~execution();
 				execution& add_parameter( const parameter_ptr& p );
 				template< typename type >
@@ -95,7 +100,7 @@ namespace stsc
 			bool operator<( const execution_ptr& first, const execution_ptr& second );
 			bool operator==( const execution_ptr& first, const std::string& execution_name );
 
-			execution_ptr make_execution( const std::string& name, const std::string& algorithm_name );
+			execution_ptr make_execution( const std::string& name, const char type, const std::string& algorithm_name );
 
 			typedef std::map< std::string, execution_ptr > execution_list;
 
@@ -144,7 +149,7 @@ namespace stsc
 			void process_instrument_list_( const std::string& line, const size_t line_index );
 			void process_assignment_( const std::string& line, const size_t line_index );
 			void divide_assignment_line_( const std::string& line, const size_t line_index, std::string& execution_name, std::string& algorithm_name, std::string& parameters_str );
-			details::execution_ptr generate_execution_ptr_( const std::string& execution_name, const std::string& algorithm_name, const std::string& parameters_str );
+			details::execution_ptr generate_execution_ptr_( const std::string& execution_name, const char type, const std::string& algorithm_name, const std::string& parameters_str );
 		};
 	}
 }

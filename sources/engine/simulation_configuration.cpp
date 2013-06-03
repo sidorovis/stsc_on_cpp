@@ -22,8 +22,9 @@ namespace stsc
 				return first->name_ < second->name_;
 			}
 			//
-			execution::execution( const std::string& name, const std::string& algorithm_name )
+			execution::execution( const std::string& name, const char type, const std::string& algorithm_name )
 				: name_( name )
+				, type_( type )
 				, algorithm_name_( algorithm_name )
 			{
 			}
@@ -52,9 +53,9 @@ namespace stsc
 				return first->name_ == execution_name;
 			}
 			//
-			execution_ptr make_execution( const std::string& name, const std::string& algorithm_name )
+			execution_ptr make_execution( const std::string& name, const char type, const std::string& algorithm_name )
 			{
-				return execution_ptr( new execution( name, algorithm_name ) );
+				return execution_ptr( new execution( name, type, algorithm_name ) );
 			}
 			//
 			stock_set::stock_set( const stock_set::stock_names& names )
@@ -197,10 +198,12 @@ namespace stsc
 		}
 		void simulation_configuration::process_assignment_( const std::string& line, const size_t line_index )
 		{
-			if ( line.empty() || line[0] != '|' )
+			if ( line.size() <= 2ul || line[0] != '|' ) /// '|S' or '|B' or '|P'
 				throw std::invalid_argument( "line '" + line + "' should be algorithm line (start from '|')" );
 			if ( !current_stock_set_.get() )
 				throw std::logic_error( "line '" + line + "' not included into stock set configuration, please add instrument line before (for example [aapl])" );
+
+			const char assignment_type  = line[1];
 
 			std::string execution_name, algorithm_name, parameters_str;
 
@@ -209,12 +212,22 @@ namespace stsc
 			if ( current_stock_set_->find_execution_name( execution_name ) )
 				throw std::logic_error( "adding already existing execution name at line: " + line_index_str_( line_index ) + " with execution_name: " + execution_name );
 
-			details::execution_ptr execution = generate_execution_ptr_( execution_name, algorithm_name, parameters_str );
+			details::execution_ptr execution = generate_execution_ptr_( execution_name, assignment_type, algorithm_name, parameters_str );
+
+			switch (assignment_type)
+			{
+			case 'S':
+				break;
+			case 'B':
+				break;
+			case 'P':
+				break;
+			}
 			current_stock_set_->add_execution( execution_name, execution );
 		}
 		void simulation_configuration::divide_assignment_line_( const std::string& line, const size_t line_index, std::string& execution_name, std::string& algorithm_name, std::string& parameters_str )
 		{
-			const boost::regex r( "\\| *(\\w+) *= *(\\w+)\\((.*)\\)" );
+			const boost::regex r( "\\|[SPB] *(\\w+) *= *(\\w+)\\((.*)\\)" );
 			boost::smatch s;
 			if ( boost::regex_match( line, s, r ) )
 			{
@@ -225,9 +238,9 @@ namespace stsc
 			else
 				throw std::invalid_argument("bad algorithm execution line '" + line + "' on " + line_index_str_( line_index ));
 		}
-		details::execution_ptr simulation_configuration::generate_execution_ptr_( const std::string& execution_name, const std::string& algorithm_name, const std::string& parameters_str )
+		details::execution_ptr simulation_configuration::generate_execution_ptr_( const std::string& execution_name, const char type, const std::string& algorithm_name, const std::string& parameters_str )
 		{
-			details::execution_ptr result = details::make_execution( execution_name, algorithm_name );
+			details::execution_ptr result = details::make_execution( execution_name, type, algorithm_name );
 
 			if ( parameters_str.empty() )
 				return result; 

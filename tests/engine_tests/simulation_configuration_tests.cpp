@@ -54,7 +54,7 @@ namespace stsc
 			void details_execution_tests()
 			{
 				execution_ptr ep;
-				BOOST_CHECK_NO_THROW( ep = make_execution( "my super duper algo execution personal name", "algooo" ) );
+				BOOST_CHECK_NO_THROW( ep = make_execution( "my super duper algo execution personal name", execution::STOCK, "algooo" ) );
 				BOOST_CHECK_EQUAL( ep->name_, "my super duper algo execution personal name" );
 				BOOST_CHECK_EQUAL( ep->algorithm_name_, "algooo" );
 				BOOST_CHECK_NO_THROW( ep->add_parameter( "asde", 15 ) );
@@ -70,7 +70,7 @@ namespace stsc
 
 				execution_list list;
 
-				list.insert( std::make_pair( "a1", make_execution( "a1", "ds" ) ) );
+				list.insert( std::make_pair( "a1", make_execution( "a1", execution::STOCK, "ds" ) ) );
 			}
 			void simulation_configuration_constructor_tests()
 			{
@@ -188,33 +188,38 @@ namespace stsc
 				common::shared_name_storage sns;
 				simulation_configuration sc( sns );
 				std::string execution_name, algorithm_name, parameters_str;
-				BOOST_CHECK_NO_THROW( sc.divide_assignment_line_( "| i = a()", 1, execution_name, algorithm_name, parameters_str ) );
-				BOOST_CHECK_NO_THROW( sc.divide_assignment_line_( "| 1i = 1a()", 1, execution_name, algorithm_name, parameters_str ) );
-				BOOST_CHECK_NO_THROW( sc.divide_assignment_line_( "| 1i_d = 1a_54()", 1, execution_name, algorithm_name, parameters_str ) );
-				BOOST_CHECK_NO_THROW( sc.divide_assignment_line_( "| 1i_dT4 = 1a_54Bs( a1s 2D4. ,='\" 5fr dw )", 1, execution_name, algorithm_name, parameters_str ) );
+				BOOST_CHECK_NO_THROW( sc.divide_assignment_line_( "|S i = a()", 1, execution_name, algorithm_name, parameters_str ) );
+				BOOST_CHECK_NO_THROW( sc.divide_assignment_line_( "|P i = a()", 1, execution_name, algorithm_name, parameters_str ) );
+				BOOST_CHECK_NO_THROW( sc.divide_assignment_line_( "|B i = a()", 1, execution_name, algorithm_name, parameters_str ) );
+				BOOST_CHECK_NO_THROW( sc.divide_assignment_line_( "|S 1i = 1a()", 1, execution_name, algorithm_name, parameters_str ) );
+				BOOST_CHECK_NO_THROW( sc.divide_assignment_line_( "|S 1i_d = 1a_54()", 1, execution_name, algorithm_name, parameters_str ) );
+				BOOST_CHECK_NO_THROW( sc.divide_assignment_line_( "|S 1i_dT4 = 1a_54Bs( a1s 2D4. ,='\" 5fr dw )", 1, execution_name, algorithm_name, parameters_str ) );
 				BOOST_CHECK_EQUAL( execution_name, "1i_dT4" );
 				BOOST_CHECK_EQUAL( algorithm_name, "1a_54Bs" );
 				BOOST_CHECK_EQUAL( parameters_str, " a1s 2D4. ,='\" 5fr dw " );
-				BOOST_CHECK_THROW( sc.divide_assignment_line_( "| ", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
-				BOOST_CHECK_THROW( sc.divide_assignment_line_( "| ferg", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
-				BOOST_CHECK_THROW( sc.divide_assignment_line_( "| ferg = ", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
-				BOOST_CHECK_THROW( sc.divide_assignment_line_( "| ferg = greg", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
-				BOOST_CHECK_THROW( sc.divide_assignment_line_( "| f.erg = greg()", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
-				BOOST_CHECK_THROW( sc.divide_assignment_line_( "| f,erg = greg()", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
-				BOOST_CHECK_THROW( sc.divide_assignment_line_( "| ferg erg= greg()", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
-				BOOST_CHECK_THROW( sc.divide_assignment_line_( "| ferg =erg greg()", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
-				BOOST_CHECK_THROW( sc.divide_assignment_line_( "| ferg = gr,eg()", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
-				BOOST_CHECK_THROW( sc.divide_assignment_line_( "| ferg = gre.g()", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
-				BOOST_CHECK_THROW( sc.divide_assignment_line_( "| ferg = greg\"ewfewf()", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
-				BOOST_CHECK_THROW( sc.divide_assignment_line_( "| ferg = greg'ewfewf()", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
+				BOOST_CHECK_THROW( sc.divide_assignment_line_( "|S ", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
+				BOOST_CHECK_THROW( sc.divide_assignment_line_( "|S ferg", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
+				BOOST_CHECK_THROW( sc.divide_assignment_line_( "|S ferg = ", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
+				BOOST_CHECK_THROW( sc.divide_assignment_line_( "|S ferg = greg", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
+				BOOST_CHECK_THROW( sc.divide_assignment_line_( "|S f.erg = greg()", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
+				BOOST_CHECK_THROW( sc.divide_assignment_line_( "|S f,erg = greg()", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
+				BOOST_CHECK_THROW( sc.divide_assignment_line_( "|S ferg erg= greg()", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
+				BOOST_CHECK_THROW( sc.divide_assignment_line_( "|S ferg =erg greg()", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
+				BOOST_CHECK_THROW( sc.divide_assignment_line_( "|S ferg = gr,eg()", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
+				BOOST_CHECK_THROW( sc.divide_assignment_line_( "|S ferg = gre.g()", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
+				BOOST_CHECK_THROW( sc.divide_assignment_line_( "|S ferg = greg\"ewfewf()", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
+				BOOST_CHECK_THROW( sc.divide_assignment_line_( "|S ferg = greg'ewfewf()", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
+
+				BOOST_CHECK_THROW( sc.divide_assignment_line_( "|A i = a()", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
+				BOOST_CHECK_THROW( sc.divide_assignment_line_( "|OA i = a()", 1, execution_name, algorithm_name, parameters_str ), std::invalid_argument );
 			}
 			void simulation_configuration_generate_execution_ptr_tests()
 			{
 				common::shared_name_storage sns;
 				simulation_configuration sc( sns );
-				BOOST_CHECK_NO_THROW( sc.generate_execution_ptr_( "en", "an", "" ) );
-				BOOST_CHECK_NO_THROW( sc.generate_execution_ptr_( "en", "an", " a =1 ,v = 5.546 , gf = \"ergeg\", ytjy = 'erger', rt45 = \"e2 rger\" " ) );
-				details::execution_ptr ex = sc.generate_execution_ptr_( "en", "an", " a =1 ,v = 5.546 , gf = \"ergeg\", ytjy = 'erger', rt45 = \"e2 rger\" " );
+				BOOST_CHECK_NO_THROW( sc.generate_execution_ptr_( "en", 'S', "an", "" ) );
+				BOOST_CHECK_NO_THROW( sc.generate_execution_ptr_( "en", 'S', "an", " a =1 ,v = 5.546 , gf = \"ergeg\", ytjy = 'erger', rt45 = \"e2 rger\" " ) );
+				details::execution_ptr ex = sc.generate_execution_ptr_( "en", 'S', "an", " a =1 ,v = 5.546 , gf = \"ergeg\", ytjy = 'erger', rt45 = \"e2 rger\" " );
 				ex->sort();
 				BOOST_CHECK_EQUAL( ex->parameters().size(), 5ul );
 				BOOST_CHECK_EQUAL( ex->parameters()[0]->name_, "a" );
@@ -237,7 +242,7 @@ namespace stsc
 				BOOST_CHECK_THROW( sc.process_assignment_( "", 1 ), std::invalid_argument );
 				BOOST_CHECK_THROW( sc.process_assignment_( " | a = e()", 1 ), std::invalid_argument );
 				
-				BOOST_CHECK_THROW( sc.process_assignment_( "| i = a()", 1 ), std::logic_error );
+				BOOST_CHECK_THROW( sc.process_assignment_( "|S i = a()", 1 ), std::logic_error );
 			}
 			void simulation_configuration_process_line_tests()
 			{
@@ -245,10 +250,10 @@ namespace stsc
 				sns << "aapl" << "goog" << "ibm";
 				simulation_configuration sc( sns );
 				BOOST_CHECK_NO_THROW( sc.process_line_( "[aapl ,ibm]", 1 ) );
-				BOOST_CHECK_NO_THROW( sc.process_line_( "| a1 = exe( h1 = '234', h5 = 543 )", 1 ) );
-				BOOST_CHECK_NO_THROW( sc.process_line_( "| a2 = exe( h1 = '234', h5 = 543, a1 )", 1 ) );
-				BOOST_CHECK_THROW( sc.process_line_( "| a2 = exe()", 1 ), std::logic_error );
-				BOOST_CHECK_THROW( sc.process_line_( "| a3 = exe( a4 )", 1 ), std::invalid_argument );
+				BOOST_CHECK_NO_THROW( sc.process_line_( "|S a1 = exe( h1 = '234', h5 = 543 )", 1 ) );
+				BOOST_CHECK_NO_THROW( sc.process_line_( "|S a2 = exe( h1 = '234', h5 = 543, a1 )", 1 ) );
+				BOOST_CHECK_THROW( sc.process_line_( "|S a2 = exe()", 1 ), std::logic_error );
+				BOOST_CHECK_THROW( sc.process_line_( "|S a3 = exe( a4 )", 1 ), std::invalid_argument );
 				BOOST_CHECK_THROW( sc.process_line_( " a1 = exe( h1 = '234', h5 = 543 )", 1 ), std::logic_error );
 			}
 			void simulation_configuration_read_unit_tests()
@@ -259,11 +264,11 @@ namespace stsc
 				{
 					std::stringstream ss;
 					ss << "[aapl, goog, ibm]" << std::endl;
-					ss << "| a1 = e1( p1 = 123, p2 = '343452', p3 = 354.765 )" << std::endl;
-					ss << "| a2 = e2( v1 = \"qewd\", v2 = 345, v3 = hello world \\" << std::endl;
+					ss << "|S a1 = e1( p1 = 123, p2 = '343452', p3 = 354.765 )" << std::endl;
+					ss << "|S a2 = e2( v1 = \"qewd\", v2 = 345, v3 = hello world \\" << std::endl;
 					ss << "new child hood\" yeeeey )" << std::endl;
-					ss << "# | a2 = e2( v1 = \"qewd\", v2 = 345, v3 = hello world )" << std::endl;
-					ss << "| a3 = e3( s1 = 'ergwerg 45t4\"t45', s2 = 54.6425, s3 = lockway, a2 )" << std::endl;
+					ss << "# |S a2 = e2( v1 = \"qewd\", v2 = 345, v3 = hello world )" << std::endl;
+					ss << "|S a3 = e3( s1 = 'ergwerg 45t4\"t45', s2 = 54.6425, s3 = lockway, a2 )" << std::endl;
 					BOOST_CHECK_NO_THROW( sc.read( ss ) );
 				}
 			}
