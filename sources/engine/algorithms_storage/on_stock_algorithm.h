@@ -11,7 +11,6 @@ namespace stsc
 	{
 		namespace algorithms_storage
 		{
-			
 			template< typename output_signal_type >
 			class on_stock_algorithm : public algorithm_prototype< common::on_stock_bar, output_signal_type >
 			{
@@ -33,8 +32,9 @@ namespace stsc
 
 			template< typename output_signal_type >
 			on_stock_algorithm< output_signal_type >::on_stock_algorithm( const std::string& name, typed_serie_ptr& serie )
-				: base_class( init, serie )
+				: base_class( algorithm_storage().register_algorithm_name( name ), serie )
 			{
+				algorithm_storage().register_on_stock( name_, this );
 			}
 			template< typename output_signal_type >
 			on_stock_algorithm< output_signal_type >::~on_stock_algorithm()

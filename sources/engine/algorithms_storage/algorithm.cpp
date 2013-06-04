@@ -10,9 +10,16 @@ namespace stsc
 				: name_( name )
 			{
 			}
+			//
+			algorithm::algorithm( const algorithm& other )
+				: name_( other.name_ )
+			{
+			}
+			//
 			algorithm::~algorithm()
 			{
 			}
+			
 		}
 	}
 }

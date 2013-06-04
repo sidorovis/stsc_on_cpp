@@ -18,7 +18,7 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 	using namespace stsc::tests_::engine::algorithms_storage;
 
 	ts1->add( BOOST_TEST_CASE( &details_algorithm_prototypes_constructor_tests ) );
-	//ts1->add( BOOST_TEST_CASE( &on_stock_algorithm_tests ) );
+	ts1->add( BOOST_TEST_CASE( &on_stock_algorithm_tests ) );
 	//ts1->add( BOOST_TEST_CASE( &on_bar_algorithm_tests ) );
 	//ts1->add( BOOST_TEST_CASE( &on_period_algorithm_tests ) );
 
@@ -34,6 +34,8 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 	//ts1->add( BOOST_TEST_CASE( &moving_median_indicator_simple_work_tests ) );
 
 	using namespace stsc::tests_::engine;
+
+	ts1->add( BOOST_TEST_CASE( &algorithm_storage_unit_tests ) );
 
 	ts1->add( BOOST_TEST_CASE( &details_parameter_tests ) );
 	ts1->add( BOOST_TEST_CASE( &details_parameter_list_tests ) );

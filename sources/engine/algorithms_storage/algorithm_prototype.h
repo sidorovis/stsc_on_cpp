@@ -26,7 +26,7 @@ namespace stsc
 			protected:	
 				typedef typename input_type bar_type;
 
-				explicit algorithm_prototype( const std::string& name, typed_serie_ptr& serie );
+				explicit algorithm_prototype( const common::shared_string& name, typed_serie_ptr& serie );
 				virtual ~algorithm_prototype();
 				//
 				virtual void register_signal( const bar_type& b, const signal_type_ptr& signal );
@@ -38,16 +38,16 @@ namespace stsc
 			};
 
 			template< typename input_type, typename output_type >
-			algorithm_prototype< input_type, output_type >::algorithm_prototype( const std::string& name, typed_serie_ptr& serie )
-				: base_class( algorithm_storage().register_algorithm_type( name, *this ), serie )
+			algorithm_prototype< input_type, output_type >::algorithm_prototype( const common::shared_string& name, typed_serie_ptr& serie )
+				: base_class( name, serie )
 			{
-				algorithm_storage().register_algorithm_type( name, *this );
 			}
 			template< typename input_type, typename output_type >
 			algorithm_prototype< input_type, output_type >::~algorithm_prototype()
 			{
 			}
 			
+			//
 			template< typename input_type, typename output_type >
 			void algorithm_prototype< input_type, output_type >::register_signal( const bar_type& b, const signal_type& signal )
 			{
@@ -63,6 +63,19 @@ namespace stsc
 			{
 				serie_->insert( b.index, signal );
 			}
+			//
+			template< typename algorithm_type, typename signal_serie_type >
+			algorithm_type* create_algorithm( const std::string& name, signal_serie_type& serie )
+			{
+				algorithm_type* result = new algorithm_type( name, serie );
+				return result;
+			};
+			template< typename algorithm_type >
+			algorithm_type* create_algorithm( const std::string& name )
+			{
+				algorithm_type* result = new algorithm_type( name );
+				return result;
+			};
 		}
 	}
 }

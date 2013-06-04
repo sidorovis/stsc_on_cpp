@@ -16,10 +16,18 @@ namespace stsc
 
 		namespace algorithms_storage
 		{
+			class algorithm;
+
+			typedef boost::shared_ptr< const algorithm > const_algorithm_ptr;
+			typedef boost::shared_ptr< algorithm > algorithm_ptr;
+
 			class algorithm
 			{
-				const common::shared_string name_;
+			protected:
+				algorithm( const algorithm& other );
 			public:
+				const common::shared_string name_;
+
 				explicit algorithm( const common::shared_string& name );
 				virtual ~algorithm();
 				//
@@ -40,6 +48,8 @@ namespace stsc
 
 				typedef series_storage::serie_ptr< signal_type > typed_serie_ptr;
 				typed_serie_ptr serie_;
+			protected:
+				algorithm_with_serie( const algorithm_with_serie& other );
 			public:
 				explicit algorithm_with_serie( const common::shared_string& name, typed_serie_ptr& serie );
 				virtual ~algorithm_with_serie();
@@ -52,6 +62,14 @@ namespace stsc
 				, serie_( serie )
 			{
 			}
+
+			template< typename signal_type >
+			algorithm_with_serie<signal_type>::algorithm_with_serie( const algorithm_with_serie& other )
+				: algorithm( other )
+				, serie_( other.serie_ )
+			{
+			}
+
 			template< typename signal_type >
 			algorithm_with_serie<signal_type>::~algorithm_with_serie()
 			{
@@ -68,6 +86,16 @@ namespace stsc
 				if ( ti != signal_type_info_ )
 					throw std::logic_error( error_line.str() );
 			}
+			//
+			template< typename algo_type >
+			class typed_algorithm : public boost::shared_ptr< algo_type >
+			{
+			public:
+				explicit typed_algorithm( algo_type* const algo )
+					: boost::shared_ptr< algo_type >( algo )
+				{
+				}
+			};
 		}
 	}
 }

@@ -31,8 +31,7 @@ namespace stsc
 			private:
 				shared_name_storage algorithm_names_;
 
-				typedef boost::shared_ptr< algorithms_storage::algorithm > algorithm_ptr;
-				typedef std::map< common::shared_string, algorithm_ptr > algorithms;
+				typedef std::map< common::shared_string, algorithms_storage::const_algorithm_ptr > algorithms;
 				algorithms on_stock_algorithms_;
 				algorithms on_bar_algorithms_;
 				algorithms on_period_algorithms_;
@@ -41,66 +40,62 @@ namespace stsc
 			public:
 				virtual ~algorithm_storage_instance();
 
-				template< typename algorithm_type_ptr >
-				common::shared_string register_on_stock( const std::string& algorithm_type_name, algorithm_type_ptr& algo );
+				common::shared_string register_algorithm_name( const std::string& algorithm_name );
 
-				template< typename algorithm_type_ptr >
-				common::shared_string register_on_bar( const std::string& algorithm_type_name, algorithm_type_ptr& algo );
+				template< typename algorithm_type >
+				void register_on_stock( const common::shared_string& algorithm_type_name, const algorithm_type* const algo );
 
-				template< typename algorithm_type_ptr >
-				common::shared_string register_on_period( const std::string& algorithm_type_name, algorithm_type_ptr& algo );
+				template< typename algorithm_type >
+				void register_on_bar( const common::shared_string& algorithm_type_name, const algorithm_type* const algo );
 
-				template< typename algorithm_type_ptr >
-				boost::shared_ptr< algorithm_type_ptr > on_stock_algorithm_prototype( const std::string& algorithm_type_name ) const;
+				template< typename algorithm_type >
+				void register_on_period( const common::shared_string& algorithm_type_name, const algorithm_type* const algo );
+
+				//
+				template< typename algorithm_type >
+				algorithms_storage::typed_algorithm< algorithm_type > create_on_stock( const common::shared_string& algorithm_type_name ) const;
 				
 			};
 
-			template< typename algorithm_type_ptr >
-			common::shared_string algorithm_storage_instance::register_on_stock( const std::string& algorithm_type_name, algorithm_type_ptr& algo )
+			template< typename algorithm_type >
+			void algorithm_storage_instance::register_on_stock( const common::shared_string& algorithm_type_name, const algorithm_type* const algo )
 			{
-				algorithm_names_.add_name( algorithm_type_name );
-				common::shared_string result = algorithm_names_.get_shared( algorithm_type_name );
+				algorithms_storage::const_algorithm_ptr ptr( dynamic_cast< const algorithm* const >( algo ) );
+				if ( !on_stock_algorithms_.insert( std::make_pair( algorithm_type_name, ptr ) ).second )
+					throw std::logic_error( "algorithm " + *algorithm_type_name + " allready exists at on_stock algorithm_storage" );
+			}
 
-				if ( !on_stock_algorithms_.insert( std::make_pair( result, algorithm_ptr( algo ) ) ).second )
+			template< typename algorithm_type >
+			void algorithm_storage_instance::register_on_bar( const common::shared_string& algorithm_type_name, const algorithm_type* const algo )
+			{
+				algorithms_storage::const_algorithm_ptr ptr( dynamic_cast< const algorithm* const >( algo ) );
+				if ( !on_bar_algorithms_.insert( std::make_pair( algorithm_type_name, ptr ) ).second )
 					throw std::logic_error( "algorithm " + algorithm_type_name + " allready exists at on_stock algorithm_storage" );
+			}
+
+			template< typename algorithm_type >
+			void algorithm_storage_instance::register_on_period( const common::shared_string& algorithm_type_name, const algorithm_type* const algo )
+			{
+				algorithms_storage::const_algorithm_ptr ptr( dynamic_cast< const algorithm* const >( algo ) );
+				if ( !on_period_algorithms_.insert( std::make_pair( algorithm_type_name, ptr ) ).second )
+					throw std::logic_error( "algorithm " + algorithm_type_name + " allready exists at on_stock algorithm_storage" );
+			}
+
+			template< typename algorithm_type >
+			algorithms_storage::typed_algorithm< algorithm_type > algorithm_storage_instance::create_on_stock( const common::shared_string& algorithm_type_name ) const
+			{
+				algorithms::const_iterator i = on_stock_algorithms_.find( algorithm_type_name );
+
+				if ( i == on_stock_algorithms_.end() )
+					throw std::logic_error( "trying to use algorithm " + *algorithm_type_name + " without creating it" );
+
+				algorithms_storage::typed_algorithm< algorithm_type > result( dynamic_cast< algorithm_type* const >( i->second->copy() ) );
+				if ( !result )
+					throw std::logic_error( "algorithm " + *algorithm_type_name + " cannot be processed to " + typeid( algorithm_type ).name() );
 
 				return result;
 			}
 
-			template< typename algorithm_type_ptr >
-			common::shared_string algorithm_storage_instance::register_on_bar( const std::string& algorithm_type_name, algorithm_type_ptr& algo )
-			{
-				algorithm_names_.add_name( algorithm_type_name );
-				common::shared_string result = algorithm_names_.get_shared( algorithm_type_name );
-
-				if ( !on_bar_algorithms_.insert( std::make_pair( result, algorithm_ptr( algo ) ) ).second )
-					throw std::logic_error( "algorithm " + algorithm_type_name + " allready exists at on_stock algorithm_storage" );
-
-				return result;
-			}
-
-			template< typename algorithm_type_ptr >
-			common::shared_string algorithm_storage_instance::register_on_period( const std::string& algorithm_type_name, algorithm_type_ptr& algo )
-			{
-				algorithm_names_.add_name( algorithm_type_name );
-				common::shared_string result = algorithm_names_.get_shared( algorithm_type_name );
-
-				if ( !on_period_algorithms_.insert( std::make_pair( result, algorithm_ptr( algo ) ) ).second )
-					throw std::logic_error( "algorithm " + algorithm_type_name + " allready exists at on_stock algorithm_storage" );
-
-				return result;
-			}
-
-			//template< typename algorithm_type_ptr >
-			//boost::shared_ptr< algorithm_type_ptr > algorithm_storage_instance::create_algorithm( const std::string& algorithm_type_name ) const
-			//{
-			//	algorithms::const_iterator i = algorithms_.find( algorithm_names_.get_shared( algorithm_type_name ) );
-			//	if ( i == algorithms_.end() )
-			//		throw std::logic_error( "no such algorithm '" + algorithm_type_name + "' at storage, please check your code configuration" );
-			//	boost::shared_ptr< algorithm_type > result;
-			//	result.reset( dynamic_cast< algorithm_type_ptr >( i->copy() ) );
-			//	return result;
-			//}
 		}
 	}
 }

@@ -1,32 +1,37 @@
-//#include <algorithm_examples.h>
-//
-//#include <series_storage/map_serie.h>
-//#include <series_storage/vector_serie.h>
-//
-//using namespace stsc::engine::algorithms_storage;
-//
-//namespace stsc
-//{
-//	namespace tests_
-//	{
-//		namespace engine
-//		{
-//			namespace algorithms_storage
-//			{
-//				on_stock_test_algorithm::on_stock_test_algorithm( const on_stock_algorithm_init& init )
-//					: typed_algorithm( init, typed_serie_ptr( new double_map_serie() ) )
-//				{
-//				}
-//				on_stock_test_algorithm::~on_stock_test_algorithm()
-//				{
-//				}
-//				void on_stock_test_algorithm::process( const bar_type& b )
-//				{
-//					if ( b.value.close_ == 0.56f )
-//						register_signal( b, 45.0 );
-//					if ( b.value.close_ == 5.27f )
-//						register_signal( b, -89.5 );
-//				}
+#include <algorithm_examples.h>
+
+#include <series_storage/map_serie.h>
+#include <series_storage/vector_serie.h>
+
+using namespace stsc::engine::algorithms_storage;
+using namespace stsc::engine::series_storage;
+
+namespace stsc
+{
+	namespace tests_
+	{
+		namespace engine
+		{
+			namespace algorithms_storage
+			{
+				on_stock_test_algorithm::on_stock_test_algorithm( const std::string& name )
+					: typed_algorithm( name, create_map_serie_ptr< signal_type >() )
+				{
+				}
+				on_stock_test_algorithm::~on_stock_test_algorithm()
+				{
+				}
+				void on_stock_test_algorithm::process( const bar_type& b )
+				{
+					if ( b.value.close_ == 0.56f )
+						register_signal( b, 45.0 );
+					if ( b.value.close_ == 5.27f )
+						register_signal( b, -89.5 );
+				}
+				algorithm* on_stock_test_algorithm::copy() const
+				{
+					return new on_stock_test_algorithm( *this );
+				}
 //				//
 //				on_bar_test_algorithm::on_bar_test_algorithm( const algorithm_init& init )
 //					: typed_algorithm( init, typed_serie_ptr( new int_map_serie() ) )
@@ -57,7 +62,7 @@
 //					if ( b.index == 18 )
 //						register_signal( b, true );
 //				}
-//			}
+			}
 //			algorithm_manager_helper::algorithm_manager_helper()
 //				: algorithm_manager( stock_names )
 //			{
@@ -65,6 +70,6 @@
 //			algorithm_manager_helper::~algorithm_manager_helper()
 //			{
 //			}
-//		}
-//	}
-//}
+		}
+	}
+}

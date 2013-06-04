@@ -32,6 +32,8 @@ namespace stsc
 				void moving_median_indicator_simple_work_tests();
 			}
 
+			void algorithm_storage_unit_tests();
+
 			void details_parameter_tests();
 			void details_parameter_list_tests();
 			void details_execution_tests();
