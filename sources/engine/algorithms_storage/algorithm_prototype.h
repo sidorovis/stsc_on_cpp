@@ -11,7 +11,6 @@
 #include <series_storage/map_serie.h>
 
 #include <algorithms_storage/algorithm.h>
-#include <algorithms_storage/algorithm_init.h>
 
 namespace stsc
 {
