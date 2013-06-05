@@ -8,6 +8,8 @@
 
 #include <series_storage/serie.h>
 
+#include <simulation_configuration.h>
+
 namespace stsc
 {
 	namespace engine
@@ -32,8 +34,10 @@ namespace stsc
 				virtual ~algorithm();
 				//
 				virtual void subscription_check( const std::type_info& ti ) const = 0;
-
+				//
 				virtual algorithm* copy() const = 0;
+				//
+				virtual void initialization( const details::execution_ptr& ptr );
 			};
 
 			template< typename output_type >
@@ -96,6 +100,18 @@ namespace stsc
 				{
 				}
 			};
+
+#define declare_copy_method(class_name) \
+stsc::engine::algorithms_storage::algorithm* class_name::copy() const; \
+
+#define generate_copy_method(class_name) \
+stsc::engine::algorithms_storage::algorithm* class_name::copy() const \
+{ \
+	return new class_name( *this ); \
+} \
+
+
+
 		}
 	}
 }

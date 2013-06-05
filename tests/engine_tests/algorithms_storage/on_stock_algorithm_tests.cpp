@@ -19,6 +19,7 @@ namespace stsc
 				{
 					using namespace stsc::engine::algorithms_storage;
 					using namespace stsc::common;
+					using namespace stsc::engine;
 
 					on_stock_test_algorithm* algo = create_algorithm< on_stock_test_algorithm >( "test_algo" );
 
@@ -38,6 +39,9 @@ namespace stsc
 					on_stock_bar b3( pb, 3 );
 					pb.close_ = 5.27f;
 					BOOST_CHECK_NO_THROW( algo->process( b3 ) );
+
+					algorithm_storage().clear();
+
 				}
 			}
 		}

@@ -40,6 +40,8 @@ namespace stsc
 			public:
 				virtual ~algorithm_storage_instance();
 
+				void clear();
+
 				common::shared_string register_algorithm_name( const std::string& algorithm_name );
 
 				template< typename algorithm_type >
@@ -54,6 +56,18 @@ namespace stsc
 				//
 				template< typename algorithm_type >
 				algorithms_storage::typed_algorithm< algorithm_type > create_on_stock( const common::shared_string& algorithm_type_name ) const;
+				template< typename algorithm_type >
+				algorithms_storage::typed_algorithm< algorithm_type > create_on_stock( const std::string& algorithm_type_name ) const;
+				//
+				template< typename algorithm_type >
+				algorithms_storage::typed_algorithm< algorithm_type > create_on_bar( const common::shared_string& algorithm_type_name ) const;
+				template< typename algorithm_type >
+				algorithms_storage::typed_algorithm< algorithm_type > create_on_bar( const std::string& algorithm_type_name ) const;
+				//
+				template< typename algorithm_type >
+				algorithms_storage::typed_algorithm< algorithm_type > create_on_period( const common::shared_string& algorithm_type_name ) const;
+				template< typename algorithm_type >
+				algorithms_storage::typed_algorithm< algorithm_type > create_on_period( const std::string& algorithm_type_name ) const;
 				
 			};
 
@@ -70,7 +84,7 @@ namespace stsc
 			{
 				algorithms_storage::const_algorithm_ptr ptr( dynamic_cast< const algorithm* const >( algo ) );
 				if ( !on_bar_algorithms_.insert( std::make_pair( algorithm_type_name, ptr ) ).second )
-					throw std::logic_error( "algorithm " + algorithm_type_name + " allready exists at on_stock algorithm_storage" );
+					throw std::logic_error( "algorithm " + *algorithm_type_name + " allready exists at on_stock algorithm_storage" );
 			}
 
 			template< typename algorithm_type >
@@ -78,9 +92,9 @@ namespace stsc
 			{
 				algorithms_storage::const_algorithm_ptr ptr( dynamic_cast< const algorithm* const >( algo ) );
 				if ( !on_period_algorithms_.insert( std::make_pair( algorithm_type_name, ptr ) ).second )
-					throw std::logic_error( "algorithm " + algorithm_type_name + " allready exists at on_stock algorithm_storage" );
+					throw std::logic_error( "algorithm " + *algorithm_type_name + " allready exists at on_stock algorithm_storage" );
 			}
-
+			//
 			template< typename algorithm_type >
 			algorithms_storage::typed_algorithm< algorithm_type > algorithm_storage_instance::create_on_stock( const common::shared_string& algorithm_type_name ) const
 			{
@@ -95,7 +109,54 @@ namespace stsc
 
 				return result;
 			}
+			template< typename algorithm_type >
+			algorithms_storage::typed_algorithm< algorithm_type > algorithm_storage_instance::create_on_stock( const std::string& algorithm_type_name ) const
+			{
+				const common::shared_string name = algorithm_names_.get_shared( algorithm_type_name );
+				return create_on_stock< algorithm_type >( name );
+			}
+			template< typename algorithm_type >
+			//
+			algorithms_storage::typed_algorithm< algorithm_type > algorithm_storage_instance::create_on_bar( const common::shared_string& algorithm_type_name ) const
+			{
+				algorithms::const_iterator i = on_bar_algorithms_.find( algorithm_type_name );
 
+				if ( i == on_bar_algorithms_.end() )
+					throw std::logic_error( "trying to use algorithm " + *algorithm_type_name + " without creating it" );
+
+				algorithms_storage::typed_algorithm< algorithm_type > result( dynamic_cast< algorithm_type* const >( i->second->copy() ) );
+				if ( !result )
+					throw std::logic_error( "algorithm " + *algorithm_type_name + " cannot be processed to " + typeid( algorithm_type ).name() );
+
+				return result;
+			}
+			template< typename algorithm_type >
+			algorithms_storage::typed_algorithm< algorithm_type > algorithm_storage_instance::create_on_bar( const std::string& algorithm_type_name ) const
+			{
+				const common::shared_string name = algorithm_names_.get_shared( algorithm_type_name );
+				return create_on_bar< algorithm_type >( name );
+			}
+			//
+			template< typename algorithm_type >
+			algorithms_storage::typed_algorithm< algorithm_type > algorithm_storage_instance::create_on_period( const common::shared_string& algorithm_type_name ) const
+			{
+				algorithms::const_iterator i = on_period_algorithms_.find( algorithm_type_name );
+
+				if ( i == on_bar_algorithms_.end() )
+					throw std::logic_error( "trying to use algorithm " + *algorithm_type_name + " without creating it" );
+
+				algorithms_storage::typed_algorithm< algorithm_type > result( dynamic_cast< algorithm_type* const >( i->second->copy() ) );
+				if ( !result )
+					throw std::logic_error( "algorithm " + *algorithm_type_name + " cannot be processed to " + typeid( algorithm_type ).name() );
+
+				return result;
+			}
+			template< typename algorithm_type >
+			algorithms_storage::typed_algorithm< algorithm_type > algorithm_storage_instance::create_on_period( const std::string& algorithm_type_name ) const
+			{
+				const common::shared_string name = algorithm_names_.get_shared( algorithm_type_name );
+				return create_on_bar< algorithm_type >( name );
+			}
 		}
 	}
 }

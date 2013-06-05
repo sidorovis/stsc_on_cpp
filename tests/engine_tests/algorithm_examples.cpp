@@ -28,40 +28,41 @@ namespace stsc
 					if ( b.value.close_ == 5.27f )
 						register_signal( b, -89.5 );
 				}
-				algorithm* on_stock_test_algorithm::copy() const
+
+				generate_copy_method( on_stock_test_algorithm )
+
+				//
+				on_bar_test_algorithm::on_bar_test_algorithm( const std::string& name )
+					: typed_algorithm( name, typed_serie_ptr( new int_map_serie() ) )
 				{
-					return new on_stock_test_algorithm( *this );
 				}
-//				//
-//				on_bar_test_algorithm::on_bar_test_algorithm( const algorithm_init& init )
-//					: typed_algorithm( init, typed_serie_ptr( new int_map_serie() ) )
-//				{
-//				}
-//				on_bar_test_algorithm::~on_bar_test_algorithm()
-//				{
-//				}
-//				void on_bar_test_algorithm::process( const bar_type& b )
-//				{
-//					if ( b.index == 3 )
-//						register_signal( b, -43 );
-//					if ( b.index == 18 )
-//						register_signal( b, 98 );
-//				}
-//				//
-//				on_period_test_algorithm::on_period_test_algorithm( const algorithm_init& init )
-//					: typed_algorithm( init, typed_serie_ptr( new bool_vector_serie() ) )
-//				{
-//				}
-//				on_period_test_algorithm::~on_period_test_algorithm()
-//				{
-//				}
-//				void on_period_test_algorithm::process( const bar_type& b )
-//				{
-//					if ( b.index == 3 )
-//						register_signal( b, true );
-//					if ( b.index == 18 )
-//						register_signal( b, true );
-//				}
+				on_bar_test_algorithm::~on_bar_test_algorithm()
+				{
+				}
+				void on_bar_test_algorithm::process( const bar_type& b )
+				{
+					if ( b.index == 3 )
+						register_signal( b, -43 );
+					if ( b.index == 18 )
+						register_signal( b, 98 );
+				}
+				generate_copy_method( on_bar_test_algorithm )
+				//
+				on_period_test_algorithm::on_period_test_algorithm( const std::string& name )
+					: typed_algorithm( name, typed_serie_ptr( new bool_vector_serie() ) )
+				{
+				}
+				on_period_test_algorithm::~on_period_test_algorithm()
+				{
+				}
+				void on_period_test_algorithm::process( const bar_type& b )
+				{
+					if ( b.index == 3 )
+						register_signal( b, true );
+					if ( b.index == 18 )
+						register_signal( b, true );
+				}
+				generate_copy_method( on_period_test_algorithm )
 			}
 //			algorithm_manager_helper::algorithm_manager_helper()
 //				: algorithm_manager( stock_names )

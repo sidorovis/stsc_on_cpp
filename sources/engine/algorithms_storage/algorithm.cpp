@@ -19,7 +19,9 @@ namespace stsc
 			algorithm::~algorithm()
 			{
 			}
-			
+			void algorithm::initialization( const details::execution_ptr& ptr )
+			{
+			}
 		}
 	}
 }

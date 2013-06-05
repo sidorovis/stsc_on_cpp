@@ -37,21 +37,19 @@ namespace stsc
 			}
 			void details_parameter_list_tests()
 			{
-				BOOST_CHECK_EQUAL( typeid( std::iterator_traits< parameter_list::iterator >::iterator_category ) == typeid( std::random_access_iterator_tag ), true );
-				parameter_list list;
-				list.push_back( make_parameter( "b", "a" ) );
-				list.push_back( make_parameter( "g", "a" ) );
-				list.push_back( make_parameter( "u", "a" ) );
-				list.push_back( make_parameter( "w", "a" ) );
-				list.push_back( make_parameter( "i", "a" ) );
+				BOOST_CHECK_EQUAL( typeid( std::iterator_traits< parameter_map::iterator >::iterator_category ) == typeid( std::bidirectional_iterator_tag ), true );
+				parameter_map list;
+				list.insert( std::make_pair( "b", make_parameter( "b", "a" ) ) );
+				list.insert( std::make_pair( "g", make_parameter( "g", "a" ) ) );
+				list.insert( std::make_pair( "u", make_parameter( "u", "a" ) ) );
+				list.insert( std::make_pair( "w", make_parameter( "w", "a" ) ) );
+				list.insert( std::make_pair( "i", make_parameter( "i", "a" ) ) );
 
-				std::sort( list.begin(), list.end() );
-
-				BOOST_CHECK_EQUAL( list[0]->name_, "b" );
-				BOOST_CHECK_EQUAL( list[1]->name_, "g" );
-				BOOST_CHECK_EQUAL( list[2]->name_, "i" );
-				BOOST_CHECK_EQUAL( list[3]->name_, "u" );
-				BOOST_CHECK_EQUAL( list[4]->name_, "w" );
+				BOOST_CHECK_EQUAL( list["b"]->name_, "b" );
+				BOOST_CHECK_EQUAL( list["g"]->name_, "g" );
+				BOOST_CHECK_EQUAL( list["u"]->name_, "u" );
+				BOOST_CHECK_EQUAL( list["w"]->name_, "w" );
+				BOOST_CHECK_EQUAL( list["i"]->name_, "i" );
 			}
 			void details_execution_tests()
 			{
@@ -62,9 +60,9 @@ namespace stsc
 				BOOST_CHECK_NO_THROW( ep->add_parameter( "asde", 15 ) );
 				BOOST_CHECK_NO_THROW( ep->add_parameter( "asdadsa", "regrg" ) );
 				BOOST_CHECK_EQUAL( ep->parameters().size(), 2ul );
-				BOOST_CHECK_NO_THROW( ep->sort() );
-				BOOST_CHECK_EQUAL( ep->parameters()[0]->name_, "asdadsa" );
-				BOOST_CHECK_EQUAL( ep->parameters()[1]->name_, "asde" );
+				
+				BOOST_CHECK_EQUAL( ep->parameter< std::string >("asdadsa"), "regrg" );
+				BOOST_CHECK_EQUAL( ep->parameter< std::string >("asde"), "15" );
 			}
 			void details_execution_list_tests()
 			{
@@ -222,18 +220,13 @@ namespace stsc
 				BOOST_CHECK_NO_THROW( sc.generate_execution_ptr_( "en", 'S', "an", "" ) );
 				BOOST_CHECK_NO_THROW( sc.generate_execution_ptr_( "en", 'S', "an", " a = \"1,all\" ,v = 5.546 , gf = \"ergeg\", ytjy = 'erger', rt45 = \"e2 rger\" " ) );
 				details::execution_ptr ex = sc.generate_execution_ptr_( "en", 'S', "an", " a =\"1,all\" ,v = 5.546 , gf = \"erge,g\", ytjy = 'erger', rt45 = \"e2 rger\" " );
-				ex->sort();
+
 				BOOST_CHECK_EQUAL( ex->parameters().size(), 5ul );
-				BOOST_CHECK_EQUAL( ex->parameters()[0]->name_, "a" );
-				BOOST_CHECK_EQUAL( ex->parameters()[0]->value< std::string >(), "1,all" );
-				BOOST_CHECK_EQUAL( ex->parameters()[1]->name_, "gf" );
-				BOOST_CHECK_EQUAL( ex->parameters()[1]->value< std::string >(), "erge,g" );
-				BOOST_CHECK_EQUAL( ex->parameters()[2]->name_, "rt45" );
-				BOOST_CHECK_EQUAL( ex->parameters()[2]->value< std::string >(), "e2 rger" );
-				BOOST_CHECK_EQUAL( ex->parameters()[3]->name_, "v" );
-				BOOST_CHECK_EQUAL( ex->parameters()[3]->value< double >(), 5.546 );
-				BOOST_CHECK_EQUAL( ex->parameters()[4]->name_, "ytjy" );
-				BOOST_CHECK_EQUAL( ex->parameters()[4]->value< std::string >(), "erger" );
+				BOOST_CHECK_EQUAL( ex->parameter< std::string >("a"), "1,all" );
+				BOOST_CHECK_EQUAL( ex->parameter< double >("v"), 5.546 );
+				BOOST_CHECK_EQUAL( ex->parameter< std::string >("gf"), "erge,g" );
+				BOOST_CHECK_EQUAL( ex->parameter< std::string >("ytjy"), "erger" );
+				BOOST_CHECK_EQUAL( ex->parameter< std::string >("rt45"), "e2 rger" );
 			}
 			void simulation_configuration_process_assignment_tests()
 			{

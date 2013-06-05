@@ -8,6 +8,8 @@
 
 using namespace stsc::engine::algorithms;
 using namespace stsc::engine::algorithms_storage;
+using namespace stsc::engine::details;
+using namespace stsc::engine;
 
 namespace stsc
 {
@@ -15,67 +17,71 @@ namespace stsc
 	{
 		namespace engine
 		{
-			//namespace algorithms
-			//{
-			//	class moving_median_series_test_helper : public moving_median_series
-			//	{
-			//	public:
-			//		explicit moving_median_series_test_helper( const moving_median_series_init& init )
-			//			: moving_median_series( init )
-			//		{
-			//		}
-			//		virtual ~moving_median_series_test_helper(){}
-			//		//
-			//		virtual void process( const bar_type& b )
-			//		{
-			//			return moving_median_series::process( b );
-			//		}
-			//	};
-			//	class moving_median_series_tests
-			//	{
-			//		typedef moving_median_series_test_helper moving_median_series_type;
-			//		typedef boost::shared_ptr< moving_median_series_type > mms_ptr;
+			namespace algorithms
+			{
+				class moving_median_series_test_helper : public moving_median_series
+				{
+				public:
+					explicit moving_median_series_test_helper()
+						: moving_median_series( "mov med test name" )
+					{
+					}
+					virtual ~moving_median_series_test_helper(){}
+					//
+					virtual void process( const bar_type& b )
+					{
+						return moving_median_series::process( b );
+					}
+					generate_copy_method( moving_median_series_test_helper )
+				};
+				class moving_median_series_tests
+				{
+					typedef moving_median_series_test_helper moving_median_series_type;
+					typedef boost::shared_ptr< moving_median_series_type > mms_ptr;
 
-			//	public:
-			//		explicit moving_median_series_tests()
-			//		{
-			//		}
-			//		void constructor_tests()
-			//		{
-			//			typedef moving_median_series mm_close;
-			//			algorithm_manager_helper subsman;
+				public:
+					explicit moving_median_series_tests()
+					{
+					}
+					void constructor_tests()
+					{
+						typedef moving_median_series_test_helper mm_close;
 
-			//			moving_median_series_init osa_init( common::make_shared_string( "test_moving_median_close" ), subsman, 3 );
+						BOOST_CHECK_NO_THROW( create_algorithm< mm_close >() );
+						BOOST_CHECK_NO_THROW( algorithm_storage().clear() );
+					}
+					void simple_work_tests()
+					{
+						execution_ptr exe( make_execution( "name", execution::STOCK, "moving median" ) );
+						exe->add_parameter( "window_size", 3 );
 
-			//			BOOST_CHECK_NO_THROW( mm_close mmst( osa_init ) );
+						create_algorithm< moving_median_series_test_helper >();
 
-			//		}
-			//		void simple_work_tests()
-			//		{
-			//			algorithm_manager_helper subsman;
-			//			moving_median_series_init osa_init( common::make_shared_string( "test_moving_median_close" ), subsman, 3 );
-			//			moving_median_series_test_helper mms( osa_init );
+						typed_algorithm< moving_median_series_test_helper > mms = algorithm_storage().create_on_stock< moving_median_series_test_helper >( "mov med test name" );
 
-			//			for ( long i = 1; i < 1000; ++i )
-			//			{
-			//				common::price_bar pb;
-			//				pb.close_ = i * 1.0f;
-			//				pb.time_ = i;
-			//				common::on_stock_bar bar( pb, i );
-			//				BOOST_CHECK_NO_THROW( mms.process( bar ) );
-			//			}
-			//		}
-			//	};
+						mms->initialization( exe );
+
+						for ( long i = 1; i < 1000; ++i )
+						{
+							common::price_bar pb;
+							pb.close_ = i * 1.0f;
+							pb.time_ = i;
+							common::on_stock_bar bar( pb, i );
+							BOOST_CHECK_NO_THROW( mms->process( bar ) );
+						}
+						BOOST_CHECK_NO_THROW( algorithm_storage().clear() );
+					}
+				};
 				void moving_median_series_constructor_tests()
 				{
-					//moving_median_series_tests mms_test;
-					//mms_test.constructor_tests();
+					moving_median_series_tests mms_test;
+					mms_test.constructor_tests();
 				}
 				void moving_median_series_simple_work_tests()
 				{
-					//moving_median_series_tests mms_test;
-					//mms_test.simple_work_tests();
-				//}
+					moving_median_series_tests mms_test;
+					mms_test.simple_work_tests();
+				}
 			}
 		}
 	}

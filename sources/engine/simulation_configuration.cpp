@@ -21,6 +21,14 @@ namespace stsc
 			{
 				return first->name_ < second->name_;
 			}
+			bool operator<( const parameter_ptr& first, const std::string& second )
+			{
+				return first->name_ < second;
+			}
+			bool operator==( const parameter_ptr& first, const std::string& second )
+			{
+				return first->name_ == second;
+			}
 			//
 			execution::execution( const std::string& name, const char type, const std::string& algorithm_name )
 				: name_( name )
@@ -31,16 +39,7 @@ namespace stsc
 			execution::~execution()
 			{
 			}
-			execution& execution::add_parameter( const parameter_ptr& p )
-			{
-				parameters_.push_back( p );
-				return *this;
-			}
-			void execution::sort()
-			{
-				std::sort( parameters_.begin(), parameters_.end() );
-			}
-			const parameter_list& execution::parameters() const
+			const parameter_map& execution::parameters() const
 			{
 				return parameters_;
 			}

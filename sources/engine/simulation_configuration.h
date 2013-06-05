@@ -60,6 +60,8 @@ namespace stsc
 			typedef boost::shared_ptr< parameter > parameter_ptr;
 
 			bool operator<( const parameter_ptr& first, const parameter_ptr& second );
+			bool operator<( const parameter_ptr& first, const std::string& second );
+			bool operator==( const parameter_ptr& first, const std::string& second );
 
 			template< typename type >
 			parameter_ptr make_parameter( const std::string& name, const type& value )
@@ -67,7 +69,7 @@ namespace stsc
 				return parameter_ptr( new parameter( name, value ) );
 			}
 			//
-			typedef std::vector< parameter_ptr > parameter_list;
+			typedef std::map< std::string, parameter_ptr > parameter_map;
 			//
 			class execution
 			{
@@ -80,21 +82,37 @@ namespace stsc
 				const char type_;
 				const std::string algorithm_name_;
 			private:
-				parameter_list parameters_;
+				parameter_map parameters_;
 			public:
 				explicit execution( const std::string& name, const char type, const std::string& algorithm_name );
 				~execution();
-				execution& add_parameter( const parameter_ptr& p );
+				//
 				template< typename type >
-				execution& add_parameter( const std::string& p_name, const type& p_value )
-				{
-					return add_parameter( make_parameter( p_name, boost::lexical_cast< std::string >( p_value ) ) );
-				}
+				execution& add_parameter( const std::string& p_name, const type& p_value );
 				//
-				void sort();
+				template< typename value_type >
+				const value_type parameter( const std::string& parameter_name ) const;
 				//
-				const parameter_list& parameters() const;
+				const parameter_map& parameters() const;
 			};
+
+			template< typename type >
+			execution& execution::add_parameter( const std::string& p_name, const type& p_value )
+			{
+				if ( !parameters_.insert( std::make_pair( p_name, make_parameter( p_name, boost::lexical_cast< std::string >( p_value ) ) ) ).second )
+					throw std::invalid_argument( "error while adding parameter " + p_name + " to execution + " + name_ + " please check configuration" );
+				return *this;
+			}
+
+			template< typename value_type >
+			const value_type execution::parameter( const std::string& parameter_name ) const
+			{
+				parameter_map::const_iterator i = parameters_.find( parameter_name );
+				if ( i == parameters_.end() )
+					throw std::logic_error("no such parameter " + parameter_name + " at parameter list :" + type_ + " " + name_ + "( " + algorithm_name_ + " ) ");
+				return boost::lexical_cast< value_type >( i->second->value_ );
+			}
+
 			typedef boost::shared_ptr< execution > execution_ptr;
 
 			bool operator<( const execution_ptr& first, const execution_ptr& second );

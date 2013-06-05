@@ -63,6 +63,12 @@ namespace stsc
 				serie_->insert( b.index, signal );
 			}
 			//
+			template< typename algorithm_type >
+			algorithm_type* create_algorithm()
+			{
+				algorithm_type* result = new algorithm_type();
+				return result;
+			};
 			template< typename algorithm_type, typename signal_serie_type >
 			algorithm_type* create_algorithm( const std::string& name, signal_serie_type& serie )
 			{
@@ -75,6 +81,13 @@ namespace stsc
 				algorithm_type* result = new algorithm_type( name );
 				return result;
 			};
+			template< typename algorithm_type >
+			algorithm_type* create_algorithm( const std::string& name, const details::execution_ptr& ptr )
+			{
+				algorithm_type* result = new algorithm_type( name, ptr );
+				return result;
+			};
+
 		}
 	}
 }
