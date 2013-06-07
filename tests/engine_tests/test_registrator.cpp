@@ -20,7 +20,7 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 	ts1->add( BOOST_TEST_CASE( &details_algorithm_prototypes_constructor_tests ) );
 	ts1->add( BOOST_TEST_CASE( &on_stock_algorithm_tests ) );
 	ts1->add( BOOST_TEST_CASE( &on_bar_algorithm_tests ) );
-	//ts1->add( BOOST_TEST_CASE( &on_period_algorithm_tests ) );
+	ts1->add( BOOST_TEST_CASE( &on_period_algorithm_tests ) );
 
 	using namespace stsc::tests_::engine::algorithms;
 

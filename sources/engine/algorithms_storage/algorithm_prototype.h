@@ -18,10 +18,12 @@ namespace stsc
 	{
 		namespace algorithms_storage
 		{
+
 			template< typename input_type, typename output_type >
-			class algorithm_prototype : public algorithm_with_serie< output_type >
+			class algorithm_prototype : public algorithm_with_serie< output_type >, public algorithm_interface< input_type >
 			{
 				typedef algorithm_with_serie< output_type > base_class;
+				typedef algorithm_interface< input_type > base_interface;
 			protected:	
 				typedef typename input_type bar_type;
 
@@ -34,11 +36,17 @@ namespace stsc
 				/// this method use boost::shared_ptr to store element - you should not call 'delete' for this pointer
 				/// do not use .get() method to send signal here use appropriate method for storing signal in several places
 				virtual void register_signal( const bar_type& b, signal_type* const signal );
+			public:
+				virtual void subscription_check( const std::type_info& ti ) const;
+				virtual const common::shared_string& name() const;
 			};
+
 
 			template< typename input_type, typename output_type >
 			algorithm_prototype< input_type, output_type >::algorithm_prototype( const common::shared_string& name, typed_serie_ptr& serie )
-				: base_class( name, serie )
+				: algorithm()
+				, base_class( name, serie )
+				, base_interface()
 			{
 			}
 			template< typename input_type, typename output_type >
@@ -88,6 +96,17 @@ namespace stsc
 				return result;
 			};
 
+			//
+			template< typename input_type, typename output_type >
+			void algorithm_prototype< input_type, output_type >::subscription_check( const std::type_info& ti ) const
+			{
+				return base_class::subscription_check( ti );
+			}
+			template< typename input_type, typename output_type >
+			const common::shared_string& algorithm_prototype< input_type, output_type >::name() const
+			{
+				return base_class::name();
+			}
 		}
 	}
 }

@@ -41,18 +41,18 @@ namespace stsc
 		{
 			friend class stsc::engine::algorithms_storage::algorithm;
 
-			typedef system_utilities::common::shared_name_storage shared_name_storage;
-			shared_name_storage stock_names_;
-
 			typedef details::executions_stock_group::on_stock_algorithm_sequence on_stock_algorithm_sequence;
 
-			typedef std::map< common::shared_string, details::executions_stock_group > data_processors;
+			typedef boost::shared_ptr< details::executions_stock_group > executions_stock_group_ptr;
+
+			typedef std::multimap< common::shared_string, executions_stock_group_ptr > data_processors;
 			data_processors data_processors_;
 
 		public:
 			explicit algorithm_manager();
 			virtual ~algorithm_manager();
 			//
+			void prepare( const simulation_configuration& configuration );
 			void clear();
 			//
 		};

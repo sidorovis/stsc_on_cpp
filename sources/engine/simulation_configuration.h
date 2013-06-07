@@ -126,10 +126,9 @@ namespace stsc
 			{
 			public:
 				typedef std::set< stsc::common::shared_string > stock_names;
-			private:
 				const stock_names stock_names_;
 				execution_list executions_;
-			public:
+
 				explicit stock_set( const stock_names& names );
 				void add_execution( const std::string& execution_name, const execution_ptr& e );
 				bool find_execution_name( const std::string& execution_name ) const;
@@ -138,8 +137,13 @@ namespace stsc
 			typedef boost::shared_ptr< stock_set > stock_set_ptr;
 			typedef std::vector< stock_set_ptr > stock_sets;
 		}
+		//
+		class algorithm_manager;
+		//
 		class simulation_configuration : virtual public boost::noncopyable
 		{
+			friend class algorithm_manager;
+
 			friend void stsc::tests_::engine::simulation_configuration_process_line_tests();
 			friend void stsc::tests_::engine::simulation_configuration_process_instrument_list_tests();
 			friend void stsc::tests_::engine::simulation_configuration_process_assignment_tests();

@@ -101,7 +101,7 @@ namespace stsc
 				algorithms::const_iterator i = on_stock_algorithms_.find( algorithm_type_name );
 
 				if ( i == on_stock_algorithms_.end() )
-					throw std::logic_error( "trying to use algorithm " + *algorithm_type_name + " without creating it" );
+					throw std::logic_error( "trying to use stock algorithm " + *algorithm_type_name + " without creating it" );
 
 				algorithms_storage::typed_algorithm< algorithm_type > result( dynamic_cast< algorithm_type* const >( i->second->copy() ) );
 				if ( !result )
@@ -122,7 +122,7 @@ namespace stsc
 				algorithms::const_iterator i = on_bar_algorithms_.find( algorithm_type_name );
 
 				if ( i == on_bar_algorithms_.end() )
-					throw std::logic_error( "trying to use algorithm " + *algorithm_type_name + " without creating it" );
+					throw std::logic_error( "trying to use bar algorithm " + *algorithm_type_name + " without creating it" );
 
 				algorithms_storage::typed_algorithm< algorithm_type > result( dynamic_cast< algorithm_type* const >( i->second->copy() ) );
 				if ( !result )
@@ -142,8 +142,8 @@ namespace stsc
 			{
 				algorithms::const_iterator i = on_period_algorithms_.find( algorithm_type_name );
 
-				if ( i == on_bar_algorithms_.end() )
-					throw std::logic_error( "trying to use algorithm " + *algorithm_type_name + " without creating it" );
+				if ( i == on_period_algorithms_.end() )
+					throw std::logic_error( "trying to use period algorithm " + *algorithm_type_name + " without creating it" );
 
 				algorithms_storage::typed_algorithm< algorithm_type > result( dynamic_cast< algorithm_type* const >( i->second->copy() ) );
 				if ( !result )
@@ -155,7 +155,7 @@ namespace stsc
 			algorithms_storage::typed_algorithm< algorithm_type > algorithm_storage_instance::create_on_period( const std::string& algorithm_type_name ) const
 			{
 				const common::shared_string name = algorithm_names_.get_shared( algorithm_type_name );
-				return create_on_bar< algorithm_type >( name );
+				return create_on_period< algorithm_type >( name );
 			}
 		}
 	}

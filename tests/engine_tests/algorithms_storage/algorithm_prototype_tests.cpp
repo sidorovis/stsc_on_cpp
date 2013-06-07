@@ -29,12 +29,9 @@ namespace stsc
 
 						typedef typed_algorithm::signal_type_ptr signal_type_ptr;
 
-						algorithm_prototype_tests( const algorithm_prototype_tests& other )
-							: typed_algorithm( other )
-						{}
-
 						explicit algorithm_prototype_tests( const common::shared_string& name )
-							: typed_algorithm( name, create_map_serie_ptr< double >() )
+							: algorithm()
+							, typed_algorithm( name, create_map_serie_ptr< double >() )
 						{}
 						virtual ~algorithm_prototype_tests(){}
 						//
@@ -45,6 +42,9 @@ namespace stsc
 						virtual algorithm* copy() const
 						{
 							return new algorithm_prototype_tests( *this );
+						}
+						virtual void process( const bar_type& b )
+						{
 						}
 						virtual void register_signal( const bar_type& b, const signal_type& signal )
 						{

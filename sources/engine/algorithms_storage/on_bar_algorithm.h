@@ -17,9 +17,7 @@ namespace stsc
 			protected:
 				explicit on_bar_algorithm( const std::string& name, typed_serie_ptr& serie );
 				virtual ~on_bar_algorithm();
-			private:
-				virtual void process( const bar_type& b ) = 0;
-			protected:
+			
 				//template< typename subscription_signal_type >
 				//series_storage::const_serie_ptr< subscription_signal_type > subscribe_on_stock( const std::string& subscription_name, const std::string& stock_name );
 				//template< typename subscription_signal_type >

@@ -20,8 +20,8 @@ namespace stsc
 				on_stock_test_algorithm* a = create_algorithm< on_stock_test_algorithm >( "name" ); 
 				BOOST_CHECK_EQUAL( a != NULL, true );
 
-				typed_algorithm< on_stock_test_algorithm > ptr = algorithm_storage().create_on_stock< on_stock_test_algorithm >( a->name_ );
-				BOOST_CHECK_EQUAL( ptr->name_, a->name_ );
+				typed_algorithm< on_stock_test_algorithm > ptr = algorithm_storage().create_on_stock< on_stock_test_algorithm >( "name" );
+				BOOST_CHECK_EQUAL( ptr->name(), a->name() );
 			}
 		}
 	}

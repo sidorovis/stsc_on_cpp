@@ -38,6 +38,7 @@ namespace stsc
 					virtual void process( const bar_type& b ); 
 					//
 					declare_copy_method( on_stock_test_algorithm );
+				
 				};
 				
 				//

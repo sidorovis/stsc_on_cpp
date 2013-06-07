@@ -17,8 +17,6 @@ namespace stsc
 			protected:
 				explicit on_period_algorithm( const std::string& name, typed_serie_ptr& serie );
 				virtual ~on_period_algorithm();
-			private:
-				virtual void process( const bar_type& b ) = 0;
 
 			//protected:
 			//	template< typename subscription_signal_type >

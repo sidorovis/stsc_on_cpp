@@ -25,23 +25,26 @@ namespace stsc
 
 			class algorithm
 			{
-			protected:
-				algorithm( const algorithm& other );
 			public:
-				const common::shared_string name_;
-
-				explicit algorithm( const common::shared_string& name );
 				virtual ~algorithm();
 				//
 				virtual void subscription_check( const std::type_info& ti ) const = 0;
-				//
 				virtual algorithm* copy() const = 0;
-				//
-				virtual void initialization( const details::execution_ptr& ptr );
+				virtual const common::shared_string& name() const = 0;
 			};
-
+			//
+			template< typename bar_type >
+			class algorithm_interface : virtual public algorithm
+			{
+			public:
+				algorithm_interface(){}
+				virtual ~algorithm_interface(){}
+				virtual void process( const bar_type& b ) = 0;
+				virtual void initialization( const details::execution_ptr& ptr ){}
+			};
+			//
 			template< typename output_type >
-			class algorithm_with_serie : public algorithm
+			class algorithm_with_serie : virtual public algorithm
 			{
 				friend class algorithm_manager;
 			private:
@@ -51,25 +54,27 @@ namespace stsc
 				typedef typename boost::shared_ptr< signal_type > signal_type_ptr;
 
 				typedef series_storage::serie_ptr< signal_type > typed_serie_ptr;
+				const common::shared_string name_;
 				typed_serie_ptr serie_;
 			protected:
 				algorithm_with_serie( const algorithm_with_serie& other );
 			public:
-				explicit algorithm_with_serie( const common::shared_string& name, typed_serie_ptr& serie );
+				explicit algorithm_with_serie(  const common::shared_string& name, typed_serie_ptr& serie );
 				virtual ~algorithm_with_serie();
 				//
 				virtual void subscription_check( const std::type_info& ti ) const;
+				virtual const common::shared_string& name() const;
 			};
 			template< typename signal_type >
 			algorithm_with_serie<signal_type>::algorithm_with_serie( const common::shared_string& name, typed_serie_ptr& serie )
-				: algorithm( name )
+				: name_( name )
 				, serie_( serie )
 			{
 			}
 
 			template< typename signal_type >
 			algorithm_with_serie<signal_type>::algorithm_with_serie( const algorithm_with_serie& other )
-				: algorithm( other )
+				: name_( other.name_ )
 				, serie_( other.serie_ )
 			{
 			}
@@ -91,6 +96,12 @@ namespace stsc
 					throw std::logic_error( error_line.str() );
 			}
 			//
+			template< typename signal_type >
+			const common::shared_string& algorithm_with_serie< signal_type >::name() const
+			{
+				return name_;
+			}
+			//
 			template< typename algo_type >
 			class typed_algorithm : public boost::shared_ptr< algo_type >
 			{
@@ -100,7 +111,8 @@ namespace stsc
 				{
 				}
 			};
-
+			//
+			//
 #define declare_copy_method(class_name) \
 stsc::engine::algorithms_storage::algorithm* class_name::copy() const; \
 

@@ -25,8 +25,6 @@ namespace stsc
 				//series_storage::const_serie_ptr< subscription_signal_type > subscribe_on_bar( const std::string& subscription_name );
 				//template< typename subscription_signal_type >
 				//series_storage::const_serie_ptr< subscription_signal_type > subscribe_on_period( const std::string& subscription_name );
-			private:
-				virtual void process( const bar_type& b ) = 0;
 			};
 
 			template< typename output_signal_type >
