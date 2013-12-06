@@ -44,7 +44,7 @@ namespace stsc
 				virtual ~moving_median_series()
 				{
 				}
-				virtual void initialization( const engine::details::execution_ptr& ptr )
+				virtual void initialization( const engine::details::execution_ptr& ptr, algorithm_manager& am )
 				{
 					mm_.reset( new moving_median_type( ptr->parameter< size_t >( "window_size" ) ) );
 				}

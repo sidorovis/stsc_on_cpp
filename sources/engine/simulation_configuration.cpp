@@ -52,6 +52,14 @@ namespace stsc
 				return first->name_ == execution_name;
 			}
 			//
+			void execution::add_dependencie_algorithm( const std::string& dep_name )
+			{
+				used_execution_names_.push_back( dep_name );
+			}
+			const execution::used_executions& execution::used() const
+			{
+				return used_execution_names_;
+			}
 			execution_ptr make_execution( const std::string& name, const char type, const std::string& algorithm_name )
 			{
 				return execution_ptr( new execution( name, type, algorithm_name ) );
@@ -305,6 +313,7 @@ namespace stsc
 					const std::string algo_name = match[1];
 					if ( !current_stock_set_->find_execution_name( algo_name ) )
 						throw std::invalid_argument( "bad parameter at execution line '" + execution_name + "' (" + line + "), " + algo_name + " execution not registered at stock set" );
+					result->add_dependencie_algorithm( algo_name );
 				}
 				else
 					throw std::invalid_argument( "bad parameter at execution line '" + execution_name + "' (" + line + "), unknown parameter" );

@@ -48,14 +48,33 @@ namespace stsc
 					switch ( u->second->type_ )
 					{
 					case details::execution::STOCK :
+					{
+						typedef algorithms_storage::algorithm_interface< common::on_stock_bar > algo;
+						typedef algorithms_storage::typed_algorithm< algo > typed_algo;
+						typed_algo new_algorithm = algorithm_storage().create_on_stock< algo >( u->second->algorithm_name_ );
+						new_algorithm->initialization( u->second, *this );
 
-//						algorithms_storage::typed_algorithm< on_stock_algorithm > ptr = algorithm_storage().create_on_stock( u->second->algorithm_name_ );
-
+						// TODO
 						break;
+					}
 					case details::execution::BAR :
+					{
+						typedef algorithms_storage::algorithm_interface< common::on_bar > algo;
+						typedef algorithms_storage::typed_algorithm< algo > typed_algo;
+						typed_algo new_algorithm = algorithm_storage().create_on_bar< algo >( u->second->algorithm_name_ );
+						new_algorithm->initialization( u->second, *this );
+						// TODO
 						break;
+					}
 					case details::execution::PERIOD :
+					{
+						typedef algorithms_storage::algorithm_interface< common::on_period > algo;
+						typedef algorithms_storage::typed_algorithm< algo > typed_algo;
+						typed_algo new_algorithm = algorithm_storage().create_on_period< algo >( u->second->algorithm_name_ );
+						new_algorithm->initialization( u->second, *this );
+						// TODO
 						break;
+					}
 					default:
 						throw std::logic_error( std::string( "unknown algorithm type: " ) + u->second->type_ + " on " + u->first + " execution" );
 					}

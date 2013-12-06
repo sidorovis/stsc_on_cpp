@@ -81,14 +81,20 @@ namespace stsc
 				const std::string name_;
 				const char type_;
 				const std::string algorithm_name_;
+
+				typedef std::vector< std::string > used_executions;
 			private:
 				parameter_map parameters_;
+				used_executions used_execution_names_;
 			public:
 				explicit execution( const std::string& name, const char type, const std::string& algorithm_name );
 				~execution();
 				//
 				template< typename type >
 				execution& add_parameter( const std::string& p_name, const type& p_value );
+				//
+				void add_dependencie_algorithm( const std::string& dep_name );
+				const used_executions& used() const;
 				//
 				template< typename value_type >
 				const value_type parameter( const std::string& parameter_name ) const;

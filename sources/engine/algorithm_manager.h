@@ -21,15 +21,21 @@ namespace stsc
 		{
 			struct executions_stock_group
 			{
-				typedef std::map< common::shared_string, algorithms_storage::algorithm_ptr > algorithms;
-				typedef algorithms::const_iterator const_iterator;
-				typedef std::pair< const_iterator, const_iterator > on_stock_algorithm_sequence;
+
+				typedef algorithms_storage::algorithm_interface< common::on_stock_bar > on_stock_algorithm;
+				typedef algorithms_storage::algorithm_interface< common::on_bar > on_bar_algorithm;
+				typedef algorithms_storage::algorithm_interface< common::on_period > on_period_algorithm;
+
 				
-				typedef std::map< common::shared_string, algorithms > on_stock_algorithms;
+				typedef std::map< common::shared_string, on_stock_algorithm > stocked_algorithms;
+				typedef std::map< common::shared_string, stocked_algorithms > on_stock_algorithms;
+
+				typedef std::map< common::shared_string, on_bar_algorithm > on_bar_algorithms;
+				typedef std::map< common::shared_string, on_period_algorithm > on_period_algorithms;
 
 				on_stock_algorithms on_stock_algorithms_;
-				algorithms on_bar_algorithms_;
-				algorithms on_period_algorithms_;
+				on_bar_algorithms on_bar_algorithms_;
+				on_period_algorithms on_period_algorithms_;
 
 				explicit executions_stock_group();
 				~executions_stock_group();

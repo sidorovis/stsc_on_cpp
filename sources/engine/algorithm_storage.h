@@ -74,7 +74,7 @@ namespace stsc
 			template< typename algorithm_type >
 			void algorithm_storage_instance::register_on_stock( const common::shared_string& algorithm_type_name, const algorithm_type* const algo )
 			{
-				algorithms_storage::const_algorithm_ptr ptr( dynamic_cast< const algorithm* const >( algo ) );
+				algorithms_storage::const_algorithm_ptr ptr( dynamic_cast< const algorithms_storage::algorithm* const >( algo ) );
 				if ( !on_stock_algorithms_.insert( std::make_pair( algorithm_type_name, ptr ) ).second )
 					throw std::logic_error( "algorithm " + *algorithm_type_name + " allready exists at on_stock algorithm_storage" );
 			}
@@ -82,7 +82,7 @@ namespace stsc
 			template< typename algorithm_type >
 			void algorithm_storage_instance::register_on_bar( const common::shared_string& algorithm_type_name, const algorithm_type* const algo )
 			{
-				algorithms_storage::const_algorithm_ptr ptr( dynamic_cast< const algorithm* const >( algo ) );
+				algorithms_storage::const_algorithm_ptr ptr( dynamic_cast< const algorithms_storage::algorithm* const >( algo ) );
 				if ( !on_bar_algorithms_.insert( std::make_pair( algorithm_type_name, ptr ) ).second )
 					throw std::logic_error( "algorithm " + *algorithm_type_name + " allready exists at on_stock algorithm_storage" );
 			}
@@ -90,7 +90,7 @@ namespace stsc
 			template< typename algorithm_type >
 			void algorithm_storage_instance::register_on_period( const common::shared_string& algorithm_type_name, const algorithm_type* const algo )
 			{
-				algorithms_storage::const_algorithm_ptr ptr( dynamic_cast< const algorithm* const >( algo ) );
+				algorithms_storage::const_algorithm_ptr ptr( dynamic_cast< const algorithms_storage::algorithm* const >( algo ) );
 				if ( !on_period_algorithms_.insert( std::make_pair( algorithm_type_name, ptr ) ).second )
 					throw std::logic_error( "algorithm " + *algorithm_type_name + " allready exists at on_stock algorithm_storage" );
 			}

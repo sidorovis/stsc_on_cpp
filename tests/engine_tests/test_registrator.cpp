@@ -30,8 +30,8 @@ test_suite* init_unit_test_suite( int argc, char* argv[] )
 	ts1->add( BOOST_TEST_CASE( &moving_median_series_constructor_tests ) );
 	ts1->add( BOOST_TEST_CASE( &moving_median_series_simple_work_tests ) );
 
-	//ts1->add( BOOST_TEST_CASE( &moving_median_indicator_constructor_tests ) );
-	//ts1->add( BOOST_TEST_CASE( &moving_median_indicator_simple_work_tests ) );
+	ts1->add( BOOST_TEST_CASE( &moving_median_indicator_constructor_tests ) );
+	ts1->add( BOOST_TEST_CASE( &moving_median_indicator_simple_work_tests ) );
 
 	using namespace stsc::tests_::engine;
 

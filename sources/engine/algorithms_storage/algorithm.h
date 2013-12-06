@@ -40,7 +40,7 @@ namespace stsc
 				algorithm_interface(){}
 				virtual ~algorithm_interface(){}
 				virtual void process( const bar_type& b ) = 0;
-				virtual void initialization( const details::execution_ptr& ptr ){}
+				virtual void initialization( const details::execution_ptr& ptr, algorithm_manager& am ){}
 			};
 			//
 			template< typename output_type >
